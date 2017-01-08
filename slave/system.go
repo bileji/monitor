@@ -18,7 +18,7 @@ type SysInfo struct {
     Docker        []docker.CgroupDockerStat `json:"docker"`
     VirtualMemory *mem.VirtualMemoryStat `json:"memory"`
     Host          *host.InfoStat `json:"host"`
-    Net           []net.ProtoCountersStat `json:"net"`
+    Net           []net.ConnectionStat `json:"net"`
 }
 
 func GetSysInfo() *SysInfo {
@@ -53,9 +53,9 @@ func GetSysInfo() *SysInfo {
         ho = &host.InfoStat{}
     }
 
-    ne, err := net.ProtoCounters([]string{"tcp", "ip"})
+    ne, err := net.Connections("tcp")
     if err != nil {
-        ne = []net.ProtoCountersStat{}
+        ne = []net.ConnectionStat{}
     }
 
     return &SysInfo{
