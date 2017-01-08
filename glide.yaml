@@ -1,0 +1,4 @@
+package: monitor
+import:
+- package: github.com/shirou/gopsutil
+- package: github.com/gizak/termui
