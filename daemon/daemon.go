@@ -65,16 +65,13 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
             syscall.Dup2(int(fd), int(os.Stderr.Fd()))
         }
     } else {
-        File, err := os.OpenFile(d.LogFile, os.O_RDWR, 0)
-        if err == nil {
-            File.WriteString(os.Stdin)
-            File.WriteString(os.Stdout)
-            File.WriteString(os.Stderr)
-            //fd := File.Fd()
-            //syscall.Dup2(int(fd), int(os.Stdin.Fd()))
-            //syscall.Dup2(int(fd), int(os.Stdout.Fd()))
-            //syscall.Dup2(int(fd), int(os.Stderr.Fd()))
-        }
+        //File, err := os.OpenFile(d.LogFile, os.O_RDWR, 0)
+        //if err == nil {
+        //    //fd := File.Fd()
+        //    //syscall.Dup2(int(fd), int(os.Stdin.Fd()))
+        //    //syscall.Dup2(int(fd), int(os.Stdout.Fd()))
+        //    //syscall.Dup2(int(fd), int(os.Stderr.Fd()))
+        //}
     }
 
     return 0, nil
