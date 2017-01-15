@@ -13,7 +13,7 @@ func main() {
     }
     Daemon.Start(0, 0)
     for {
-        time.Sleep(10 * time.Second)
+        time.Sleep(1 * time.Second)
         log.Println("hello monitor")
         bytes, err := collector.Start()
         if err != nil {
