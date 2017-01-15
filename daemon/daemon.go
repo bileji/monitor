@@ -30,7 +30,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         return -1, errors.New("fork fail")
     }
 
-    // handle exception for darwin
+    // 处理darwin的异常
     if darwin && r2 == 1 {
         r1 = 0
     }
@@ -55,6 +55,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         os.Chdir("/")
     }
 
+    // 判断是否输出日志
     if Close > 0 || len(d.LogFile) == 0 {
         File, err := os.OpenFile("/dev/null", os.O_RDWR, 0)
         if err == nil {
