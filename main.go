@@ -15,8 +15,11 @@ func main() {
     for {
         log.Println("hello monitor")
         time.Sleep(10 * time.Second)
-        bytes, _ := collector.Start()
-        log.Println(string(bytes))
+        
+        go func() {
+            bytes, _ := collector.Start()
+            log.Println(string(bytes))
+        }()
         
     }
 }
