@@ -1,20 +1,19 @@
 package main
 
 import (
-    "os"
     "log"
     "time"
     "monitor/daemon"
 )
 
 func main() {
-    
-    File, err := os.Create("log")
-    if err != nil {
-        log.Println("创建日志文件错误", err)
-        return
-    }
-    log.SetOutput(File)
+    //
+    //File, err := os.Create("log")
+    //if err != nil {
+    //    log.Println("创建日志文件错误", err)
+    //    return
+    //}
+    //log.SetOutput(File)
 
     Daemon := &daemon.Daemon{
         LogFile: "/var/log/monitord.log",

@@ -2,6 +2,7 @@ package daemon
 
 import (
     "os"
+    "log"
     "runtime"
     "syscall"
     "errors"
@@ -65,13 +66,10 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
             syscall.Dup2(int(fd), int(os.Stderr.Fd()))
         }
     } else {
-        //File, err := os.OpenFile(d.LogFile, os.O_RDWR, 0)
-        //if err == nil {
-        //    //fd := File.Fd()
-        //    //syscall.Dup2(int(fd), int(os.Stdin.Fd()))
-        //    //syscall.Dup2(int(fd), int(os.Stdout.Fd()))
-        //    //syscall.Dup2(int(fd), int(os.Stderr.Fd()))
-        //}
+        File, err := os.OpenFile(d.LogFile, os.O_RDWR, 0)
+        if err == nil {
+            log.SetOutput(File)
+        }
     }
 
     return 0, nil
