@@ -9,17 +9,17 @@ import (
 
 func main() {
     Daemon := &daemon.Daemon{
-        LogFile: "/var/log/monitord.log",
+        //LogFile: "/var/log/monitord.log",
     }
     Daemon.Start(0, 0)
     for {
         log.Println("hello monitor")
         time.Sleep(10 * time.Second)
         
-        go func() {
-            bytes, _ := collector.Start()
-            log.Println(string(bytes))
-        }()
+        //go func() {
+        bytes, _ := collector.Start()
+        log.Println(string(bytes))
+        //}()
         
     }
 }
