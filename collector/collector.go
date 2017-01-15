@@ -15,9 +15,8 @@ func Start() ([]byte, error) {
     c := &Collector{
         Cpu: Cpu{}.Exec(),
         Network: Network{}.Exec(),
+        Docker: Docker{}.Exec(),
+        Memory: Memory{}.Exec(),
     }
-    //c.Docker.Exec()
-    //c.Memory.Exec()
-    //c.Network.Exec()
     return json.Marshal(*c)
 }

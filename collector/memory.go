@@ -9,7 +9,7 @@ type Memory struct {
     VirtualMemory *mem.VirtualMemoryStat `json:"virtual_memory"`
 }
 
-func (m *Memory) Exec() *Memory {
+func (m Memory) Exec() *Memory {
     var err error
     m.VirtualMemory, err = mem.VirtualMemory()
     if err != nil {
@@ -19,5 +19,5 @@ func (m *Memory) Exec() *Memory {
     if err != nil {
         m.SwapMemory = &mem.SwapMemoryStat{}
     }
-    return m
+    return &m
 }
