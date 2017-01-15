@@ -20,7 +20,7 @@ func (n *Network) GetPublicIP() string {
     if err != nil {
         return ""
     }
-    out, err := common.Invoke{}.Command(nc, "ns1.dnspod.net", 6666)
+    out, err := common.Invoke{}.Command(nc, "ns1.dnspod.net", "6666")
     if err != nil {
         return ""
     }
