@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+    bytes, _ := collector.Start()
+    log.Println(string(bytes))
     Daemon := &daemon.Daemon{
         LogFile: "/var/log/monitord.log",
     }
