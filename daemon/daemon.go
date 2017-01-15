@@ -13,15 +13,16 @@ type Daemon struct {
 }
 
 func (d *Daemon) Start(ChDir, Close int) (int, error) {
-
+    
     darwin := runtime.GOOS == "darwin"
-
+    
+    // todo 判断是否已有程序启动 pid
+    
     // 已经以daemon启动
-    log.Println(syscall.Getppid())
     if syscall.Getppid() == 1 {
         return 0, nil
     }
-
+    
     // fork子进程
     r1, r2, err := syscall.RawSyscall(syscall.SYS_FORK, 0, 0, 0)
     if err != 0 {
@@ -31,19 +32,19 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         os.Exit(-1)
         return -1, errors.New("fork fail")
     }
-
+    
     // 处理darwin的异常
     if darwin && r2 == 1 {
         r1 = 0
     }
-
+    
     // 子进程成功启动，然后退出父进程
     if r1 > 0 {
         os.Exit(0)
     }
-
+    
     syscall.Umask(0)
-
+    
     if pid, err := syscall.Setsid(); err != nil || pid < 0 {
         if err != nil {
             return -1, err
@@ -52,11 +53,11 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
             return -1, errors.New("setsid fail")
         }
     }
-
+    
     if ChDir > 0 {
         os.Chdir("/")
     }
-
+    
     // 判断是否输出日志
     if Close > 0 || len(d.LogFile) == 0 {
         File, err := os.OpenFile("/dev/null", os.O_RDWR, 0)
@@ -73,6 +74,6 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         }
         log.SetOutput(File)
     }
-
+    
     return 0, nil
 }
