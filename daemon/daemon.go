@@ -67,9 +67,10 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         }
     } else {
         File, err := os.Create(d.LogFile)
-        if err == nil {
-            log.SetOutput(File)
+        if err != nil {
+            return -1, err
         }
+        log.SetOutput(File)
     }
 
     return 0, nil
