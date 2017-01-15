@@ -15,7 +15,7 @@ type Network struct {
     InterfacesStat []net.InterfaceStat `json:"interfaces_stat"`
 }
 
-func (n *Network) GetPublicIP() string {
+func (n Network) GetPublicIP() string {
     nc, err := exec.LookPath("/usr/bin/nc")
     if err != nil {
         return ""
@@ -31,7 +31,7 @@ func (n *Network) GetPublicIP() string {
     return ""
 }
 
-func (n *Network) Exec() *Network {
+func (n Network) Exec() *Network {
     var err error
     n.HostInfo, err = host.Info()
     if err != nil {
@@ -44,5 +44,5 @@ func (n *Network) Exec() *Network {
     if err != nil {
         n.InterfacesStat = []net.InterfaceStat{}
     }
-    return n
+    return &n
 }

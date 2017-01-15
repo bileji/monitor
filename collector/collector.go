@@ -14,6 +14,7 @@ type Collector struct {
 func Start() ([]byte, error) {
     c := &Collector{
         Cpu: Cpu{}.Exec(),
+        Network: Network{}.Exec(),
     }
     //c.Docker.Exec()
     //c.Memory.Exec()
