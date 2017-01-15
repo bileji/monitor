@@ -3,18 +3,18 @@ package collector
 import (
     "os/exec"
     "strings"
+    "monitor/common"
     "github.com/shirou/gopsutil/host"
     "github.com/shirou/gopsutil/net"
-    "monitor/common"
 )
 
 type Network struct {
-    // echo `nc ns1.dnspod.net 6666`
     PublicIP       string `json:"public_ip"`
     HostInfo       *host.InfoStat `json:"host_info"`
     InterfacesStat []net.InterfaceStat `json:"interfaces_stat"`
 }
 
+// echo `nc ns1.dnspod.net 6666`
 func (n Network) GetPublicIP() string {
     nc, err := exec.LookPath("/usr/bin/nc")
     if err != nil {
