@@ -17,6 +17,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     darwin := runtime.GOOS == "darwin"
 
     // 已经以daemon启动
+    log.Println(syscall.Getppid())
     if syscall.Getppid() == 1 {
         return 0, nil
     }
