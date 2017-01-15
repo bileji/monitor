@@ -12,8 +12,9 @@ type Collector struct {
 }
 
 func Start() ([]byte, error) {
-    c := &Collector{}
-    c.Cpu.Exec()
+    c := &Collector{
+        Cpu: &Cpu{}.Exec(),
+    }
     //c.Docker.Exec()
     //c.Memory.Exec()
     //c.Network.Exec()
