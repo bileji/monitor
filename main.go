@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-    daemon.Daemon{
+    Daemon := &daemon.Daemon{
         LogFile: "/var/log/monitord.log",
-    }.Start(0, 0)
+    }
+    Daemon.Start(0, 0)
 }
