@@ -5,7 +5,7 @@ import (
     "strings"
     "github.com/shirou/gopsutil/host"
     "github.com/shirou/gopsutil/net"
-    "github.com/shirou/gopsutil/internal/common"
+    "monitor/common"
 )
 
 type Network struct {
