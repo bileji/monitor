@@ -12,11 +12,10 @@ type Collector struct {
 }
 
 func Start() ([]byte, error) {
-    c := &Collector{
+    return json.Marshal(Collector{
         Cpu: Cpu{}.Exec(),
-        Network: Network{}.Exec(),
         Docker: Docker{}.Exec(),
         Memory: Memory{}.Exec(),
-    }
-    return json.Marshal(*c)
+        Network: Network{}.Exec(),
+    })
 }
