@@ -4,7 +4,7 @@ import (
     "log"
     "time"
     "monitor/daemon"
-    "monitor/collector"
+    //"monitor/collector"
 )
 
 func main() {
@@ -15,11 +15,11 @@ func main() {
     for {
         time.Sleep(1 * time.Second)
         log.Println("hello monitor")
-        bytes, err := collector.Start()
-        if err != nil {
-            log.Println(err)
-        } else {
-            log.Println(string(bytes))
-        }
+        //bytes, err := collector.Start()
+        //if err != nil {
+        //    log.Println(err)
+        //} else {
+        //    log.Println(string(bytes))
+        //}
     }
 }
