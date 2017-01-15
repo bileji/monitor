@@ -66,7 +66,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
             syscall.Dup2(int(fd), int(os.Stderr.Fd()))
         }
     } else {
-        File, err := os.OpenFile(d.LogFile, os.O_RDWR, 0)
+        File, err := os.Create(d.LogFile)
         if err == nil {
             log.SetOutput(File)
         }
