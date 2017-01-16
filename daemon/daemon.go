@@ -4,7 +4,6 @@ import (
     "os"
     "log"
     "fmt"
-    "runtime"
     "syscall"
     "errors"
     "strconv"
@@ -14,81 +13,30 @@ import (
 type Daemon struct {
     LogFile    string
     PidFile    string
-    pidHandler *os.File
+    PidHandler *os.File
 }
 
 func (d *Daemon) Start(ChDir, Close int) (int, error) {
     var err error
-    darwin := runtime.GOOS == "darwin"
     
     // 判断是否已有程序启动 pid
-    d.pidHandler, err = os.OpenFile(d.PidFile, os.O_RDWR | os.O_CREATE, 0644)
+    d.PidHandler, err = os.OpenFile(d.PidFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
         return -1, err
     }
-    Info, _ := d.pidHandler.Stat()
+    Info, _ := d.PidHandler.Stat()
     if Info.Size() != 0 {
         return -1, errors.New("pid file is exist")
     }
     
     // 已经以daemon启动
-    if syscall.Getppid() == 1 {
-        return 0, nil
+    if os.Getppid() != 1 {
+        args := append([]string{os.Args[0]}, os.Args[1:]...)
+        os.StartProcess(os.Args[0], args, &os.ProcAttr{Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
+        return
     }
     
-    // fork子进程
-    r1, r2, err_no := syscall.RawSyscall(syscall.SYS_FORK, 0, 0, 0)
-    if err_no != 0 {
-        return -1, errors.New("fork fail")
-    }
-    if r2 < 0 {
-        os.Exit(-1)
-        return -1, errors.New("fork fail")
-    }
-    
-    // 处理darwin的异常
-    if darwin && r2 == 1 {
-        r1 = 0
-    }
-    
-    // 子进程成功启动，然后退出父进程
-    if r1 > 0 {
-        os.Exit(0)
-    }
-    
-    syscall.Umask(0)
-    
-    if pid, err := syscall.Setsid(); err != nil || pid < 0 {
-        if err != nil {
-            return -1, err
-        }
-        if pid < 0 {
-            return -1, errors.New("setsid fail")
-        }
-    }
-    
-    if ChDir > 0 {
-        os.Chdir("/")
-    }
-    
-    // 判断是否输出日志
-    if Close > 0 || len(d.LogFile) == 0 {
-        File, err := os.OpenFile("/dev/null", os.O_RDWR, 0)
-        if err == nil {
-            fd := File.Fd()
-            syscall.Dup2(int(fd), int(os.Stdin.Fd()))
-            syscall.Dup2(int(fd), int(os.Stdout.Fd()))
-            syscall.Dup2(int(fd), int(os.Stderr.Fd()))
-        }
-    } else {
-        File, err := os.Create(d.LogFile)
-        if err != nil {
-            return -1, err
-        }
-        log.SetOutput(File)
-    }
-    
-    d.pidHandler.WriteString(strconv.Itoa(os.Getpid()))
+    d.PidHandler.WriteString(strconv.Itoa(os.Getpid()))
     return 0, nil
 }
 
@@ -101,18 +49,18 @@ func (d *Daemon) Signal() {
     // 处理退出信号
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
-    //go func() {
-    for {
-        C := <-Signal
-        fmt.Println(C)
-        log.Println(C)
-        switch C {
-        case os.Interrupt:
-            d.Exit(d.pidHandler)
-            log.Println("exit success")
-        case syscall.SIGUSR2:
-            log.Println("to do for user signal")
+    go func() {
+        for {
+            C := <-Signal
+            fmt.Println(C)
+            log.Println(C)
+            switch C {
+            case os.Interrupt:
+                d.Exit(d.PidHandler)
+                log.Println("exit success")
+            case syscall.SIGUSR2:
+                log.Println("to do for user signal")
+            }
         }
-    }
-    //}()
+    }()
 }
