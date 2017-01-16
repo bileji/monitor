@@ -7,6 +7,7 @@ import (
     "errors"
     "strconv"
     "os/signal"
+    "fmt"
 )
 
 type Daemon struct {
@@ -42,7 +43,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
     for {
         C := <-Signal
-        log.Println(C)
+        fmt.Println(C)
         switch C {
         case os.Interrupt:
             d.Exit(d.PidHandler)
