@@ -11,20 +11,21 @@ import (
 )
 
 type Daemon struct {
-    LogFile string
-    PidFile string
+    LogFile    string
+    PidFile    string
+    pidHandler *os.File
 }
 
 func (d *Daemon) Start(ChDir, Close int) (int, error) {
-    
+    var err error
     darwin := runtime.GOOS == "darwin"
     
     // 判断是否已有程序启动 pid
-    File, err := os.OpenFile(d.PidFile, os.O_RDWR | os.O_CREATE, 0644)
+    d.pidHandler, err = os.OpenFile(d.PidFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
         return -1, err
     }
-    Info, _ := File.Stat()
+    Info, _ := d.pidHandler.Stat()
     if Info.Size() != 0 {
         return -1, errors.New("pid file is exist")
     }
@@ -86,8 +87,16 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         log.SetOutput(File)
     }
     
-    File.WriteString(strconv.Itoa(os.Getpid()))
-    
+    d.pidHandler.WriteString(strconv.Itoa(os.Getpid()))
+    return 0, nil
+}
+
+func (d *Daemon) Exit(F *os.File) {
+    F.Close()
+    os.Remove(F.Name())
+}
+
+func (d *Daemon) Signal() {
     // 处理退出信号
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
@@ -97,18 +106,11 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
             log.Println(C)
             switch C {
             case os.Interrupt:
-                d.Exit(File)
+                d.Exit(d.pidHandler)
                 log.Println("exit success")
             case syscall.SIGUSR2:
                 log.Println("to do for user signal")
             }
         }
     }()
-    
-    return 0, nil
-}
-
-func (d *Daemon) Exit(F *os.File) {
-    F.Close()
-    os.Remove(F.Name())
 }

@@ -19,6 +19,8 @@ func main() {
         os.Exit(-1)
     }
     
+    Daemon.Signal()
+    
     for {
         time.Sleep(1 * time.Second)
         log.Println("hello monitor")
