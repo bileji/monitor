@@ -101,18 +101,18 @@ func (d *Daemon) Signal() {
     // 处理退出信号
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
-    go func() {
-        for {
-            C := <-Signal
-            fmt.Println(C)
-            log.Println(C)
-            switch C {
-            case os.Interrupt:
-                d.Exit(d.pidHandler)
-                log.Println("exit success")
-            case syscall.SIGUSR2:
-                log.Println("to do for user signal")
-            }
+    //go func() {
+    for {
+        C := <-Signal
+        fmt.Println(C)
+        log.Println(C)
+        switch C {
+        case os.Interrupt:
+            d.Exit(d.pidHandler)
+            log.Println("exit success")
+        case syscall.SIGUSR2:
+            log.Println("to do for user signal")
         }
-    }()
+    }
+    //}()
 }
