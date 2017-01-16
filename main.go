@@ -9,9 +9,14 @@ import (
 
 func main() {
     Daemon := &daemon.Daemon{
+        PidFile: "/var/run/monitord.pid",
         LogFile: "/var/log/monitord.log",
     }
-    Daemon.Start(0, 0)
+    _, err := Daemon.Start(0, 0)
+    if err != nil {
+        log.Println(err)
+    }
+    
     for {
         time.Sleep(1 * time.Second)
         log.Println("hello monitor")

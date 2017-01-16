@@ -6,17 +6,27 @@ import (
     "runtime"
     "syscall"
     "errors"
+    "strconv"
 )
 
 type Daemon struct {
     LogFile string
+    PidFile string
 }
 
 func (d *Daemon) Start(ChDir, Close int) (int, error) {
     
     darwin := runtime.GOOS == "darwin"
     
-    // todo 判断是否已有程序启动 pid
+    // 判断是否已有程序启动 pid
+    File, err := os.OpenFile(d.PidFile, os.O_RDWR | os.O_CREATE, 0644)
+    if err != nil {
+        return -1, err
+    }
+    Info, _ := File.Stat()
+    if Info.Size() != 0 {
+        return -1, errors.New("pid file is exist")
+    }
     
     // 已经以daemon启动
     if syscall.Getppid() == 1 {
@@ -74,6 +84,8 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         }
         log.SetOutput(File)
     }
+    
+    File.WriteString(strconv.Itoa(os.Getpid()))
     
     return 0, nil
 }
