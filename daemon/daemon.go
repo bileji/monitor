@@ -94,6 +94,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     go func() {
         for {
             C := <-Signal
+            log.Println(C)
             switch C {
             case os.Interrupt:
                 d.Exit(File)
