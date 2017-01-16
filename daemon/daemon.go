@@ -86,6 +86,8 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         log.SetOutput(File)
     }
     
+    File.WriteString(strconv.Itoa(os.Getpid()))
+    
     // 处理退出信号
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
@@ -101,8 +103,6 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
             }
         }
     }()
-    
-    File.WriteString(strconv.Itoa(os.Getpid()))
     
     return 0, nil
 }
