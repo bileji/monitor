@@ -1,6 +1,7 @@
 package main
 
 import (
+    "os"
     "log"
     "time"
     "monitor/daemon"
@@ -15,6 +16,7 @@ func main() {
     _, err := Daemon.Start(0, 0)
     if err != nil {
         log.Println(err)
+        os.Exit(-1)
     }
     
     for {
