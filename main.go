@@ -13,7 +13,7 @@ func main() {
     File, err := os.Create("/var/log/monitord.log")
     if err != nil {
         fmt.Println("创建日志文件错误", err)
-        return -1, err
+        return
     }
     log.SetOutput(File)
     
