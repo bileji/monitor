@@ -7,6 +7,7 @@ import (
     "syscall"
     "errors"
     "strconv"
+    "os/signal"
 )
 
 type Daemon struct {
@@ -85,7 +86,25 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
         log.SetOutput(File)
     }
     
+    // 处理退出信号
+    s := make(chan os.Signal, 1)
+    signal.Notify(s, os.Interrupt, syscall.SIGUSR2)
+    go func() {
+        switch <-s {
+        case os.Interrupt:
+            d.Exit(File)
+            log.Println("exit success")
+        case syscall.SIGUSR2:
+            log.Println("to do for user signal")
+        }
+    }()
+    
     File.WriteString(strconv.Itoa(os.Getpid()))
     
     return 0, nil
+}
+
+func (d *Daemon) Exit(F *os.File) {
+    F.Close()
+    os.Remove(F.Name())
 }
