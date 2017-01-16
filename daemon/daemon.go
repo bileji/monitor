@@ -90,13 +90,15 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
     go func() {
-        C := <-Signal
-        switch C {
-        case os.Interrupt:
-            d.Exit(File)
-            log.Println("exit success")
-        case syscall.SIGUSR2:
-            log.Println("to do for user signal")
+        for {
+            C := <-Signal
+            switch C {
+            case os.Interrupt:
+                d.Exit(File)
+                log.Println("exit success")
+            case syscall.SIGUSR2:
+                log.Println("to do for user signal")
+            }
         }
     }()
     
