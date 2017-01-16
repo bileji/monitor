@@ -22,7 +22,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     File, err := os.Create(d.LogFile)
     if err != nil {
         fmt.Println("创建日志文件错误", err)
-        return
+        return -1, err
     }
     log.SetOutput(File)
     
