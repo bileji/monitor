@@ -19,6 +19,13 @@ type Daemon struct {
 func (d *Daemon) Start(ChDir, Close int) (int, error) {
     var err error
     
+    File, err := os.Create(d.LogFile)
+    if err != nil {
+        fmt.Println("创建日志文件错误", err)
+        return
+    }
+    log.SetOutput(File)
+    
     // 判断是否已有程序启动 pid
     d.PidHandler, err = os.OpenFile(d.PidFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
@@ -26,7 +33,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     }
     Info, _ := d.PidHandler.Stat()
     if Info.Size() != 0 {
-        return -1, errors.New("pid file is exist")
+        return -1, errors.New("pid file is exist:" + d.PidFile)
     }
     
     // 已经以daemon启动
