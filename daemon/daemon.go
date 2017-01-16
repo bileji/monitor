@@ -19,13 +19,6 @@ type Daemon struct {
 func (d *Daemon) Start(ChDir, Close int) (int, error) {
     var err error
     
-    File, err := os.Create(d.LogFile)
-    if err != nil {
-        fmt.Println("创建日志文件错误", err)
-        return -1, err
-    }
-    log.SetOutput(File)
-    
     // 判断是否已有程序启动 pid
     d.PidHandler, err = os.OpenFile(d.PidFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
