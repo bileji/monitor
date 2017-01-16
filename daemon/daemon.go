@@ -87,10 +87,11 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     }
     
     // 处理退出信号
-    s := make(chan os.Signal, 1)
-    signal.Notify(s, os.Interrupt, syscall.SIGUSR2)
+    Signal := make(chan os.Signal, 1)
+    signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
     go func() {
-        switch <-s {
+        C := <-Signal
+        switch C {
         case os.Interrupt:
             d.Exit(File)
             log.Println("exit success")
