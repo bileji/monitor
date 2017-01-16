@@ -35,7 +35,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     
     // fork子进程
     r1, r2, err := syscall.RawSyscall(syscall.SYS_FORK, 0, 0, 0)
-    if err != 0 {
+    if err != nil {
         return -1, errors.New("fork fail")
     }
     if r2 < 0 {
