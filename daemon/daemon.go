@@ -33,7 +33,7 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     if os.Getppid() != 1 {
         args := append([]string{os.Args[0]}, os.Args[1:]...)
         os.StartProcess(os.Args[0], args, &os.ProcAttr{Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
-        return
+        return 0, nil
     }
     
     d.PidHandler.WriteString(strconv.Itoa(os.Getpid()))
