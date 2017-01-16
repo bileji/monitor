@@ -3,6 +3,7 @@ package daemon
 import (
     "os"
     "log"
+    "fmt"
     "runtime"
     "syscall"
     "errors"
@@ -103,6 +104,7 @@ func (d *Daemon) Signal() {
     go func() {
         for {
             C := <-Signal
+            fmt.Println(C)
             log.Println(C)
             switch C {
             case os.Interrupt:
