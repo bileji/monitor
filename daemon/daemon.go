@@ -3,7 +3,6 @@ package daemon
 import (
     "os"
     "log"
-    "fmt"
     "syscall"
     "errors"
     "strconv"
@@ -37,6 +36,21 @@ func (d *Daemon) Start(ChDir, Close int) (int, error) {
     }
     
     d.PidHandler.WriteString(strconv.Itoa(os.Getpid()))
+    
+    // 处理退出信号
+    Signal := make(chan os.Signal, 1)
+    signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
+    for {
+        C := <-Signal
+        log.Println(C)
+        switch C {
+        case os.Interrupt:
+            d.Exit(d.PidHandler)
+            log.Println("exit success")
+        case syscall.SIGUSR2:
+            log.Println("to do for user signal")
+        }
+    }
     return 0, nil
 }
 
@@ -45,22 +59,20 @@ func (d *Daemon) Exit(F *os.File) {
     os.Remove(F.Name())
 }
 
-func (d *Daemon) Signal() {
-    // 处理退出信号
-    Signal := make(chan os.Signal, 1)
-    signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
-    go func() {
-        for {
-            C := <-Signal
-            fmt.Println(C)
-            log.Println(C)
-            switch C {
-            case os.Interrupt:
-                d.Exit(d.PidHandler)
-                log.Println("exit success")
-            case syscall.SIGUSR2:
-                log.Println("to do for user signal")
-            }
-        }
-    }()
-}
+//func (d *Daemon) Signal() {
+//    // 处理退出信号
+//    Signal := make(chan os.Signal, 1)
+//    signal.Notify(Signal, os.Interrupt, syscall.SIGUSR2)
+//    for {
+//        C := <-Signal
+//        fmt.Println(C)
+//        log.Println(C)
+//        switch C {
+//        case os.Interrupt:
+//            d.Exit(d.PidHandler)
+//            log.Println("exit success")
+//        case syscall.SIGUSR2:
+//            log.Println("to do for user signal")
+//        }
+//    }
+//}
