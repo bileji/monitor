@@ -23,12 +23,12 @@ func (D *Daemon) Daemon(routine func()) {
     
     File, err = os.OpenFile(D.PidFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
-        log.Printf("read pid file error: %v\r\n", err)
+        fmt.Printf("read pid file error: %v\r\n", err)
         return
     }
     
     if Info, _ := File.Stat(); Info.Size() != 0 {
-        log.Printf("pid file is exist: %s\r\n", D.LogFile)
+        fmt.Printf("pid file is exist: %s\r\n", D.LogFile)
         return
     }
     if os.Getppid() != 1 {
@@ -37,7 +37,7 @@ func (D *Daemon) Daemon(routine func()) {
         return
     }
     if _, err = File.WriteString(fmt.Sprint(os.Getpid())); err != nil {
-        log.Printf("fail write pid to %s: %v\r\n", D.PidFile, err)
+        fmt.Printf("fail write pid to %s: %v\r\n", D.PidFile, err)
         return
     }
     Signal := make(chan os.Signal, 1)
