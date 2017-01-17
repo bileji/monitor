@@ -3,9 +3,9 @@ package daemon
 import (
     "os"
     "log"
+    "fmt"
     "syscall"
     "os/signal"
-    "fmt"
 )
 
 type Daemon struct {
@@ -13,7 +13,7 @@ type Daemon struct {
     PidFile string
 }
 
-func (D *Daemon) Daemon() {
+func (D *Daemon) Daemon(routine func()) {
     File, err := os.OpenFile(D.LogFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
         fmt.Printf("create log error: %v\r\n", err)
@@ -42,6 +42,9 @@ func (D *Daemon) Daemon() {
     }
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
+    
+    go routine()
+    
     for {
         switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
