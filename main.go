@@ -13,7 +13,6 @@ func main() {
         PidFile: "/var/run/monitord.pid",
         LogFile: "/var/log/monitord.log",
     }
-    Daemon.Daemon()
     
     for {
         time.Sleep(1 * time.Second)
@@ -25,4 +24,6 @@ func main() {
         //    log.Println(string(bytes))
         //}
     }
+    
+    Daemon.Daemon()
 }
