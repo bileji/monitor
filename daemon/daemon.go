@@ -41,6 +41,7 @@ func (D *Daemon) Daemon() {
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, os.Interrupt, syscall.SIGUSR2)
     for {
+        fmt.Println("+++++++go forever")
         switch <-Signal {
         case syscall.SIGTERM:
             fmt.Println("安全退出")
