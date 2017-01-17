@@ -27,8 +27,8 @@ func (D *Daemon) Daemon() {
         log.Printf("read pid file error: %v\r\n", err)
         return
     }
-    Info, _ := File.Stat()
-    if Info.Size() != 0 {
+    
+    if Info, _ := File.Stat(); Info.Size() != 0 {
         log.Printf("pid file is exist: %s\r\n", D.LogFile)
         return
     }
