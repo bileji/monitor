@@ -28,7 +28,7 @@ func (D *Daemon) Daemon(routine func()) {
     }
     
     if Info, _ := File.Stat(); Info.Size() != 0 {
-        fmt.Printf("pid file is exist: %s\r\n", D.LogFile)
+        fmt.Printf("pid file is exist: %s\r\n", D.PidFile)
         return
     }
     if os.Getppid() != 1 {
