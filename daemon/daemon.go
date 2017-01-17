@@ -14,7 +14,7 @@ type Daemon struct {
 }
 
 func (D *Daemon) Daemon(routine func()) {
-    File, err := os.OpenFile(D.LogFile, os.O_RDWR | os.O_CREATE, 0644)
+    File, err := os.Create(D.LogFile)
     if err != nil {
         fmt.Printf("create log error: %v\r\n", err)
         return
