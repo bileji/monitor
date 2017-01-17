@@ -37,7 +37,10 @@ func (D *Daemon) Daemon() {
         os.StartProcess(os.Args[0], args, &os.ProcAttr{Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
         return
     }
-    File.WriteString(fmt.Sprint(os.Getpid()))
+    if _, err = File.WriteString(fmt.Sprint(os.Getpid())); err != nil {
+        log.Printf("fail write pid to %s: %v", D.PidFile, err)
+        return
+    }
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, os.Interrupt, syscall.SIGUSR2)
     for {
