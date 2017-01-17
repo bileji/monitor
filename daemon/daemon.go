@@ -49,7 +49,7 @@ func (D *Daemon) Daemon(routine func()) {
         switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             if err := D.ClearPidFile(File); err == nil {
-                fmt.Println("bye bye!")
+                fmt.Println("success to exit proc, bye bye!")
                 os.Exit(1)
             } else {
                 fmt.Printf("fail to exit proc: %v\r\n", err)
