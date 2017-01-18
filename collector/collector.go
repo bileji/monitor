@@ -5,11 +5,11 @@ import (
 )
 
 type Collector struct {
-    Cpu     *Cpu
-    Docker  *Docker
-    Memory  *Memory
-    Network *Network
-    Disk    *Disk
+    Cpu     *Cpu `json:"cpu"`
+    Docker  *Docker `json:"docker"`
+    Memory  *Memory `json:"memory"`
+    Network *Network `json:"network"`
+    Disk    *Disk `json:"disk"`
 }
 
 func Start() ([]byte, error) {
