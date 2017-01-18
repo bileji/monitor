@@ -10,8 +10,7 @@ type Docker struct {
 
 func (d Docker) Exec() *Docker {
     var err error
-    d.DockersStat, err = docker.GetDockerStat()
-    if err != nil {
+    if d.DockersStat, err = docker.GetDockerStat(); err != nil {
         d.DockersStat = []docker.CgroupDockerStat{}
     }
     return &d

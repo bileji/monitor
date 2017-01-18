@@ -11,13 +11,11 @@ type Memory struct {
 
 func (m Memory) Exec() *Memory {
     var err error
-    m.VirtualMemory, err = mem.VirtualMemory()
-    if err != nil {
-        m.VirtualMemory = &mem.VirtualMemoryStat{}
-    }
-    m.SwapMemory, err = mem.SwapMemory()
-    if err != nil {
+    if m.SwapMemory, err = mem.SwapMemory(); err != nil {
         m.SwapMemory = &mem.SwapMemoryStat{}
+    }
+    if m.VirtualMemory, err = mem.VirtualMemory(); err != nil {
+        m.VirtualMemory = &mem.VirtualMemoryStat{}
     }
     return &m
 }

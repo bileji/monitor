@@ -9,6 +9,7 @@ type Collector struct {
     Docker  *Docker
     Memory  *Memory
     Network *Network
+    Disk    *Disk
 }
 
 func Start() ([]byte, error) {
@@ -17,5 +18,6 @@ func Start() ([]byte, error) {
         Docker: Docker{}.Exec(),
         Memory: Memory{}.Exec(),
         Network: Network{}.Exec(),
+        Disk: Disk{}.Exec(),
     })
 }

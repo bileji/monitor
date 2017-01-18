@@ -12,12 +12,10 @@ type Cpu struct {
 
 func (c Cpu) Exec() *Cpu {
     var err error
-    c.Load, err = load.Avg()
-    if err != nil {
+    if c.Load, err = load.Avg(); err != nil {
         c.Load = &load.AvgStat{}
     }
-    c.TimesStat, err = cpu.Times(false)
-    if err != nil {
+    if c.TimesStat, err = cpu.Times(false); err != nil {
         c.TimesStat = []cpu.TimesStat{}
     }
     return &c

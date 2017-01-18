@@ -33,15 +33,11 @@ func (n Network) GetPublicIP() string {
 
 func (n Network) Exec() *Network {
     var err error
-    n.HostInfo, err = host.Info()
-    if err != nil {
+    n.PublicIP = n.GetPublicIP()
+    if n.HostInfo, err = host.Info(); err != nil {
         n.HostInfo = &host.InfoStat{}
     }
-    
-    n.PublicIP = n.GetPublicIP()
-    
-    n.InterfacesStat, err = net.Interfaces()
-    if err != nil {
+    if n.InterfacesStat, err = net.Interfaces(); err != nil {
         n.InterfacesStat = []net.InterfaceStat{}
     }
     return &n
