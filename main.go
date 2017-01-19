@@ -5,9 +5,14 @@ import (
     "time"
     "monitor/daemon"
     "monitor/collector"
+    "monitor/service"
 )
 
 func main() {
+    
+    go (&service.Master{
+        Addr: ":88",
+    }).Listen()
     
     Daemon := &daemon.Daemon{
         PidFile: "/var/run/monitord.pid",

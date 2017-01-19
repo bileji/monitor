@@ -24,7 +24,7 @@ type Master struct {
     DBHandler *mgo.Database
 }
 
-func Listen(m Master) {
+func (m *Master) Listen() {
     http.HandleFunc("/save", m.Save)
     http.ListenAndServe(m.Addr, nil)
 }
