@@ -1,0 +1,33 @@
+hash: 9d1f7b47e4189d93e386f7a180246b09f593a3229d38724c7569d57be6612d2d
+updated: 2017-01-19T22:44:31.938208004+08:00
+imports:
+- name: github.com/gizak/termui
+  version: 991cd3d3809135dc24daf6188dc6edcaf3d7d2d9
+- name: github.com/go-ole/go-ole
+  version: 5e9c030faf78847db7aa77e3661b9cc449de29b7
+  subpackages:
+  - oleutil
+- name: github.com/shirou/gopsutil
+  version: 1123132e5ad392485dbd16e0f09a0db8c963a2ab
+  subpackages:
+  - cpu
+  - disk
+  - docker
+  - host
+  - load
+  - mem
+  - net
+  - internal/common
+  - process
+- name: github.com/shirou/w32
+  version: bb4de0191aa41b5507caa14b0650cdbddcd9280b
+- name: github.com/StackExchange/wmi
+  version: e54cbda6595d7293a7a468ccf9525f6bc8887f99
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  subpackages:
+  - bson
+  - internal/sasl
+  - internal/scram
+  - internal/json
+devImports: []
