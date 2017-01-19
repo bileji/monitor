@@ -1,4 +1,5 @@
 package: monitor
 import:
-- package: github.com/shirou/gopsutil
-- package: github.com/gizak/termui
+  - package: github.com/shirou/gopsutil
+  - package: github.com/gizak/termui
+  - package: gopkg.in/mgo.v2
