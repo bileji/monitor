@@ -58,7 +58,7 @@ func (m *Master) Save(Res http.ResponseWriter, Req *http.Request) {
         // todo...
         (&Answer{
             Code: 0,
-            Data: {
+            Data: map[string]interface{}{
                 "playload": PlayLoad,
             },
             Message: fmt.Sprintf("%v", err),
