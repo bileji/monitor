@@ -2,6 +2,7 @@ package service
 
 import (
     "fmt"
+    "io/ioutil"
     "net/http"
     "encoding/json"
     "gopkg.in/mgo.v2"
@@ -33,10 +34,18 @@ func (m *Master) Save(Res http.ResponseWriter, Req *http.Request) {
     
     fmt.Println(Req.Method)
     fmt.Println("++++++++")
-    fmt.Println(Req.Body)
+    fmt.Println(Req.Context())
     
     if Req.Method == "PUT" {
-        
+        Body, err := ioutil.ReadAll(Req.Body)
+        defer Req.Body.Close()
+        if err != nil {
+            (&Answer{
+                Code: -1,
+                Message: fmt.Printf("%v", err),
+            }).Return(Res)
+        }
+        fmt.Println(string(Body))
     }
 }
 
