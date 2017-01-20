@@ -53,7 +53,7 @@ func (D *Daemon) Daemon(routines... func()) {
             // todo 疑问为什么关闭pid是阻塞的，而关闭log是非阻塞的
             LogFile.Close()
             if err := D.ClearFile(PidFile); err == nil {
-                fmt.Println("success to exit proc, bye bye!")
+                fmt.Println("success to exit proc, bye bye!\r\nEOF")
                 os.Exit(1)
             } else {
                 fmt.Printf("fail to exit proc: %v\r\n", err)
