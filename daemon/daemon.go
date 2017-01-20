@@ -48,21 +48,18 @@ func (D *Daemon) Daemon(routines... func()) {
     }
     
     for {
-        fmt.Println("+++")
-        C := <-Signal
-        fmt.Println("---")
-        switch C {
+        switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             // todo 疑问为什么关闭pid是阻塞的，而关闭log是非阻塞的
             LogFile.Close()
             if err := D.ClearFile(PidFile); err == nil {
-                fmt.Println("success to exit proc, bye bye!\r\nEOF")
+                log.Println("success to exit proc, bye bye!")
                 os.Exit(1)
             } else {
-                fmt.Printf("fail to exit proc: %v\r\n", err)
+                log.Printf("fail to exit proc: %v\r\n", err)
             }
         default:
-            fmt.Println("unknow signal, this process will go on...")
+            log.Println("unknow signal, this process will go on...")
         }
     }
 }
