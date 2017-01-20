@@ -36,7 +36,8 @@ func (D *Daemon) Daemon(routines... func()) {
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
     
-    LogFile, err := os.OpenFile(D.LogFile, os.O_CREATE | os.O_RDWR | os.O_APPEND, 0644)
+    //LogFile, err := os.OpenFile(D.LogFile, os.O_CREATE | os.O_RDWR | os.O_APPEND, 0644)
+    LogFile, err := os.Create(D.LogFile)
     if err != nil {
         fmt.Printf("create log error: %v\r\n", err)
         return
