@@ -60,7 +60,7 @@ func (D *Daemon) Daemon(routines... func()) {
             //}
             os.Exit(1)
             //} else {
-            fmt.Printf("fail to exit proc: %v\r\n", err)
+            //fmt.Printf("fail to exit proc: %v\r\n", err)
         //}
         default:
             fmt.Println("unknow signal, this process will go on...")
