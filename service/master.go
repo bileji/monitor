@@ -6,6 +6,7 @@ import (
     "net/http"
     "encoding/json"
     "gopkg.in/mgo.v2"
+    "monitor/collector"
 )
 
 type Answer struct {
@@ -31,18 +32,44 @@ func (m *Master) Listen() {
 }
 
 func (m *Master) Save(Res http.ResponseWriter, Req *http.Request) {
+    var PlayLoad collector.Collector
     
     if Req.Method == "PUT" {
         Body, err := ioutil.ReadAll(Req.Body)
+        
         defer Req.Body.Close()
+        
         if err != nil {
             (&Answer{
                 Code: -1,
                 Message: fmt.Sprintf("%v", err),
             }).Return(Res)
+            return
         }
-        fmt.Println(string(Body))
+        err = json.Unmarshal(&PlayLoad, string(Body))
+        if err != nil {
+            (&Answer{
+                Code: -1,
+                Message: fmt.Sprintf("%v", err),
+            }).Return(Res)
+            return
+        }
+        
+        // todo...
+        (&Answer{
+            Code: 0,
+            Data: {
+                "playload": PlayLoad,
+            },
+            Message: fmt.Sprintf("%v", err),
+        }).Return(Res)
+        return
     }
+    
+    (&Answer{
+        Code: -1,
+        Message: "invalid request",
+    }).Return(Res)
 }
 
 

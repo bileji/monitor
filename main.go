@@ -10,16 +10,16 @@ import (
 
 func main() {
     
-    go (&service.Master{
-        Addr: ":88",
-    }).Listen()
-    
     Daemon := &daemon.Daemon{
         PidFile: "/var/run/monitord.pid",
         LogFile: "/var/log/monitord.log",
     }
     
     Daemon.Daemon(func() {
+        go (&service.Master{
+            Addr: ":88",
+        }).Listen()
+        
         for {
             time.Sleep(2 * time.Second)
             bytes, err := collector.Start()
