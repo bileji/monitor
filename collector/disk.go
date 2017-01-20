@@ -10,7 +10,7 @@ type Disk struct {
 func (d Disk) Exec() *Disk {
     var err error
     if d.UseAge, err = disk.Usage("/data"); err != nil {
-        d.UseAge = *disk.UsageStat{}
+        d.UseAge = &disk.UsageStat{}
     }
     if d.IOCounters, err = disk.IOCounters(); err != nil {
         d.IOCounters = make(map[string]disk.IOCountersStat)
