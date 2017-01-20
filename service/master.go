@@ -38,7 +38,7 @@ func (m *Master) Save(Res http.ResponseWriter, Req *http.Request) {
         if err != nil {
             (&Answer{
                 Code: -1,
-                Message: fmt.Printf("%v", err),
+                Message: fmt.Sprintf("%v", err),
             }).Return(Res)
         }
         fmt.Println(string(Body))
