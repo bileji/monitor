@@ -46,7 +46,7 @@ func (m *Master) Save(Res http.ResponseWriter, Req *http.Request) {
             }).Return(Res)
             return
         }
-        err = json.Unmarshal(&PlayLoad, string(Body))
+        err = json.Unmarshal(Body, &PlayLoad)
         if err != nil {
             (&Answer{
                 Code: -1,
