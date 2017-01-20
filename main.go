@@ -16,20 +16,20 @@ func main() {
         LogFile: "/var/log/monitord.log",
     }
     
-    session, err := mgo.Dial("127.0.0.1:27017")
+    Session, err := mgo.Dial("127.0.0.1:27017")
     if err != nil {
         panic(err)
     }
-    if session.DB("vpn").Login("shadowsocks", "mlgR4evB") != nil {
+    if Session.DB("vpn").Login("shadowsocks", "mlgR4evB") != nil {
         panic(err)
     }
     
     Daemon.Daemon(func() {
-        defer session.Close()
+        defer Session.Close()
     
         go (&service.Master{
             Addr: ":88",
-            DBHandler: session.DB("vpn"),
+            DBHandler: Session.DB("vpn"),
         }).Listen()
         
         for {
