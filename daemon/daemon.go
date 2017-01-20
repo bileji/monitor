@@ -52,8 +52,12 @@ func (D *Daemon) Daemon(routines... func()) {
         switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             // todo 疑问为什么关闭pid是阻塞的，而关闭log是非阻塞的
-            if err := D.ClearPidFile(PidFile); err == nil {
-                fmt.Println("success to exit proc, bye bye!")
+            if err := D.ClearFile(PidFile); err == nil {
+                if err := D.ClearFile(LogFile); err == nil {
+                    fmt.Println("success to exit proc, bye bye!")
+                } else {
+                    fmt.Printf("fail to close log file: %s", D.LogFile)
+                }
                 os.Exit(1)
             } else {
                 fmt.Printf("fail to exit proc: %v\r\n", err)
@@ -64,7 +68,7 @@ func (D *Daemon) Daemon(routines... func()) {
     }
 }
 
-func (D *Daemon) ClearPidFile(F *os.File) (error) {
+func (D *Daemon) ClearFile(F *os.File) (error) {
     if err := F.Close(); err != nil {
         return err
     }
