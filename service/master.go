@@ -32,10 +32,6 @@ func (m *Master) Listen() {
 
 func (m *Master) Save(Res http.ResponseWriter, Req *http.Request) {
     
-    fmt.Println(Req.Method)
-    fmt.Println("++++++++")
-    fmt.Println(Req.Context())
-    
     if Req.Method == "PUT" {
         Body, err := ioutil.ReadAll(Req.Body)
         defer Req.Body.Close()
