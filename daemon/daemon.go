@@ -14,7 +14,7 @@ type Daemon struct {
 }
 
 func (D *Daemon) Daemon(routines... func()) {
-    PidFile, err := os.OpenFile(D.PidFile, os.O_RDWR | os.O_CREATE, 0644)
+    PidFile, err := os.OpenFile(D.PidFile, os.O_CREATE | os.O_RDWR, 0644)
     if err != nil {
         fmt.Printf("read pid file error: %v\r\n", err)
         return
@@ -36,11 +36,12 @@ func (D *Daemon) Daemon(routines... func()) {
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
     
-    LogFile, err := os.Create(D.LogFile)
+    LogFile, err := os.OpenFile(D.LogFile, os.O_CREATE | os.O_RDWR | os.O_APPEND, 0644)
     if err != nil {
         fmt.Printf("create log error: %v\r\n", err)
         return
     }
+    defer LogFile.Close()
     log.SetOutput(LogFile)
     
     for _, routine := range routines {
