@@ -13,7 +13,7 @@ type Daemon struct {
     PidFile string
 }
 
-func (D *Daemon) Daemon(routine func()) {
+func (D *Daemon) Daemon(routines... func()) {
     PidFile, err := os.OpenFile(D.PidFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
         fmt.Printf("read pid file error: %v\r\n", err)
@@ -43,7 +43,9 @@ func (D *Daemon) Daemon(routine func()) {
     }
     log.SetOutput(LogFile)
     
-    go routine()
+    for _, routine := range routines {
+        go routine()
+    }
     
     for {
         switch <-Signal {
