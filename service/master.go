@@ -10,7 +10,7 @@ import (
 )
 
 const (
-    SERVER_INFO string = "server_info"
+    SERVER_INFO string = "gathers"
 )
 
 type Answer struct {
