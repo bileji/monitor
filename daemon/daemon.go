@@ -36,8 +36,7 @@ func (D *Daemon) Daemon(routines... func()) {
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
     
-    //LogFile, err := os.OpenFile(D.LogFile, os.O_CREATE | os.O_RDWR | os.O_APPEND, 0644)
-    LogFile, err := os.Create(D.LogFile)
+    LogFile, err := os.OpenFile(D.LogFile, os.O_CREATE | os.O_RDWR | os.O_APPEND, 0644)
     if err != nil {
         fmt.Printf("create log error: %v\r\n", err)
         return
@@ -52,16 +51,13 @@ func (D *Daemon) Daemon(routines... func()) {
         switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             // todo 疑问为什么关闭pid是阻塞的，而关闭log是非阻塞的
-            //if err := D.ClearFile(PidFile); err == nil {
-            if err := D.ClearFile(LogFile); err == nil {
+            LogFile.Close()
+            if err := D.ClearFile(PidFile); err == nil {
                 fmt.Println("success to exit proc, bye bye!")
+                os.Exit(1)
             } else {
-                fmt.Printf("fail to close log file: %s", D.LogFile)
+                fmt.Printf("fail to exit proc: %v\r\n", err)
             }
-            os.Exit(1)
-        //} else {
-        //fmt.Printf("fail to exit proc: %v\r\n", err)
-        //}
         default:
             fmt.Println("unknow signal, this process will go on...")
         }
