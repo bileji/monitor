@@ -31,11 +31,11 @@ type Master struct {
 }
 
 func (m *Master) Listen() {
-    http.HandleFunc("/save", m.Save)
+    http.HandleFunc("/gather", m.Gather)
     http.ListenAndServe(m.Addr, nil)
 }
 
-func (m *Master) Save(Res http.ResponseWriter, Req *http.Request) {
+func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
     var PlayLoad collector.Collector
     
     if Req.Method == "PUT" {
