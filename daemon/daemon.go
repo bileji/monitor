@@ -41,7 +41,6 @@ func (D *Daemon) Daemon(routines... func()) {
         fmt.Printf("create log error: %v\r\n", err)
         return
     }
-    defer LogFile.Close()
     log.SetOutput(LogFile)
     
     for _, routine := range routines {
