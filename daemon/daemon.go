@@ -14,13 +14,13 @@ type Daemon struct {
 }
 
 func (D *Daemon) Daemon(routine func()) {
-    File, err := os.OpenFile(D.PidFile, os.O_RDWR | os.O_CREATE, 0644)
+    PidFile, err := os.OpenFile(D.PidFile, os.O_RDWR | os.O_CREATE, 0644)
     if err != nil {
         fmt.Printf("read pid file error: %v\r\n", err)
         return
     }
     
-    if Info, _ := File.Stat(); Info.Size() != 0 {
+    if Info, _ := PidFile.Stat(); Info.Size() != 0 {
         fmt.Printf("pid file is exist: %s\r\n", D.PidFile)
         return
     }
@@ -29,26 +29,26 @@ func (D *Daemon) Daemon(routine func()) {
         os.StartProcess(os.Args[0], args, &os.ProcAttr{Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
         return
     }
-    if _, err = File.WriteString(fmt.Sprint(os.Getpid())); err != nil {
+    if _, err = PidFile.WriteString(fmt.Sprint(os.Getpid())); err != nil {
         fmt.Printf("fail write pid to %s: %v\r\n", D.PidFile, err)
         return
     }
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
     
-    File, err = os.Create(D.LogFile)
+    LogFile, err := os.Create(D.LogFile)
     if err != nil {
         fmt.Printf("create log error: %v\r\n", err)
         return
     }
-    log.SetOutput(File)
+    log.SetOutput(LogFile)
     
     go routine()
     
     for {
         switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
-            if err := D.ClearPidFile(File); err == nil {
+            if err := D.ClearPidFile(PidFile); err == nil {
                 fmt.Println("success to exit proc, bye bye!")
                 os.Exit(1)
             } else {
