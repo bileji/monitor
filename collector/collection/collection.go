@@ -1,4 +1,4 @@
-package static
+package collection
 
 var (
     GATHER string = "gathers"
