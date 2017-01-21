@@ -9,7 +9,12 @@ import (
     "encoding/hex"
     "monitor/collector/collection"
     "monitor/collector/model"
+    "gopkg.in/mgo.v2"
 )
+
+type Options struct {
+    DBHandler *mgo.Database
+}
 
 func (o *Options) Init() {
     

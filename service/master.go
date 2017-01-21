@@ -6,9 +6,8 @@ import (
     "net/http"
     "encoding/json"
     "gopkg.in/mgo.v2"
-    "monitor/collector"
-    "monitor/static"
     "monitor/collector/model"
+    "monitor/collector/collection"
 )
 
 type Answer struct {
@@ -56,7 +55,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
                 return
             }
             
-            err = m.DBHandler.C(static.GATHER).Insert(Gather);
+            err = m.DBHandler.C(collection.GATHER).Insert(Gather);
             if err != nil {
                 Answer{
                     Code: -1,
