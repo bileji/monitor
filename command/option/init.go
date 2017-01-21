@@ -33,10 +33,11 @@ func (o *Options) Init() {
         Name: "token",
         Value: Token,
     }) {
-        fmt.Println("")
+        fmt.Println("generate token error")
         return
     }
     
-    fmt.Println("")
+    fmt.Printf("monitor init success\r\n\t-join_token: %s\r\n", Token)
+    
     return
 }
