@@ -8,6 +8,7 @@ import (
     "gopkg.in/mgo.v2"
     "monitor/collector"
     "monitor/static"
+    "monitor/collector/model"
 )
 
 type Answer struct {
@@ -33,7 +34,7 @@ func (m *Master) Listen() {
 }
 
 func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
-    var PlayLoad collector.Collector
+    var Gather model.Gather
     
     if Req.Method == "PUT" {
         Body, err := ioutil.ReadAll(Req.Body);
@@ -46,7 +47,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
             }.Return(Res)
             return
         } else {
-            err = json.Unmarshal(Body, &PlayLoad);
+            err = json.Unmarshal(Body, &Gather);
             if err != nil {
                 Answer{
                     Code: -1,
@@ -55,7 +56,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
                 return
             }
             
-            err = m.DBHandler.C(static.GATHER).Insert(PlayLoad);
+            err = m.DBHandler.C(static.GATHER).Insert(Gather);
             if err != nil {
                 Answer{
                     Code: -1,

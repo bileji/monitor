@@ -4,9 +4,9 @@ import (
     "log"
     "time"
     "monitor/daemon"
-    "monitor/collector"
     "monitor/service"
     "gopkg.in/mgo.v2"
+    "monitor/collector/model"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
     
     Daemon.Daemon(func() {
         defer Session.Close()
-    
+        
         go (&service.Master{
             Addr: ":88",
             DBHandler: Session.DB("vpn"),
@@ -34,7 +34,7 @@ func main() {
         
         for {
             time.Sleep(2 * time.Second)
-            bytes, err := collector.Start()
+            bytes, err := model.Gather{}.Exec()
             if err != nil {
                 log.Println(err)
             } else {

@@ -7,13 +7,13 @@ import (
     "math/rand"
     "crypto/md5"
     "encoding/hex"
-    "monitor/static"
+    "monitor/collector/collection"
     "monitor/collector/model"
 )
 
 func (o *Options) Init() {
     
-    DBNames := []string{static.GATHER, static.COLLOCATE}
+    DBNames := []string{collection.GATHER, collection.COLLOCATE}
     
     for _, Name := range DBNames {
         o.DBHandler.C(Name).DropCollection()
@@ -24,7 +24,7 @@ func (o *Options) Init() {
     Md5.Write([]byte(strconv.Itoa(rand.Intn(10))))
     Token := hex.EncodeToString(Md5.Sum(nil))
     
-    if nil == o.DBHandler.C(static.COLLOCATE).Insert(model.Collocate{
+    if nil == o.DBHandler.C(collection.COLLOCATE).Insert(model.Collocate{
         Name: "token",
         Value: Token,
     }) {
