@@ -304,9 +304,9 @@ func HostEtc(combineWith ...string) string {
 	return GetEnv("HOST_ETC", "/etc", combineWith...)
 }
 
-// CombinedOutputTimeout runs the given command with the given timeout and
+// CombinedOutputTimeout runs the given static with the given timeout and
 // returns the combined output of stdout and stderr.
-// If the command times out, it attempts to kill the process.
+// If the static times out, it attempts to kill the process.
 // copied from https://github.com/influxdata/telegraf
 func CombinedOutputTimeout(c *exec.Cmd, timeout time.Duration) ([]byte, error) {
 	var b bytes.Buffer
@@ -319,9 +319,9 @@ func CombinedOutputTimeout(c *exec.Cmd, timeout time.Duration) ([]byte, error) {
 	return b.Bytes(), err
 }
 
-// WaitTimeout waits for the given command to finish with a timeout.
-// It assumes the command has already been started.
-// If the command times out, it attempts to kill the process.
+// WaitTimeout waits for the given static to finish with a timeout.
+// It assumes the static has already been started.
+// If the static times out, it attempts to kill the process.
 // copied from https://github.com/influxdata/telegraf
 func WaitTimeout(c *exec.Cmd, timeout time.Duration) error {
 	timer := time.NewTimer(timeout)
@@ -336,7 +336,7 @@ func WaitTimeout(c *exec.Cmd, timeout time.Duration) error {
 			log.Printf("FATAL error killing process: %s", err)
 			return err
 		}
-		// wait for the command to return after killing it
+		// wait for the static to return after killing it
 		<-done
 		return ErrTimeout
 	}
@@ -344,37 +344,37 @@ func WaitTimeout(c *exec.Cmd, timeout time.Duration) error {
 
 // https://gist.github.com/kylelemons/1525278
 func Pipeline(cmds ...*exec.Cmd) ([]byte, []byte, error) {
-        // Require at least one command
+        // Require at least one static
         if len(cmds) < 1 { 
                 return nil, nil, nil
         }
 
-        // Collect the output from the command(s)
+        // Collect the output from the static(s)
         var output bytes.Buffer
         var stderr bytes.Buffer
 
         last := len(cmds) - 1
         for i, cmd := range cmds[:last] {
                 var err error
-                // Connect each command's stdin to the previous command's stdout
+                // Connect each static's stdin to the previous static's stdout
                 if cmds[i+1].Stdin, err = cmd.StdoutPipe(); err != nil {
                         return nil, nil, err
                 }
-                // Connect each command's stderr to a buffer
+                // Connect each static's stderr to a buffer
                 cmd.Stderr = &stderr
         }
 
-        // Connect the output and error for the last command
+        // Connect the output and error for the last static
         cmds[last].Stdout, cmds[last].Stderr = &output, &stderr
 
-        // Start each command
+        // Start each static
         for _, cmd := range cmds {
                 if err := cmd.Start(); err != nil {
                         return output.Bytes(), stderr.Bytes(), err
                 }
         }
 
-        // Wait for each command to complete
+        // Wait for each static to complete
         for _, cmd := range cmds {
                 if err := cmd.Wait(); err != nil {
                         return output.Bytes(), stderr.Bytes(), err

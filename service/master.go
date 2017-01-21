@@ -7,10 +7,7 @@ import (
     "encoding/json"
     "gopkg.in/mgo.v2"
     "monitor/collector"
-)
-
-const (
-    SERVER_INFO string = "gathers"
+    "monitor/static"
 )
 
 type Answer struct {
@@ -58,7 +55,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
                 return
             }
             
-            err = m.DBHandler.C(SERVER_INFO).Insert(PlayLoad);
+            err = m.DBHandler.C(static.GATHER).Insert(PlayLoad);
             if err != nil {
                 Answer{
                     Code: -1,

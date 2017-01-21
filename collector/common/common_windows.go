@@ -26,7 +26,7 @@ type PDH_FMT_COUNTERVALUE_LONG struct {
 	padding   [4]byte
 }
 
-// windows system const
+// windows system static
 const (
 	ERROR_SUCCESS        = 0
 	ERROR_FILE_NOT_FOUND = 2
