@@ -3,7 +3,7 @@ package main
 import (
     "log"
     "time"
-    "monitor/command/daemon"
+    "monitor/daemon"
     "monitor/service"
     "gopkg.in/mgo.v2"
     "monitor/collector/model"
