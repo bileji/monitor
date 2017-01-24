@@ -51,12 +51,12 @@ func (D *Daemon) Daemon(Routine func(chan []byte)) {
         switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             if err := D.ClearFile(PidFile); err == nil {
-                LogFile.Close()
                 if err := os.Remove(D.UnixFile); err == nil {
                     log.Println("success to exit proc, bye bye!")
                 } else {
                     log.Printf("fail to remove unix sock: %v\r\n", err)
                 }
+                LogFile.Close()
                 os.Exit(1)
             } else {
                 log.Printf("fail to exit proc: %v\r\n", err)
