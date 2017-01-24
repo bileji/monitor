@@ -4,16 +4,18 @@ import (
     "os"
     "log"
     "fmt"
+    "net"
     "syscall"
     "os/signal"
 )
 
 type Daemon struct {
-    LogFile string
-    PidFile string
+    LogFile  string
+    PidFile  string
+    UnixFile string
 }
 
-func (D *Daemon) Daemon(routines... func()) {
+func (D *Daemon) Daemon(Routine func(chan []byte)) {
     PidFile, err := os.OpenFile(D.PidFile, os.O_CREATE | os.O_RDWR, 0644)
     if err != nil {
         fmt.Printf("read pid file error: %v\r\n", err)
@@ -43,16 +45,18 @@ func (D *Daemon) Daemon(routines... func()) {
     }
     log.SetOutput(LogFile)
     
-    for _, routine := range routines {
-        go routine()
-    }
+    go D.UnixListen(Routine)
     
     for {
         switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             if err := D.ClearFile(PidFile); err == nil {
                 LogFile.Close()
-                log.Println("success to exit proc, bye bye!")
+                if err := os.Remove(D.UnixFile); err == nil {
+                    log.Println("success to exit proc, bye bye!")
+                } else {
+                    log.Printf("fail to remove unix sock: %v\r\n", err)
+                }
                 os.Exit(1)
             } else {
                 log.Printf("fail to exit proc: %v\r\n", err)
@@ -71,4 +75,31 @@ func (D *Daemon) ClearFile(F *os.File) (error) {
         return err
     }
     return nil
+}
+
+func (D *Daemon) UnixListen(Routine func(ch chan []byte)) {
+    UnixL, err := net.ListenUnix("unix", &net.UnixAddr{Name: D.UnixFile, Net: "unix"})
+    if err != nil {
+        log.Printf("listen unix error: %v", err)
+    }
+    defer UnixL.Close()
+    
+    C := make(chan []byte, 1)
+    
+    go Routine(C)
+    
+    for {
+        if Fd, err := UnixL.AcceptUnix(); err != nil {
+            log.Printf("accect error: %v", err)
+        } else {
+            for {
+                Buffer := make([]byte, 512)
+                if Len, err := Fd.Read(Buffer); err != nil {
+                    log.Printf("accect error: %v", err)
+                } else {
+                    C <- Buffer[0: Len]
+                }
+            }
+        }
+    }
 }

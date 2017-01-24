@@ -24,7 +24,7 @@ func main() {
         panic(err)
     }
     
-    Daemon.Daemon(func() {
+    Daemon.Daemon(func(ch chan []byte) {
         defer Session.Close()
         
         go (&service.Master{
