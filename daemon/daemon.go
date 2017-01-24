@@ -15,6 +15,11 @@ type Daemon struct {
     UnixFile string
 }
 
+type Protocol struct {
+    Name  string
+    Value string
+}
+
 func (D *Daemon) Daemon(Routine func(chan []byte)) {
     PidFile, err := os.OpenFile(D.PidFile, os.O_CREATE | os.O_RDWR, 0644)
     if err != nil {
