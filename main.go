@@ -13,6 +13,7 @@ func main() {
     
     Daemon := &daemon.Daemon{
         PidFile: "/var/run/monitord.pid",
+        UnixFile: "/var/run/monitord.sock",
         LogFile: "/var/log/monitord.log",
     }
     
