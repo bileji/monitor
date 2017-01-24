@@ -59,7 +59,7 @@ func (D *Daemon) Daemon(Routine func(chan []byte)) {
                 LogFile.Close()
                 os.Exit(1)
             } else {
-                log.Printf("fail to exit proc: %v\r\n", err)
+                log.Printf("fail to remove process pid file: %v\r\n", err)
             }
         default:
             log.Println("unknow signal, this process will go on...")
