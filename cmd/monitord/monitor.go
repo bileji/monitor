@@ -7,6 +7,9 @@ import (
 )
 
 func main() {
+    
+    var version string
+    
     Cmd := &cobra.Command{
         Use:           "monitord [OPTIONS]",
         Short:         "A self-sufficient runtime for monitors.",
@@ -20,12 +23,12 @@ func main() {
         },
     }
     
-    Cmd.Flags()
-    //Flags := Cmd.Flags()
-    //Flags.StringVar()
+    //Cmd.Flags()
+    Flags := Cmd.Flags()
+    Flags.StringVar(&version, "version", "1.0.0", "this monitor version")
     
     if err := Cmd.Execute(); err != nil {
-        log.Printf("cmd error: %v", err)
+        log.Printf("%v", err)
         os.Exit(1)
     }
 }
