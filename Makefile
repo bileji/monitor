@@ -1,4 +1,4 @@
-APP = monitor
+APP = monitord
 build:
 	go build -o ../bin/${APP} -ldflags '-s -w' ./cmd/monitord.go
 linux:
