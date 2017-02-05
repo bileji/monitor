@@ -83,10 +83,6 @@ func authUriToDBAuth(AuthUri string) DBAuth {
     return dbAuth
 }
 
-func Test() *cobra.Command {
-    return serverCmd
-}
-
 func init() {
     serverCmd.Flags().IntVarP(&serverPort, "port", "p", 3413, "port on which the server will listen")
     serverCmd.Flags().StringVarP(&serverInterface, "bind", "b", "0.0.0.0", "interface to which the server will bind")
