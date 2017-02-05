@@ -50,6 +50,8 @@ var serverCmd = &cobra.Command{
                 Addr: serverInterface + ":" + serverPort,
                 DBHandler: Session.DB(auth.Database),
             }).Listen()
+            
+            // todo socket
         })
     },
 }

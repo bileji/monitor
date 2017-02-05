@@ -9,6 +9,7 @@ import (
 var rootCmd = &cobra.Command{
     Use: "monitord",
     Short: "Linux server status monitor",
+    Long: "",
     Run: func(cmd *cobra.Command, args []string) {
         // TODO ...
     },
