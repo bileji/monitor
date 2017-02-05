@@ -42,6 +42,9 @@ func main() {
     // TODO flags
     //Flags := RootCmd.Flags()
     //Flags.StringVar(&version, "version", "1.0.0", "this monitor version")
+    RootCmd.Flags().Bool("cleanDestinationDir", false, "Remove files from destination not found in static directories")
+    RootCmd.Flags().BoolP("buildDrafts", "D", false, "include content marked as draft")
+    RootCmd.Flags().BoolP("buildFuture", "F", false, "include content with publishdate in the future")
     
     if err := RootCmd.Execute(); err != nil {
         fmt.Printf("%v", err)
