@@ -21,7 +21,7 @@ func main() {
     Unix.Write(Message)
     
     RootCmd := &cobra.Command{
-        Use: "monitord",
+        Use: "monitor",
         Short: "Linux server status monitor",
         Long: "",
         Run: func(cmd *cobra.Command, args []string) {

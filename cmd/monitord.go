@@ -6,9 +6,9 @@ import (
     "log"
     "net"
     "runtime"
-    //"encoding/json"
+    "encoding/json"
     "monitor/daemon"
-    //"monitor/cmd/protocols"
+    "monitor/cmd/protocols"
     "github.com/spf13/cobra"
 )
 
@@ -60,10 +60,10 @@ func main() {
                             Fd.Close()
                             return
                         }
-                        //var Message protocols.Socket
-                        //json.Unmarshal(Buffer[0: Len], &Message)
+                        var Message protocols.Socket
+                        json.Unmarshal(Buffer[0: Len], &Message)
                         // todo 接收到cli信息,然后处理
-                        log.Println(string(Buffer[0: Len]))
+                        log.Println(Message)
                     }
                 }()
             }
