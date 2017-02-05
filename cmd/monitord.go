@@ -55,14 +55,16 @@ func main() {
                 go func() {
                     for {
                         Buffer := make([]byte, 512)
-                        if Len, err := Fd.Read(Buffer); err != nil {
+                        Len, err := Fd.Read(Buffer);
+                        if err != nil {
                             log.Printf("%v", err)
-                        } else {
-                            //var Message protocols.Socket
-                            //json.Unmarshal(Buffer[0: Len], &Message)
-                            // todo 接收到cli信息,然后处理
-                            log.Println(string(Buffer[0: Len]))
+                            Fd.Close()
+                            return
                         }
+                        //var Message protocols.Socket
+                        //json.Unmarshal(Buffer[0: Len], &Message)
+                        // todo 接收到cli信息,然后处理
+                        log.Println(string(Buffer[0: Len]))
                     }
                 }()
             }
