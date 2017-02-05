@@ -25,8 +25,7 @@ func main() {
     
     RootCmd := &cobra.Command{
         Use: "monitord",
-        Short: "monitor daemon",
-        // todo ...
+        Short: "Linux server status monitor daemon",
         Long: "to do...",
         RunE:func(cmd *cobra.Command, args []string) error {
             
