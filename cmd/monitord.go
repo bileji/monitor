@@ -48,20 +48,20 @@ func main() {
     
     Daemon.Daemon(func(Unix *net.UnixListener) {
         defer Unix.Close()
-    
+        
         for {
             if Fd, err := Unix.AcceptUnix(); err != nil {
-                log.Printf("accect error: %v", err)
+                log.Printf("%v", err)
             } else {
                 for {
                     Buffer := make([]byte, 512)
                     if Len, err := Fd.Read(Buffer); err != nil {
-                        log.Printf("accect error: %v", err)
+                        log.Printf("%v", err)
                     } else {
                         var Message protocols.Socket
                         json.Unmarshal(Buffer[0: Len], &Message)
                         // todo 接收到cli信息,然后处理
-    
+                        log.Println(Message)
                     }
                 }
             }
