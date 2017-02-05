@@ -20,7 +20,7 @@ type Protocol struct {
     Value string
 }
 
-func (D *Daemon) Daemon(Routine func(chan []byte)) {
+func (D *Daemon) Daemon(Routine func(chan []byte, wr *net.UnixListener)) {
     PidFile, err := os.OpenFile(D.PidFile, os.O_CREATE | os.O_RDWR, 0644)
     if err != nil {
         fmt.Printf("read pid file error: %v\r\n", err)
