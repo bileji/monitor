@@ -1,6 +1,7 @@
 package command
 
 import (
+    "fmt"
     "strings"
     "strconv"
     "github.com/spf13/cobra"
@@ -31,6 +32,9 @@ var serverCmd = &cobra.Command{
     Long: ``,
     Run: func(cmd *cobra.Command, args []string) {
         auth := authUriToDBAuth(authUri)
+        
+        fmt.Println(auth)
+        
         Session, err := mgo.Dial(auth.Host + ":" + strconv.Itoa(auth.Port))
         if err != nil {
             panic(err)
