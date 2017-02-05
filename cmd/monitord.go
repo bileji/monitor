@@ -57,7 +57,7 @@ func main() {
                         Buffer := make([]byte, 512)
                         Len, err := Fd.Read(Buffer);
                         if err != nil {
-                            log.Printf("%v", err)
+                            log.Printf("er: %v", err)
                             Fd.Close()
                             return
                         }
