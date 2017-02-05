@@ -37,11 +37,14 @@ func (D *Daemon) Daemon(Routine func(chan []byte, *net.UnixListener)) {
         file, _ := exec.LookPath(os.Args[0])
         path, _ := filepath.Abs(file)
         //args := append([]string{os.Args[0]}, os.Args[1:]...)
+        //os.StartProcess(os.Args[0], args, &os.ProcAttr{Dir: "/", Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
+    
         args := append([]string{path}, os.Args[1:]...)
-        os.StartProcess(os.Args[0], args, &os.ProcAttr{Dir: "/", Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
+        os.StartProcess(path, args, &os.ProcAttr{Dir: "/", Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
+    
+        fmt.Println(args)
         return
     }
-    fmt.Println(os.Environ())
     if _, err = PidFile.WriteString(fmt.Sprint(os.Getpid())); err != nil {
         fmt.Printf("fail write pid to %s: %v\r\n", D.PidFile, err)
         return
