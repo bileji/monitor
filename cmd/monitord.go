@@ -47,6 +47,8 @@ func main() {
     }
     
     Daemon.Daemon(func(Unix *net.UnixListener) {
+        defer Unix.Close()
+    
         for {
             if Fd, err := Unix.AcceptUnix(); err != nil {
                 log.Printf("accect error: %v", err)

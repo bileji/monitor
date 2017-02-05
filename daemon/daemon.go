@@ -102,7 +102,6 @@ func (D *Daemon) UnixListen(Routine func(*net.UnixListener)) {
     if err != nil {
         log.Printf("listen unix error: %v", err)
     }
-    defer UnixL.Close()
     
     go Routine(UnixL)
 }
