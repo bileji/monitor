@@ -31,7 +31,7 @@ var serverCmd = &cobra.Command{
     Long: ``,
     Run: func(cmd *cobra.Command, args []string) {
         auth := authUriToDBAuth(authUri)
-        Session, err := mgo.Dial(auth.Host + ":" + auth.Port)
+        Session, err := mgo.Dial(auth.Host + ":" + strconv.Itoa(auth.Port))
         if err != nil {
             panic(err)
         }
@@ -47,7 +47,7 @@ var serverCmd = &cobra.Command{
             defer Session.Close()
             
             go (&service.Master{
-                Addr: serverInterface + ":" + serverPort,
+                Addr: serverInterface + ":" + strconv.Itoa(serverPort),
                 DBHandler: Session.DB(auth.Database),
             }).Listen()
             
