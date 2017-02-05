@@ -36,8 +36,8 @@ func (D *Daemon) Daemon(Routine func(chan []byte, *net.UnixListener)) {
     if os.Getppid() != 1 {
         file, _ := exec.LookPath(os.Args[0])
         path, _ := filepath.Abs(file)
-        println(path)
-        args := append([]string{os.Args[0]}, os.Args[1:]...)
+        //args := append([]string{os.Args[0]}, os.Args[1:]...)
+        args := append([]string{path}, os.Args[1:]...)
         os.StartProcess(os.Args[0], args, &os.ProcAttr{Dir: "/", Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
         return
     }
