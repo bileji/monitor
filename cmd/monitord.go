@@ -61,6 +61,9 @@ func main() {
                             Fd.Close()
                             return
                         }
+                        if string(Buffer[0: Len]) == "EOF" {
+                            continue
+                        }
                         //var Message protocols.Socket
                         //json.Unmarshal(Buffer[0: Len], &Message)
                         // todo 接收到cli信息,然后处理
