@@ -25,8 +25,9 @@ func main() {
         Short: "monitor daemon",
         // todo ...
         Long: "to do...",
-        RunE:func(cmd *cobra.Command, args []string) {
+        RunE:func(cmd *cobra.Command, args []string) error {
             
+            return nil
         },
     }
     
