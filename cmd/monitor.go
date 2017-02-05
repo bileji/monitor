@@ -25,7 +25,7 @@ func main() {
                 if Fd, err := UnixL.AcceptUnix(); err != nil {
                     fmt.Printf("%v", err)
                 } else {
-                    Message, _ := json.Marshal(protocols.Socket{Method: "test", Body: "", Timestamp: 1234567890})
+                    Message, _ := json.Marshal(protocols.Socket{Method: "test", Body: []byte(""), Timestamp: 1234567890})
                     
                     Fd.Write(Message)
                 }
