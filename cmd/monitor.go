@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-    
+    os.Remove("/var/run/monitor.sock")
     Unix, err := net.DialUnix("unix", &net.UnixAddr{Name: "/var/run/monitor.sock", Net: "unix"}, &net.UnixAddr{Name: "/var/run/monitord.sock", Net: "unix"})
     
     if err != nil {
