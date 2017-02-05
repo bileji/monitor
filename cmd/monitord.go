@@ -3,10 +3,12 @@ package main
 import (
     "os"
     "fmt"
+    "log"
     "net"
-    "time"
     "runtime"
+    "encoding/json"
     "monitor/daemon"
+    "monitor/cmd/protocols"
     "github.com/spf13/cobra"
 )
 
@@ -44,10 +46,23 @@ func main() {
         LogFile: "/var/log/monitord.log",
     }
     
-    Daemon.Daemon(func(unix *net.UnixListener) {
+    Daemon.Daemon(func(Unix *net.UnixListener) {
         for {
-            fmt.Println("--------------")
-            time.Sleep(20 * time.Second)
+            if Fd, err := Unix.AcceptUnix(); err != nil {
+                log.Printf("accect error: %v", err)
+            } else {
+                for {
+                    Buffer := make([]byte, 512)
+                    if Len, err := Fd.Read(Buffer); err != nil {
+                        log.Printf("accect error: %v", err)
+                    } else {
+                        var Message protocols.Socket
+                        json.Unmarshal(Buffer[0: Len], &Message)
+                        // todo 接收到cli信息,然后处理
+    
+                    }
+                }
+            }
         }
     })
 }
