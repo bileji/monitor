@@ -8,14 +8,14 @@ import (
     //"gopkg.in/mgo.v2"
     //"monitor/collector/model"
     "runtime"
-    "monitor/command"
+    //"monitor/command"
 )
 
 func main() {
     // 调优
     runtime.GOMAXPROCS(runtime.NumCPU())
     
-    command.Execute()
+    //command.Execute()
     
     
     //Daemon := &daemon.Daemon{

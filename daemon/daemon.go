@@ -82,7 +82,7 @@ func (D *Daemon) ClearFile(F *os.File) (error) {
     return nil
 }
 
-func (D *Daemon) UnixListen(Routine func(ch chan []byte)) {
+func (D *Daemon) UnixListen(Routine func(ch chan []byte, wr *net.UnixListener)) {
     UnixL, err := net.ListenUnix("unix", &net.UnixAddr{Name: D.UnixFile, Net: "unix"})
     if err != nil {
         log.Printf("listen unix error: %v", err)
@@ -91,7 +91,7 @@ func (D *Daemon) UnixListen(Routine func(ch chan []byte)) {
     
     C := make(chan []byte, 1)
     
-    go Routine(C)
+    go Routine(C, UnixL)
     
     for {
         if Fd, err := UnixL.AcceptUnix(); err != nil {
