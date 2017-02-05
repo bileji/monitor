@@ -5,8 +5,10 @@ import (
     "log"
     "fmt"
     "net"
+    "os/exec"
     "syscall"
     "os/signal"
+    "path/filepath"
 )
 
 type Daemon struct {
@@ -32,7 +34,9 @@ func (D *Daemon) Daemon(Routine func(chan []byte, *net.UnixListener)) {
         return
     }
     if os.Getppid() != 1 {
-        fmt.Println(os.Args)
+        file, _ := exec.LookPath(os.Args[0])
+        path, _ := filepath.Abs(file)
+        println(path)
         args := append([]string{os.Args[0]}, os.Args[1:]...)
         os.StartProcess(os.Args[0], args, &os.ProcAttr{Dir: "/", Files: []*os.File{os.Stdin, os.Stdout, os.Stderr}})
         return
