@@ -11,7 +11,7 @@ import (
 
 func main() {
     
-    Unix, err := net.DialUnix("unix", &net.UnixAddr{Name: "/var/run/monitord.sock", Net: "unix"}, &net.UnixAddr{Name: "/var/run/monitor.sock", Net: "unix"})
+    Unix, err := net.DialUnix("unix", &net.UnixAddr{Name: "/var/run/monitor.sock", Net: "unix"}, &net.UnixAddr{Name: "/var/run/monitord.sock", Net: "unix"})
     
     if err != nil {
         fmt.Printf("%v\r\n", err)
