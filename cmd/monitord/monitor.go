@@ -2,33 +2,40 @@ package main
 
 import (
     "os"
-    "log"
+    "fmt"
     "github.com/spf13/cobra"
 )
 
+func NewCommand(RootCmd *cobra.Command) {
+    HelpCommand := &cobra.Command{
+        Use: "help [OPTION]",
+        Short: "show help message",
+    }
+    
+    RootCmd.AddCommand(HelpCommand)
+    return RootCmd
+}
+
 func main() {
     
-    var version string
-    
-    Cmd := &cobra.Command{
-        Use:           "monitord [OPTIONS]",
-        Short:         "A self-sufficient runtime for monitors.",
-        SilenceUsage:  true,
-        SilenceErrors: true,
-        RunE: func(cmd *cobra.Command, args []string) error {
-            return nil
-        },
+    RootCmd := &cobra.Command{
+        Use: "monitord [OPTIONS]",
+        Short: "Linux server status monitor",
         Run: func(cmd *cobra.Command, args []string) {
-            log.Printf("Inside rootCmd Run with args: %v\n", args)
+            // TODO ...
         },
     }
     
-    //Cmd.Flags()
-    Flags := Cmd.Flags()
-    Flags.StringVar(&version, "version", "1.0.0", "this monitor version")
+    // 添加子命令
+    NewCommand(RootCmd)
     
-    if err := Cmd.Execute(); err != nil {
-        log.Printf("%v", err)
+    // TODO flags
+    //Flags := RootCmd.Flags()
+    //Flags.StringVar(&version, "version", "1.0.0", "this monitor version")
+    
+    if err := RootCmd.Execute(); err != nil {
+        fmt.Printf("%v", err)
         os.Exit(1)
     }
+    
 }
