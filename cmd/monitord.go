@@ -44,10 +44,10 @@ func main() {
         LogFile: "/var/log/monitord.log",
     }
     
-    Daemon.Daemon(func(ch chan []byte, wr *net.UnixListener) {
+    Daemon.Daemon(func(unix *net.UnixListener) {
         for {
             fmt.Println("--------------")
-            time.Sleep(4 * time.Second)
+            time.Sleep(20 * time.Second)
         }
     })
 }
