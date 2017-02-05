@@ -4,6 +4,7 @@ import (
     "os"
     "fmt"
     "net"
+    "time"
     "runtime"
     "monitor/daemon"
     "github.com/spf13/cobra"
@@ -44,6 +45,9 @@ func main() {
     }
     
     Daemon.Daemon(func(ch chan []byte, wr *net.UnixListener) {
-        
+        for {
+            fmt.Println("--------------")
+            time.Sleep(4 * time.Second)
+        }
     })
 }
