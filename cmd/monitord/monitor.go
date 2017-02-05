@@ -22,6 +22,10 @@ and push the latest content to them. As most Hugo sites are built in a fraction
 of a second, you will be able to save and see your changes nearly instantly.`,
     }
     
+    HelpCommand.Flags().Bool("cleanDestinationDir", false, "Remove files from destination not found in static directories")
+    HelpCommand.Flags().BoolP("buildDrafts", "D", false, "include content marked as draft")
+    HelpCommand.Flags().BoolP("buildFuture", "F", false, "include content with publishdate in the future")
+    
     VersionCommand := &cobra.Command{
         Use: "version",
         Short: "A high performance webserver",
@@ -36,6 +40,10 @@ automatically rebuild the site. It will then live reload any open browser pages
 and push the latest content to them. As most Hugo sites are built in a fraction
 of a second, you will be able to save and see your changes nearly instantly.`,
     }
+    VersionCommand.Flags().Bool("cleanDestinationDir", false, "Remove files from destination not found in static directories")
+    VersionCommand.Flags().BoolP("buildDrafts", "D", false, "include content marked as draft")
+    VersionCommand.Flags().BoolP("buildFuture", "F", false, "include content with publishdate in the future")
+    
     
     RootCmd.AddCommand(HelpCommand)
     RootCmd.AddCommand(VersionCommand)
