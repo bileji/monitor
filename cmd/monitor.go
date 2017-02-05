@@ -25,7 +25,7 @@ func main() {
             // TODO ...
             Message, _ := json.Marshal(protocols.Socket{Method: "test", Body: []byte(""), Timestamp: 1234567890})
             fmt.Printf(string(Message))
-            Unix.Write(Message)
+            Unix.Write([]byte("test"))
         },
         RunE: func(cmd *cobra.Command, args []string) error {
             // TODO
