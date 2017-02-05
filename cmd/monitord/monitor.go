@@ -6,7 +6,7 @@ import (
     "github.com/spf13/cobra"
 )
 
-func NewCommand(RootCmd *cobra.Command) {
+func NewCommand(RootCmd *cobra.Command) *cobra.Command {
     HelpCommand := &cobra.Command{
         Use: "help [OPTION]",
         Short: "show help message",
