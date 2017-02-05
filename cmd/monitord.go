@@ -57,12 +57,8 @@ func main() {
                         Buffer := make([]byte, 512)
                         Len, err := Fd.Read(Buffer);
                         if err != nil {
-                            log.Printf("er: %v", err)
                             Fd.Close()
                             return
-                        }
-                        if string(Buffer[0: Len]) == "EOF" {
-                            continue
                         }
                         //var Message protocols.Socket
                         //json.Unmarshal(Buffer[0: Len], &Message)
