@@ -16,6 +16,7 @@ func main() {
     if err != nil {
         fmt.Printf("%v\r\n", err)
     }
+    Unix.Write([]byte("test"))
     
     RootCmd := &cobra.Command{
         Use: "monitord",
