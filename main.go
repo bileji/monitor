@@ -7,9 +7,12 @@ import (
     "monitor/service"
     "gopkg.in/mgo.v2"
     "monitor/collector/model"
+    "runtime"
 )
 
 func main() {
+    // 调优
+    runtime.GOMAXPROCS(runtime.NumCPU())
     
     Daemon := &daemon.Daemon{
         PidFile: "/var/run/monitord.pid",
