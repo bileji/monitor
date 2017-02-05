@@ -22,9 +22,8 @@ and push the latest content to them. As most Hugo sites are built in a fraction
 of a second, you will be able to save and see your changes nearly instantly.`,
     }
     
-    HelpCommand.Flags().Bool("cleanDestinationDir", false, "Remove files from destination not found in static directories")
-    HelpCommand.Flags().BoolP("buildDrafts", "D", false, "include content marked as draft")
-    HelpCommand.Flags().BoolP("buildFuture", "F", false, "include content with publishdate in the future")
+    var serverPort int
+    HelpCommand.Flags().IntVarP(&serverPort, "port", "p", 1313, "port on which the server will listen")
     
     VersionCommand := &cobra.Command{
         Use: "version",
