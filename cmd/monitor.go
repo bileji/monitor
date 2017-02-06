@@ -11,11 +11,25 @@ import (
 
 func main() {
     os.Remove("/var/run/monitor.sock")
-    Unix, err := net.DialUnix("unix", &net.UnixAddr{Name: "/var/run/monitor.sock", Net: "unix"}, &net.UnixAddr{Name: "/var/run/monitord.sock", Net: "unix"})
+    lAddr, err := net.ResolveUnixAddr("unix", "/var/run/monitor.sock")
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(-1)
+    }
+    
+    rAddr, err := net.ResolveUnixAddr("unix", "/var/run/monitord.sock")
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(-1)
+    }
+    
+    Unix, err := net.DialUnix("unix", lAddr, rAddr)
     
     if err != nil {
-        fmt.Printf("%v\r\n", err)
+        fmt.Println(err)
     }
+    
+    // TODO remove this example
     Message, _ := json.Marshal(protocols.Socket{Method: "test", Body: []byte(""), Timestamp: 1234567890})
     fmt.Printf(string(Message))
     Unix.Write(Message)
