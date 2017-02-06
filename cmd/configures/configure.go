@@ -12,12 +12,17 @@ type Config struct {
     DSockFile  string
     CSockFile  string
     LogFile    string
-
+    
     DBHost     string
     DBPort     int
     DB         string
     DBUsername string
     DBPassword string
+    
+    DBM        struct {
+                   Name string
+                   Size string
+               }
 }
 
 func Initialize(Viper *viper.Viper, Path string) *viper.Viper {
