@@ -94,8 +94,8 @@ func main() {
     Flags.StringVarP(&LogFile, "log", "l", "/var/log/monitord.log", "monitor daemon log file")
     // todo socket file and mongodb config
     
-    viper.BindPFlag("server.pid_file", Flags.Lookup("pid_file"))
-    //Viper.BindPFlag("server.log_file", Flags.Lookup("log_file"))
+    Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
+    Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
     
     if err := RootCmd.Execute(); err != nil {
         fmt.Println(err)
