@@ -65,7 +65,7 @@ func main() {
             u := configures.Config{}
             t := reflect.TypeOf(u)
             
-            for k := 0; k < t.Len(); k++ {
+            for k := 0; k < t.NumField(); k++ {
                 fmt.Printf("%s -- \n", t.Field(k).Name)
             }
             
