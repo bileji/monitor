@@ -61,7 +61,6 @@ func main() {
         RunE:func(cmd *cobra.Command, args []string) error {
             
             Conf := configures.Initialize(Viper, ConfFile)
-            return nil
     
             fmt.Println(*Conf)
             // TODO run ...
@@ -95,8 +94,8 @@ func main() {
     Flags.StringVarP(&LogFile, "log", "l", "/var/log/monitord.log", "monitor daemon log file")
     // todo socket file and mongodb config
     
-    Viper.BindPFlag("server.pid_file", Flags.Lookup("pid_file"))
-    Viper.BindPFlag("server.log_file", Flags.Lookup("log_file"))
+    //Viper.BindPFlag("server.pid_file", Flags.Lookup("pid_file"))
+    //Viper.BindPFlag("server.log_file", Flags.Lookup("log_file"))
     
     if err := RootCmd.Execute(); err != nil {
         fmt.Println(err)
