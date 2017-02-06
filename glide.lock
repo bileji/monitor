@@ -1,5 +1,5 @@
-hash: ce553ff5da206804da0dde386a5621a5ce27ae2641199516ffcd6069b1021283
-updated: 2017-02-01T19:36:06.065953762+08:00
+hash: 57dea2d5e60f9322eed043d220f733960e819337346d83f64b22456a73c3682a
+updated: 2017-02-06T11:42:27.306821348+08:00
 imports:
 - name: github.com/gizak/termui
   version: 991cd3d3809135dc24daf6188dc6edcaf3d7d2d9
@@ -7,6 +7,8 @@ imports:
   version: 5e9c030faf78847db7aa77e3661b9cc449de29b7
   subpackages:
   - oleutil
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/shirou/gopsutil
   version: 1123132e5ad392485dbd16e0f09a0db8c963a2ab
   subpackages:
@@ -25,6 +27,8 @@ imports:
   version: 35136c09d8da66b901337c6e86fd8e88a1a255bd
 - name: github.com/spf13/pflag
   version: 9ff6c6923cfffbcd502984b8e0c80539a94968b7
+- name: github.com/spf13/viper
+  version: 5ed0fc31f7f453625df314d8e66b9791e8d13003
 - name: github.com/StackExchange/wmi
   version: e54cbda6595d7293a7a468ccf9525f6bc8887f99
 - name: gopkg.in/mgo.v2

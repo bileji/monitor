@@ -10,6 +10,7 @@ import (
     "monitor/daemon"
     "monitor/cmd/protocols"
     "github.com/spf13/cobra"
+    "github.com/spf13/viper"
 )
 
 const (
@@ -40,6 +41,11 @@ func Scheduler(Con *net.UnixConn) {
 }
 
 func main() {
+    var (
+        // 配置文件
+        ConfFile string
+    )
+    
     runtime.GOMAXPROCS(runtime.NumCPU())
     
     RootCmd := &cobra.Command{
@@ -47,6 +53,8 @@ func main() {
         Short: "Linux server status monitor daemon",
         Long: "######to do...",
         RunE:func(cmd *cobra.Command, args []string) error {
+            // TODO read config file
+            
             // TODO run ...
             Daemon := &daemon.Daemon{
                 PidFile: "/var/run/monitord.pid",
@@ -67,6 +75,24 @@ func main() {
             })
             return nil
         },
+    }
+    
+    Flags := RootCmd.Flags()
+    
+    // 配置文件路径
+    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.yaml", "monitor config file path")
+    
+    //Flags.StringVarP(&)
+    //
+    //viper.BindPFlag("config", Flags.Lookup("config"))
+    
+    viper.SetConfigName("monitor")
+    viper.SetConfigType("yaml")
+    viper.AddConfigPath("/etc")
+    viper.AddConfigPath("./config")
+    
+    if viper.ReadInConfig() != nil {
+        fmt.Println("No config file found. Using built-in defaults.")
     }
     
     if err := RootCmd.Execute(); err != nil {
