@@ -6,7 +6,6 @@ import (
     "log"
     "net"
     "runtime"
-    "reflect"
     "encoding/json"
     "monitor/daemon"
     "monitor/cmd/protocols"
@@ -46,6 +45,9 @@ func main() {
     var (
         // 配置文件
         ConfFile string
+        
+        PidFile string
+        LogFile string
     )
     
     runtime.GOMAXPROCS(runtime.NumCPU())
@@ -60,16 +62,7 @@ func main() {
             
             Conf := configures.Initialize(Viper, ConfFile)
             
-            fmt.Println(Conf.AllKeys())
-            
-            u := configures.Config{}
-            t := reflect.TypeOf(u)
-            
-            for k := 0; k < t.NumField(); k++ {
-                fmt.Printf("%s -- \n", t.Field(k).Name)
-            }
-            
-            // TODO read config file
+            fmt.Println(Conf)
             
             // TODO run ...
             Daemon := &daemon.Daemon{
@@ -97,6 +90,13 @@ func main() {
     
     // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.yaml", "monitor config file path")
+    
+    Flags.StringVarP(&PidFile, "pid_file", "p", "/var/run/monitord.pid", "monitor daemon pid file")
+    Flags.StringVarP(&LogFile, "log_file", "l", "/var/log/monitord.log", "monitor daemon log file")
+    // todo socket file and mongodb config
+    
+    Viper.BindPFlag("server.pid_file", Flags.Lookup("pid_file"))
+    Viper.BindPFlag("server.log_file", Flags.Lookup("log_file"))
     
     if err := RootCmd.Execute(); err != nil {
         fmt.Println(err)
