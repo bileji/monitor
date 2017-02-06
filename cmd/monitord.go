@@ -64,13 +64,14 @@ func main() {
             viper.AddConfigPath(Dir)
             
             fmt.Println(ConfFile)
-            viper.Set("test", "test")
-            fmt.Println(viper.Get("test"))
+            
             
             if viper.ReadInConfig() != nil {
                 log.Println("No config file found. Using built-in defaults.")
             }
             
+            //viper.Set("test", "test")
+            fmt.Println(viper.Get("test"))
             
             // TODO read config file
             
