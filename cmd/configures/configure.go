@@ -45,19 +45,19 @@ func Initialize(Viper *viper.Viper, Path string) *Conf {
     
     return &Conf{
         Server: Server{
-            PidFile:  Viper.Get("server.pid_file"),
-            SocketFile: Viper.Get("server.socket_file"),
-            LogFile: Viper.Get("server.log_file"),
+            PidFile:  Viper.GetString("server.pid_file"),
+            SocketFile: Viper.GetString("server.socket_file"),
+            LogFile: Viper.GetString("server.log_file"),
         },
         Client: Client{
-            SocketFile: Viper.Get("client.socket_file"),
+            SocketFile: Viper.GetString("client.socket_file"),
         },
         MongoDB: Database{
-            Host: Viper.Get("mongodb.host"),
-            Port: Viper.Get("mongodb.port"),
-            AuthDB: Viper.Get("mongodb.auth_db"),
-            Username: Viper.Get("mongodb.username"),
-            Password: Viper.Get("mongodb.password"),
+            Host: Viper.GetString("mongodb.host"),
+            Port: int8(Viper.GetInt("mongodb.port")),
+            AuthDB: Viper.GetString("mongodb.auth_db"),
+            Username: Viper.GetString("mongodb.username"),
+            Password: Viper.GetString("mongodb.password"),
         },
     }
 }
