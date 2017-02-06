@@ -7,18 +7,18 @@ import (
     "github.com/spf13/viper"
 )
 
-//type Config struct {
-//    PidFile    string
-//    DSockFile  string
-//    CSockFile  string
-//    LogFile    string
-//
-//    DBHost     string
-//    DBPort     int
-//    DB         string
-//    DBUsername string
-//    DBPassword string
-//}
+type Config struct {
+    PidFile    string
+    DSockFile  string
+    CSockFile  string
+    LogFile    string
+
+    DBHost     string
+    DBPort     int
+    DB         string
+    DBUsername string
+    DBPassword string
+}
 
 func Initialize(Viper *viper.Viper, Path string) *viper.Viper {
     Dir, File := filepath.Split(Path)

@@ -6,6 +6,7 @@ import (
     "log"
     "net"
     "runtime"
+    "reflect"
     "encoding/json"
     "monitor/daemon"
     "monitor/cmd/protocols"
@@ -60,6 +61,13 @@ func main() {
             Conf := configures.Initialize(Viper, ConfFile)
             
             fmt.Println(Conf.AllKeys())
+            
+            u := configures.Config{}
+            t := reflect.TypeOf(u)
+            
+            for k := 0; k < t.Len(); k++ {
+                fmt.Printf("%s -- \n", t.Field(k).Name)
+            }
             
             // TODO read config file
             
