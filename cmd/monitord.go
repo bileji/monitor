@@ -63,7 +63,7 @@ func main() {
             Conf := configures.Initialize(Viper, ConfFile)
             
             fmt.Println(*Conf)
-            
+            return nil
             // TODO run ...
             Daemon := &daemon.Daemon{
                 PidFile: "/var/run/monitord.pid",
