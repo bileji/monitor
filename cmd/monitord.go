@@ -6,11 +6,10 @@ import (
     "log"
     "net"
     "runtime"
-    "strings"
-    "path/filepath"
     "encoding/json"
     "monitor/daemon"
     "monitor/cmd/protocols"
+    "monitor/cmd/configures"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
 )
@@ -50,28 +49,17 @@ func main() {
     
     runtime.GOMAXPROCS(runtime.NumCPU())
     
+    Viper := viper.GetViper()
+    
     RootCmd := &cobra.Command{
         Use: "monitord",
         Short: "Linux server status monitor daemon",
         Long: "######to do...",
         RunE:func(cmd *cobra.Command, args []string) error {
             
-            Dir, File := filepath.Split(ConfFile)
-            Ext := filepath.Ext(File)
+            Conf := configures.Initialize(Viper, ConfFile)
             
-            viper.SetConfigName(strings.Replace(File, Ext, "", 1))
-            viper.SetConfigType(strings.Trim(Ext, "."))
-            viper.AddConfigPath(Dir)
-            
-            fmt.Println(ConfFile)
-            
-            
-            if viper.ReadInConfig() != nil {
-                log.Println("No config file found. Using built-in defaults.")
-            }
-            
-            //viper.Set("test", "test")
-            fmt.Println(viper.Get("test"))
+            fmt.Println(Conf.AllKeys())
             
             // TODO read config file
             
