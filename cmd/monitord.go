@@ -55,6 +55,21 @@ func main() {
         Short: "Linux server status monitor daemon",
         Long: "######to do...",
         RunE:func(cmd *cobra.Command, args []string) error {
+            
+            Dir, File := filepath.Split(ConfFile)
+            Ext := filepath.Ext(File)
+            
+            viper.SetConfigName(strings.Replace(File, Ext, "", 1))
+            viper.SetConfigType(strings.Trim(Ext, "."))
+            viper.AddConfigPath(Dir)
+            
+            fmt.Println(ConfFile)
+            
+            if viper.ReadInConfig() != nil {
+                log.Println("No config file found. Using built-in defaults.")
+            }
+            
+            
             // TODO read config file
             
             // TODO run ...
@@ -83,19 +98,6 @@ func main() {
     
     // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.yaml", "monitor config file path")
-    
-    Dir, File := filepath.Split(ConfFile)
-    Ext := filepath.Ext(File)
-    
-    viper.SetConfigName(strings.Replace(File, Ext, "", 1))
-    viper.SetConfigType(strings.Trim(Ext, "."))
-    viper.AddConfigPath(Dir)
-   
-    fmt.Println(ConfFile)
-    
-    if viper.ReadInConfig() != nil {
-        log.Println("No config file found. Using built-in defaults.")
-    }
     
     if err := RootCmd.Execute(); err != nil {
         fmt.Println(err)
