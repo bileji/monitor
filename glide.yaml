@@ -1,8 +1,26 @@
 package: monitor
+license: MIT
+owners:
+- name: Shu Chao
+  email: shuc324@gmail.com
+  homepage: https://github.com/shuc324
 import:
 - package: github.com/shirou/gopsutil
 - package: github.com/gizak/termui
 - package: gopkg.in/mgo.v2
+  #repo: git@github.com:go-mgo/mgo.git
+  #vcs:  git
+- package: gopkg.in/yaml.v2
+  #repo: git@github.com:go-yaml/yaml.git
+  #vcs:  git
 - package: github.com/spf13/cobra
 - package: github.com/spf13/pflag
 - package: github.com/spf13/viper
+- package: github.com/spf13/afero
+- package: github.com/spf13/cast
+- package: github.com/spf13/jwalterweatherman
+- package: github.com/fsnotify/fsnotify
+- package: github.com/hashicorp/hcl
+- package: github.com/magiconair/properties
+- package: github.com/mitchellh/mapstructure
+- package: github.com/pelletier/go-toml

@@ -1,14 +1,35 @@
-hash: 57dea2d5e60f9322eed043d220f733960e819337346d83f64b22456a73c3682a
-updated: 2017-02-06T11:42:27.306821348+08:00
+hash: 79aa19003a533594028ba528b99f8bb4c6e25b4e64422ff6e6abb4f44f685d9f
+updated: 2017-02-06T16:37:35.704949882+08:00
 imports:
+- name: github.com/fsnotify/fsnotify
+  version: a904159b9206978bb6d53fcc7a769e5cd726c737
 - name: github.com/gizak/termui
   version: 991cd3d3809135dc24daf6188dc6edcaf3d7d2d9
 - name: github.com/go-ole/go-ole
   version: 5e9c030faf78847db7aa77e3661b9cc449de29b7
   subpackages:
   - oleutil
+- name: github.com/hashicorp/hcl
+  version: 372e8ddaa16fd67e371e9323807d056b799360af
+  subpackages:
+  - hcl/ast
+  - hcl/parser
+  - hcl/token
+  - json/parser
+  - hcl/scanner
+  - hcl/strconv
+  - json/scanner
+  - json/token
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/magiconair/properties
+  version: b3b15ef068fd0b17ddf408a23669f20811d194d2
+- name: github.com/mitchellh/mapstructure
+  version: db1efb556f84b25a0a13a04aad883943538ad2e0
+- name: github.com/pelletier/go-buffruneio
+  version: df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d
+- name: github.com/pelletier/go-toml
+  version: d1fa2118c12c44e4f5004da216d1efad10cb4924
 - name: github.com/shirou/gopsutil
   version: 1123132e5ad392485dbd16e0f09a0db8c963a2ab
   subpackages:
@@ -23,14 +44,31 @@ imports:
   - process
 - name: github.com/shirou/w32
   version: bb4de0191aa41b5507caa14b0650cdbddcd9280b
+- name: github.com/spf13/afero
+  version: 72b31426848c6ef12a7a8e216708cb0d1530f074
+  subpackages:
+  - mem
+- name: github.com/spf13/cast
+  version: d1139bab1c07d5ad390a65e7305876b3c1a8370b
 - name: github.com/spf13/cobra
   version: 35136c09d8da66b901337c6e86fd8e88a1a255bd
+- name: github.com/spf13/jwalterweatherman
+  version: fa7ca7e836cf3a8bb4ebf799f472c12d7e903d66
 - name: github.com/spf13/pflag
   version: 9ff6c6923cfffbcd502984b8e0c80539a94968b7
 - name: github.com/spf13/viper
   version: 5ed0fc31f7f453625df314d8e66b9791e8d13003
 - name: github.com/StackExchange/wmi
   version: e54cbda6595d7293a7a468ccf9525f6bc8887f99
+- name: golang.org/x/sys
+  version: 7a6e5648d140666db5d920909e082ca00a87ba2c
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: 506f9d5c962f284575e88337e7d9296d27e729d3
+  subpackages:
+  - transform
+  - unicode/norm
 - name: gopkg.in/mgo.v2
   version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:
@@ -38,4 +76,6 @@ imports:
   - internal/sasl
   - internal/scram
   - internal/json
+- name: gopkg.in/yaml.v2
+  version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
 devImports: []
