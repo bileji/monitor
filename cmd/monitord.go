@@ -62,7 +62,7 @@ func main() {
             
             Conf := configures.Initialize(Viper, ConfFile)
             
-            fmt.Println(Conf)
+            fmt.Println(*Conf)
             
             // TODO run ...
             Daemon := &daemon.Daemon{
