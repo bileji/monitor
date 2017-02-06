@@ -91,8 +91,8 @@ func main() {
     // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.yaml", "monitor config file path")
     
-    Flags.StringVarP(&PidFile, "pid_file", "", "/var/run/monitord.pid", "monitor daemon pid file")
-    Flags.StringVarP(&LogFile, "log_file", "l", "/var/log/monitord.log", "monitor daemon log file")
+    Flags.StringVarP(&PidFile, "pid", "", "/var/run/monitord.pid", "monitor daemon pid file")
+    Flags.StringVarP(&LogFile, "log", "l", "/var/log/monitord.log", "monitor daemon log file")
     // todo socket file and mongodb config
     
     Viper.BindPFlag("server.pid_file", Flags.Lookup("pid_file"))
