@@ -6,6 +6,8 @@ import (
     "log"
     "net"
     "runtime"
+    "strings"
+    "path/filepath"
     "encoding/json"
     "monitor/daemon"
     "monitor/cmd/protocols"
@@ -82,17 +84,15 @@ func main() {
     // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.yaml", "monitor config file path")
     
-    //Flags.StringVarP(&)
-    //
-    //viper.BindPFlag("config", Flags.Lookup("config"))
+    Dir, File := filepath.Split(ConfFile)
+    Ext := filepath.Ext(File)
     
-    viper.SetConfigName("monitor")
-    viper.SetConfigType("yaml")
-    viper.AddConfigPath("/etc")
-    viper.AddConfigPath("./config")
+    viper.SetConfigName(strings.Replace(File, "." + Ext, "", 1))
+    viper.SetConfigType(Ext)
+    viper.AddConfigPath(Dir)
     
     if viper.ReadInConfig() != nil {
-        fmt.Println("No config file found. Using built-in defaults.")
+        log.Println("No config file found. Using built-in defaults.")
     }
     
     if err := RootCmd.Execute(); err != nil {
