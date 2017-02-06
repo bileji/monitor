@@ -64,6 +64,7 @@ func main() {
             viper.AddConfigPath(Dir)
             
             fmt.Println(ConfFile)
+            viper.Set("test", "test")
             fmt.Println(viper.Get("test"))
             
             if viper.ReadInConfig() != nil {
