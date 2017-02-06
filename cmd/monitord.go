@@ -91,10 +91,8 @@ func main() {
     viper.SetConfigType(strings.Trim(Ext, "."))
     viper.AddConfigPath(Dir)
     
-    fmt.Println(Dir, Ext, strings.Replace(File, Ext, "", 1))
-    
     if viper.ReadInConfig() != nil {
-        log.Println("No config file found. Using built-in defaults.")
+        fmt.Println("No config file found. Using built-in defaults.")
     }
     
     if err := RootCmd.Execute(); err != nil {
