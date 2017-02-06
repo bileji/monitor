@@ -88,7 +88,7 @@ func main() {
     Ext := filepath.Ext(File)
     
     viper.SetConfigName(strings.Replace(File, Ext, "", 1))
-    viper.SetConfigType(Ext)
+    viper.SetConfigType(strings.Trim(Ext, "."))
     viper.AddConfigPath(Dir)
     
     fmt.Println(Dir, Ext, strings.Replace(File, Ext, "", 1))
