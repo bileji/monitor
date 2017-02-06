@@ -61,9 +61,9 @@ func main() {
         RunE:func(cmd *cobra.Command, args []string) error {
             
             Conf := configures.Initialize(Viper, ConfFile)
-            
-            fmt.Println(*Conf)
             return nil
+    
+            fmt.Println(*Conf)
             // TODO run ...
             Daemon := &daemon.Daemon{
                 PidFile: "/var/run/monitord.pid",
