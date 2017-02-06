@@ -45,7 +45,7 @@ func main() {
     RootCmd := &cobra.Command{
         Use: "monitord",
         Short: "Linux server status monitor daemon",
-        Long: "to do...",
+        Long: "######to do...",
         RunE:func(cmd *cobra.Command, args []string) error {
             // TODO run ...
             Daemon := &daemon.Daemon{
@@ -53,13 +53,13 @@ func main() {
                 UnixFile: "/var/run/monitord.sock",
                 LogFile: "/var/log/monitord.log",
             }
-    
+            
             Daemon.Daemon(func(Unix *net.UnixListener) {
                 defer Unix.Close()
-        
+                
                 for {
                     if Fd, err := Unix.AcceptUnix(); err != nil {
-                        log.Printf("%v", err)
+                        log.Printf("%v\r\n", err)
                     } else {
                         go Scheduler(Fd)
                     }
