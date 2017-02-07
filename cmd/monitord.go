@@ -13,6 +13,36 @@ import (
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
     "monitor/cmd/commands"
+    "github.com/spf13/pflag"
+)
+
+var (
+    Daemon bool
+    
+    ConfFile string
+    
+    PidFile string
+    LogFile string
+    
+    Viper = viper.GetViper()
+    
+    Serve = func(cmd *cobra.Command, args []string) error {
+        Conf := configures.Initialize(Viper, ConfFile)
+        
+        Daemon := &daemon.Daemon{
+            PidFile: Conf.Server.PidFile,
+            UnixFile: Conf.Server.UnixFile,
+            LogFile: Conf.Server.LogFile,
+        }
+        
+        if Conf.Server.Daemon {
+            Daemon.Daemon(Monitor)
+        } else {
+            Daemon.UnixListen(Monitor)
+        }
+        
+        return nil
+    }
 )
 
 const (
@@ -25,6 +55,10 @@ type DBAuth struct {
     Database string `json:"database"`
     Username string `json:"username"`
     Password string `json:"password"`
+}
+
+func InitEnv() {
+    runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
 func Scheduler(Con *net.UnixConn) {
@@ -54,46 +88,7 @@ func Monitor(Unix *net.UnixListener) {
     }
 }
 
-func main() {
-    var (
-        Daemon bool
-        
-        ConfFile string
-        
-        PidFile string
-        LogFile string
-    )
-    
-    runtime.GOMAXPROCS(runtime.NumCPU())
-    
-    Viper := viper.GetViper()
-    
-    RootCmd := &cobra.Command{
-        Use: "monitord",
-        Short: "Linux server status monitor daemon",
-        Long: "######to do...",
-        RunE:func(cmd *cobra.Command, args []string) error {
-            
-            Conf := configures.Initialize(Viper, ConfFile)
-            
-            Daemon := &daemon.Daemon{
-                PidFile: Conf.Server.PidFile,
-                UnixFile: Conf.Server.UnixFile,
-                LogFile: Conf.Server.LogFile,
-            }
-            
-            if Conf.Server.Daemon {
-                Daemon.Daemon(Monitor)
-            } else {
-                Daemon.UnixListen(Monitor)
-            }
-            
-            return nil
-        },
-    }
-    
-    Flags := RootCmd.Flags()
-    
+func BindFlag(Flags *pflag.FlagSet) {
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
     
     Flags.BoolVarP(&Daemon, "daemon", "d", false, "to start the daemon way")
@@ -103,10 +98,30 @@ func main() {
     Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
     Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
     Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
+}
+
+func AddCommand(Cmd *cobra.Command) {
+    Cmd.AddCommand(commands.VersionCmd)
+}
+
+func main() {
     
-    RootCmd.AddCommand(commands.VersionCmd)
+    InitEnv()
     
-    if err := RootCmd.Execute(); err != nil {
+    RootCmd := &cobra.Command{
+        Use: "monitord",
+        Short: "Linux server status monitor daemon",
+        Long: "######to do...",
+        RunE: Serve,
+    }
+    
+    BindFlag(RootCmd.Flags())
+    
+    AddCommand(RootCmd)
+    
+    err := RootCmd.Execute()
+    
+    if err != nil {
         fmt.Println(err)
         os.Exit(-1)
     }
