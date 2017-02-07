@@ -67,7 +67,8 @@ func parseDBUri(AuthUri string) *configures.Database {
         
         hostInfo := strings.Split(arrStr[0], ":")
         if len(hostInfo) > 1 {
-            Database.Port, _ = strconv.Atoi(hostInfo[1])
+            Port, _ := strconv.Atoi(hostInfo[1])
+            Database.Port = int8(Port)
         }
         Database.Host = hostInfo[0]
     }
