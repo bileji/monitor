@@ -11,7 +11,7 @@ var initCmd = &cobra.Command{
     RunE: func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         
-        Con, err := utils.UnixSocket(Conf)
+        _, err := utils.UnixSocket(Conf)
         if err != nil {
             return err
         }
