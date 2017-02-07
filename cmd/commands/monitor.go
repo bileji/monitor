@@ -27,7 +27,6 @@ var (
     
     Serve = func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
-        log.Println("rune")
         Daemon := &daemon.Daemon{
             PidFile: Conf.Server.PidFile,
             UnixFile: Conf.Server.UnixFile,
@@ -79,6 +78,7 @@ func monitor(Unix *net.UnixListener) {
 }
 
 func addCommand(Cmd *cobra.Command) {
+    Cmd.AddCommand(ServerCmd)
     Cmd.AddCommand(VersionCmd)
 }
 

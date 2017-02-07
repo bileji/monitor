@@ -1,9 +1,12 @@
 package commands
 
 import (
+    "fmt"
+    "encoding/json"
     "github.com/spf13/cobra"
     "monitor/cmd/configures"
     "monitor/utils"
+    "monitor/cmd/protocols"
 )
 
 var initCmd = &cobra.Command{
@@ -11,10 +14,19 @@ var initCmd = &cobra.Command{
     RunE: func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         
-        _, err := utils.UnixSocket(Conf)
+        Conn, err := utils.UnixSocket(Conf)
         if err != nil {
             return err
         }
+        
+        // TODO
+        Message, _ := json.Marshal(protocols.Socket{
+            Command: "test",
+            Body: []byte(""),
+            Timestamp: 1234567890,
+        })
+        fmt.Println(string(Message))
+        Conn.Write(Message)
         
         return nil
     },
