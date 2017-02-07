@@ -19,7 +19,7 @@ var (
     Viper = viper.GetViper()
 )
 
-func Socket(Conf *configures.Conf) (*net.UnixConn, error) {
+func UnixSocket(Conf *configures.Conf) (*net.UnixConn, error) {
     os.Remove(Conf.Client.UnixFile)
     
     lAddr, err := net.ResolveUnixAddr("unix", Conf.Client.UnixFile)
@@ -52,7 +52,7 @@ func main() {
         RunE: func(cmd *cobra.Command, args []string) error {
             Conf := configures.Initialize(Viper, ConfFile)
             
-            Con, err := Socket(Conf)
+            Con, err := UnixSocket(Conf)
             if err != nil {
                 return err
             }
