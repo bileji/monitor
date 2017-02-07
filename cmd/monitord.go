@@ -42,9 +42,22 @@ func Scheduler(Con *net.UnixConn) {
     }
 }
 
+func Monitor(Unix *net.UnixListener) {
+    defer Unix.Close()
+    
+    for {
+        if Fd, err := Unix.AcceptUnix(); err != nil {
+            log.Printf("%v\r\n", err)
+        } else {
+            go Scheduler(Fd)
+        }
+    }
+}
+
 func main() {
     var (
-        // 配置文件
+        DaemonB bool
+        
         ConfFile string
         
         PidFile string
@@ -69,17 +82,8 @@ func main() {
                 LogFile: Conf.Server.LogFile,
             }
             
-            Daemon.Daemon(func(Unix *net.UnixListener) {
-                defer Unix.Close()
-                
-                for {
-                    if Fd, err := Unix.AcceptUnix(); err != nil {
-                        log.Printf("%v\r\n", err)
-                    } else {
-                        go Scheduler(Fd)
-                    }
-                }
-            })
+            Daemon.Daemon(Monitor)
+            
             return nil
         },
     }
@@ -88,10 +92,12 @@ func main() {
     
     // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
+    Flags.BoolVarP(&DaemonB, "daemon", "d", true, "to start the daemon way")
     
     Flags.StringVarP(&PidFile, "pid", "", "", "full path to pidfile")
     Flags.StringVarP(&LogFile, "log", "l", "", "log file")
     
+    Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
     Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
     Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
     

@@ -8,6 +8,7 @@ import (
 )
 
 type Server struct {
+    Daemon   bool
     PidFile  string
     UnixFile string
     LogFile  string
@@ -45,6 +46,7 @@ func Initialize(Viper *viper.Viper, Path string) *Conf {
     
     return &Conf{
         Server: Server{
+            Daemon: Viper.GetBool("server.daemon"),
             PidFile:  Viper.GetString("server.pid_file"),
             UnixFile: Viper.GetString("server.unix_file"),
             LogFile: Viper.GetString("server.log_file"),
