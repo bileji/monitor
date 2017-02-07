@@ -7,8 +7,8 @@ import (
     "strconv"
     "github.com/spf13/cobra"
     "gopkg.in/mgo.v2"
-    "monitor/daemon"
-    "monitor/service"
+    "monitor/monitor/daemon"
+    "monitor/monitor/service"
 )
 
 var (

@@ -7,7 +7,7 @@ import (
     "net"
     "runtime"
     "encoding/json"
-    "monitor/daemon"
+    "monitor/monitor/daemon"
     "monitor/cmd/protocols"
     "monitor/cmd/configures"
     "github.com/spf13/cobra"
