@@ -1,22 +1,22 @@
 package main
 
 import (
-    //"log"
-    //"time"
-    //"monitor/daemon"
-    //"monitor/service"
-    //"gopkg.in/mgo.v2"
-    //"monitor/collector/model"
+    "os"
+    "fmt"
     "runtime"
-    //"monitor/command"
+    "monitor/cmd/commands"
 )
 
 func main() {
     // 调优
     runtime.GOMAXPROCS(runtime.NumCPU())
     
-    //command.Execute()
+    err := commands.MonitorCmd.Execute()
     
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(-1)
+    }
     
     //Daemon := &daemon.Daemon{
     //    PidFile: "/var/run/monitord.pid",
