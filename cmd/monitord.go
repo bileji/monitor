@@ -76,8 +76,6 @@ func main() {
             
             Conf := configures.Initialize(Viper, ConfFile)
             
-            fmt.Println(Conf)
-            
             Daemon := &daemon.Daemon{
                 PidFile: Conf.Server.PidFile,
                 UnixFile: Conf.Server.UnixFile,
@@ -96,10 +94,9 @@ func main() {
     
     Flags := RootCmd.Flags()
     
-    // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
-    Flags.BoolVarP(&Daemon, "daemon", "d", false, "to start the daemon way")
     
+    Flags.BoolVarP(&Daemon, "daemon", "d", false, "to start the daemon way")
     Flags.StringVarP(&PidFile, "pid", "", "", "full path to pidfile")
     Flags.StringVarP(&LogFile, "log", "l", "", "log file")
     
