@@ -98,6 +98,7 @@ func (D *Daemon) ClearFile(F *os.File) (error) {
 }
 
 func (D *Daemon) UnixListen(Routine func(*net.UnixListener)) {
+    os.Remove(D.UnixFile)
     UnixL, err := net.ListenUnix("unix", &net.UnixAddr{Name: D.UnixFile, Net: "unix"})
     if err != nil {
         log.Printf("%v\r\n", err)
