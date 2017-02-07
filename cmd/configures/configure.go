@@ -56,7 +56,7 @@ func Initialize(Viper *viper.Viper, Path string) *Conf {
         },
         MongoDB: Database{
             Host: Viper.GetString("mongodb.host"),
-            Port: int8(Viper.GetInt("mongodb.port")),
+            Port: int16(Viper.GetInt("mongodb.port")),
             AuthDB: Viper.GetString("mongodb.auth_db"),
             Username: Viper.GetString("mongodb.username"),
             Password: Viper.GetString("mongodb.password"),
