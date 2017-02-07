@@ -8,7 +8,7 @@ import (
     "github.com/spf13/cobra"
     "gopkg.in/mgo.v2"
     "monitor/monitor/daemon"
-    "monitor/monitor/service"
+    "monitor/monitor/webserver"
 )
 
 var (
