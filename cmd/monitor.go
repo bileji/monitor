@@ -5,50 +5,74 @@ import (
     "fmt"
     "net"
     "encoding/json"
+    "monitor/cmd/commands"
     "monitor/cmd/protocols"
+    "monitor/cmd/configures"
     "github.com/spf13/cobra"
+    "github.com/spf13/viper"
+    "github.com/spf13/pflag"
 )
 
+var (
+    ConfFile string
+    
+    Viper = viper.GetViper()
+)
+
+func Socket(Conf *configures.Conf) (*net.UnixConn, error) {
+    os.Remove(Conf.Client.UnixFile)
+    
+    lAddr, err := net.ResolveUnixAddr("unix", Conf.Client.UnixFile)
+    if err != nil {
+        return nil, err
+    }
+    
+    rAddr, err := net.ResolveUnixAddr("unix", Conf.Server.UnixFile)
+    if err != nil {
+        return nil, err
+    }
+    
+    return net.DialUnix("unix", lAddr, rAddr)
+}
+
+func bindFlag(Flags *pflag.FlagSet) {
+    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
+}
+
+func addCommand(Cmd *cobra.Command) {
+    Cmd.AddCommand(commands.VersionCmd)
+}
+
 func main() {
-    os.Remove("/var/run/monitor.sock")
-    lAddr, err := net.ResolveUnixAddr("unix", "/var/run/monitor.sock")
-    if err != nil {
-        fmt.Println(err)
-        os.Exit(-1)
-    }
-    
-    rAddr, err := net.ResolveUnixAddr("unix", "/var/run/monitord.sock")
-    if err != nil {
-        fmt.Println(err)
-        os.Exit(-1)
-    }
-    
-    Unix, err := net.DialUnix("unix", lAddr, rAddr)
-    
-    if err != nil {
-        fmt.Println(err)
-    }
-    
-    // TODO remove this example
-    Message, _ := json.Marshal(protocols.Socket{Command: "test", Body: []byte(""), Timestamp: 1234567890})
-    fmt.Printf(string(Message))
-    Unix.Write(Message)
     
     RootCmd := &cobra.Command{
         Use: "monitor",
         Short: "Linux server status monitor",
         Long: "/////////////////////////////",
-        Run: func(cmd *cobra.Command, args []string) {
-            // TODO ...
-            Message, _ := json.Marshal(protocols.Socket{Command: "test", Body: []byte(""), Timestamp: 1234567890})
-            fmt.Printf(string(Message))
-            Unix.Write(Message)
-        },
         RunE: func(cmd *cobra.Command, args []string) error {
-            // TODO
+            Conf := configures.Initialize(Viper, ConfFile)
+            
+            Con, err := Socket(Conf)
+            if err != nil {
+                return nil
+            }
+            
+            // TODO remove this example
+            Message, _ := json.Marshal(protocols.Socket{
+                Command: "test",
+                Body: []byte(""),
+                Timestamp: 1234567890,
+            })
+            fmt.Printf(string(Message))
+            Con.Write(Message)
+            
             return nil
         },
     }
+    
+    bindFlag(RootCmd.Flags())
+    
+    addCommand(RootCmd)
     
     if err := RootCmd.Execute(); err != nil {
         fmt.Printf("%v", err)

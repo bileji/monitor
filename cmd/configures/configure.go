@@ -15,7 +15,7 @@ type Server struct {
 }
 
 type Client struct {
-    SocketFile string
+    UnixFile string
 }
 
 type Database struct {
@@ -52,7 +52,7 @@ func Initialize(Viper *viper.Viper, Path string) *Conf {
             LogFile: Viper.GetString("server.log_file"),
         },
         Client: Client{
-            SocketFile: Viper.GetString("client.socket_file"),
+            UnixFile: Viper.GetString("client.unix_file"),
         },
         MongoDB: Database{
             Host: Viper.GetString("mongodb.host"),
