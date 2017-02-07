@@ -9,7 +9,7 @@ import (
 var VersionCmd = &cobra.Command{
     Use:   "version",
     Short: "print the version number of monitor",
-    Long:  `all software has versions. this is monitor's.`,
+    Long:  `All software has versions. This is monitor's.`,
     RunE: func(cmd *cobra.Command, args []string) error {
         monitorVersion()
         return nil
