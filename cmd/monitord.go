@@ -84,7 +84,7 @@ func main() {
                 LogFile: Conf.Server.LogFile,
             }
             
-            if DaemonB == false {
+            if Conf.Server.Daemon == false {
                 fmt.Println("a")
                 Daemon.UnixListen(Monitor)
             } else {
