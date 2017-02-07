@@ -111,7 +111,7 @@ func main() {
     RootCmd := &cobra.Command{
         Use: "monitord",
         Short: "Linux server status monitor daemon",
-        Long: "######to do...",
+        Long: "Powerful Linux server status monitor",
         RunE: Serve,
     }
     
