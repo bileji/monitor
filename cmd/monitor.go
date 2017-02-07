@@ -48,7 +48,7 @@ func main() {
     RootCmd := &cobra.Command{
         Use: "monitor",
         Short: "Linux server status monitor",
-        Long: "/////////////////////////////",
+        Long: "Powerful Linux server status monitor client",
         RunE: func(cmd *cobra.Command, args []string) error {
             Conf := configures.Initialize(Viper, ConfFile)
             
