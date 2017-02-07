@@ -54,7 +54,7 @@ func main() {
             
             Con, err := Socket(Conf)
             if err != nil {
-                return nil
+                return err
             }
             
             // TODO remove this example
