@@ -17,5 +17,6 @@ var VersionCmd = &cobra.Command{
 }
 
 func monitorVersion() {
+    fmt.Println(ConfFile)
     fmt.Printf("monitor: v%s %s/%s \n", "1.0.0", runtime.GOOS, runtime.GOARCH)
 }
