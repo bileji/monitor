@@ -82,7 +82,9 @@ func main() {
                 LogFile: Conf.Server.LogFile,
             }
             
-            Daemon.Daemon(Monitor)
+            if DaemonB == false {
+                Daemon.UnixListen(Monitor)
+            }
             
             return nil
         },
