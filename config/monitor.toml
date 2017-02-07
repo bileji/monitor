@@ -1,0 +1,8 @@
+[server]
+# configuration file specifying additional options
+pid_file="/var/run/monitord.pid"
+# log file
+log_file="/var/log/monitord.log"
+# unix socket file
+unix_file="/var/run/monitord.sock"
+[client]
