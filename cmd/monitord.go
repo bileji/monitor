@@ -86,8 +86,11 @@ func main() {
             
             if DaemonB == false {
                 Daemon.UnixListen(Monitor)
+                select {}
+                return nil
             }
             
+            Daemon.Daemon(Monitor)
             return nil
         },
     }
