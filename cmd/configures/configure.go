@@ -20,7 +20,7 @@ type Client struct {
 
 type Database struct {
     Host     string `json:"host"`
-    Port     int8 `json:"port"`
+    Port     int16 `json:"port"`
     AuthDB   string `json:"auth_db"`
     Username string `json:"username"`
     Password string `json:"password"`
