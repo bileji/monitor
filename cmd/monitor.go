@@ -63,7 +63,7 @@ func main() {
                 Body: []byte(""),
                 Timestamp: 1234567890,
             })
-            fmt.Printf(string(Message))
+            fmt.Println(string(Message))
             Con.Write(Message)
             
             return nil
