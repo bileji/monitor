@@ -55,6 +55,9 @@ func scheduler(Con *net.UnixConn) {
         json.Unmarshal(Buffer[0: Len], &Message)
         // todo 接收到cli信息,然后处理
         log.Println(Message)
+        var DB configures.Database
+        json.Unmarshal(Message.Body, &DB)
+        log.Println(DB)
     }
 }
 
