@@ -103,5 +103,5 @@ func (D *Daemon) UnixListen(Routine func(*net.UnixListener)) {
         log.Printf("%v\r\n", err)
     }
     
-    go Routine(UnixL)
+    Routine(UnixL)
 }

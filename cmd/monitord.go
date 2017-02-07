@@ -85,16 +85,13 @@ func main() {
             }
             
             if DaemonB == false {
+                fmt.Println("a")
                 Daemon.UnixListen(Monitor)
-                for {
-                    select {
-                        
-                    }
-                }
-                return nil
+            } else {
+                fmt.Println("b")
+                Daemon.Daemon(Monitor)
             }
             
-            Daemon.Daemon(Monitor)
             return nil
         },
     }
