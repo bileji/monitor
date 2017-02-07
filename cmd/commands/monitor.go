@@ -83,7 +83,7 @@ func addCommand(Cmd *cobra.Command) {
 }
 
 var MonitorCmd = &cobra.Command{
-    Use: "monitord",
+    Use: "monitor",
     Short: "Linux server status monitor",
     Long: "Powerful Linux server status monitor server",
     RunE: Serve,
