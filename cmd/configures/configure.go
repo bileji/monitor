@@ -19,11 +19,11 @@ type Client struct {
 }
 
 type Database struct {
-    Host     string
-    Port     int8
-    AuthDB   string
-    Username string
-    Password string
+    Host     string `json:"host"`
+    Port     int8 `json:"port"`
+    AuthDB   string `json:"auth_db"`
+    Username string `json:"username"`
+    Password string `json:"password"`
 }
 
 type Conf struct {
