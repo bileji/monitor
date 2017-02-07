@@ -61,7 +61,7 @@ func main() {
         RunE:func(cmd *cobra.Command, args []string) error {
             
             Conf := configures.Initialize(Viper, ConfFile)
-    
+            
             fmt.Println(*Conf)
             // TODO run ...
             Daemon := &daemon.Daemon{
@@ -88,7 +88,7 @@ func main() {
     Flags := RootCmd.Flags()
     
     // 配置文件路径
-    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.yaml", "monitor config file path")
+    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "monitor config file path")
     
     Flags.StringVarP(&PidFile, "pid", "", "/var/run/monitord.pid", "monitor daemon pid file")
     Flags.StringVarP(&LogFile, "log", "l", "/var/log/monitord.log", "monitor daemon log file")
