@@ -2,6 +2,7 @@ package commands
 
 import (
     "fmt"
+    "net"
     "strings"
     "strconv"
     "github.com/spf13/cobra"
@@ -47,7 +48,7 @@ var serverCmd = &cobra.Command{
             UnixFile: "/var/run/monitord.sock",
             LogFile: "/var/log/monitord.log",
         }
-        Daemon.Daemon(func(ch chan []byte) {
+        Daemon.Daemon(func(Unix *net.UnixListener) {
             defer Session.Close()
             
             go (&service.Master{
