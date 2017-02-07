@@ -8,9 +8,9 @@ import (
 )
 
 type Server struct {
-    PidFile    string
-    SocketFile string
-    LogFile    string
+    PidFile  string
+    UnixFile string
+    LogFile  string
 }
 
 type Client struct {
@@ -46,7 +46,7 @@ func Initialize(Viper *viper.Viper, Path string) *Conf {
     return &Conf{
         Server: Server{
             PidFile:  Viper.GetString("server.pid_file"),
-            SocketFile: Viper.GetString("server.socket_file"),
+            UnixFile: Viper.GetString("server.unix_file"),
             LogFile: Viper.GetString("server.log_file"),
         },
         Client: Client{

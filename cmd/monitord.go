@@ -12,6 +12,7 @@ import (
     "monitor/cmd/configures"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
+    "monitor/cmd/commands"
 )
 
 const (
@@ -62,12 +63,10 @@ func main() {
             
             Conf := configures.Initialize(Viper, ConfFile)
             
-            fmt.Println(*Conf)
-            // TODO run ...
             Daemon := &daemon.Daemon{
-                PidFile: "/var/run/monitord.pid",
-                UnixFile: "/var/run/monitord.sock",
-                LogFile: "/var/log/monitord.log",
+                PidFile: Conf.Server.PidFile,
+                UnixFile: Conf.Server.UnixFile,
+                LogFile: Conf.Server.LogFile,
             }
             
             Daemon.Daemon(func(Unix *net.UnixListener) {
@@ -88,14 +87,15 @@ func main() {
     Flags := RootCmd.Flags()
     
     // 配置文件路径
-    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "monitor config file path")
+    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
     
-    Flags.StringVarP(&PidFile, "pid", "", "/var/run/monitord.pid", "monitor daemon pid file")
-    Flags.StringVarP(&LogFile, "log", "l", "/var/log/monitord.log", "monitor daemon log file")
-    // todo socket file and mongodb config
+    Flags.StringVarP(&PidFile, "pid", "", "", "full path to pidfile")
+    Flags.StringVarP(&LogFile, "log", "l", "", "log file")
     
     Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
     Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
+    
+    RootCmd.AddCommand(commands.VersionCmd)
     
     if err := RootCmd.Execute(); err != nil {
         fmt.Println(err)
