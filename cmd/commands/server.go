@@ -2,11 +2,17 @@ package commands
 
 import (
     "fmt"
+    "strings"
+    "strconv"
     "encoding/json"
     "github.com/spf13/cobra"
     "monitor/cmd/configures"
     "monitor/utils"
     "monitor/cmd/protocols"
+)
+
+var (
+    authUri string
 )
 
 var initCmd = &cobra.Command{
@@ -19,10 +25,12 @@ var initCmd = &cobra.Command{
             return err
         }
         
-        // TODO
+        // TODO save to config
+        Body, _ := json.Marshal(parseDBUri(authUri))
+        
         Message, _ := json.Marshal(protocols.Socket{
-            Command: "test",
-            Body: []byte(""),
+            Command: "initweb",
+            Body: Body,
             Timestamp: 1234567890,
         })
         fmt.Println(string(Message))
@@ -38,7 +46,40 @@ var ServerCmd = &cobra.Command{
     //RunE: func(cmd *cobra.Command, args []string) {},
 }
 
+func parseDBUri(AuthUri string) *configures.Database {
+    var Database = &configures.Database{
+        Username: "root",
+        Password: "",
+    }
+    
+    if arrStr := strings.Split(AuthUri, "/"); len(arrStr) >= 1 {
+        if len(arrStr) > 1 {
+            authInfo := strings.Split(arrStr[1], "@")
+            if len(authInfo) > 1 {
+                loginInfo := strings.Split(authInfo[1], ":")
+                Database.Username = loginInfo[0]
+                if len(loginInfo) > 1 {
+                    Database.Password = loginInfo[1]
+                }
+            }
+            Database.AuthDB = authInfo[0]
+        }
+        
+        hostInfo := strings.Split(arrStr[0], ":")
+        if len(hostInfo) > 1 {
+            Database.Port, _ = strconv.Atoi(hostInfo[1])
+        }
+        Database.Host = hostInfo[0]
+    }
+    
+    return Database
+}
+
 func init() {
+    Flags := ServerCmd.Flags()
+    
+    Flags.StringVarP(&authUri, "db_uri", "", "127.0.0.1:27017/vpn@shadowsocks:mlgR4evB", "auth uri of the mongodb")
+    
     ServerCmd.AddCommand(initCmd)
 }
 

@@ -42,13 +42,6 @@ var (
         return nil
     }
 )
-//type DBAuth struct {
-//    Host     string `json:"host"`
-//    Port     int `json:"port"`
-//    Database string `json:"database"`
-//    Username string `json:"username"`
-//    Password string `json:"password"`
-//}
 
 func scheduler(Con *net.UnixConn) {
     for {
