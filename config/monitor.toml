@@ -1,6 +1,6 @@
 [server]
 # to start the daemon way
-daemon=true
+daemon=false
 # configuration file specifying additional options
 pid_file="/var/run/monitord.pid"
 # log file
