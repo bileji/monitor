@@ -56,12 +56,11 @@ func Monitor(Unix *net.UnixListener) {
 
 func main() {
     var (
-        DaemonB bool
         
         ConfFile string
         
-        PidFile string
-        LogFile string
+        //PidFile string
+        //LogFile string
     )
     
     runtime.GOMAXPROCS(runtime.NumCPU())
@@ -84,12 +83,10 @@ func main() {
                 LogFile: Conf.Server.LogFile,
             }
             
-            if Conf.Server.Daemon == false {
-                fmt.Println("a")
-                Daemon.UnixListen(Monitor)
-            } else {
-                fmt.Println("b")
+            if Conf.Server.Daemon {
                 Daemon.Daemon(Monitor)
+            } else {
+                Daemon.UnixListen(Monitor)
             }
             
             return nil
@@ -100,10 +97,10 @@ func main() {
     
     // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
-    Flags.BoolVarP(&DaemonB, "daemon", "d", true, "to start the daemon way")
+    Flags.BoolP("daemon", "d", false, "to start the daemon way")
     
-    Flags.StringVarP(&PidFile, "pid", "", "", "full path to pidfile")
-    Flags.StringVarP(&LogFile, "log", "l", "", "log file")
+    Flags.StringP("pid", "", "", "full path to pidfile")
+    Flags.StringP("log", "l", "", "log file")
     
     Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
     Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
