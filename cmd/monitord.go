@@ -47,7 +47,8 @@ func Monitor(Unix *net.UnixListener) {
     
     for {
         if Fd, err := Unix.AcceptUnix(); err != nil {
-            log.Printf("%v\r\n", err)
+            Fd.Close()
+            return
         } else {
             go Scheduler(Fd)
         }
@@ -56,7 +57,6 @@ func Monitor(Unix *net.UnixListener) {
 
 func main() {
     var (
-        
         ConfFile string
         
         //PidFile string
@@ -97,8 +97,8 @@ func main() {
     
     // 配置文件路径
     Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
-    Flags.BoolP("daemon", "d", false, "to start the daemon way")
     
+    Flags.BoolP("daemon", "d", false, "to start the daemon way")
     Flags.StringP("pid", "", "", "full path to pidfile")
     Flags.StringP("log", "l", "", "log file")
     
