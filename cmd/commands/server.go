@@ -8,13 +8,15 @@ import (
 
 var initCmd = &cobra.Command{
     Use: "init",
-    RunE: func(cmd *cobra.Command, args []string) {
+    RunE: func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         
         Con, err := utils.UnixSocket(Conf)
         if err != nil {
             return err
         }
+        
+        return nil
     },
 }
 
