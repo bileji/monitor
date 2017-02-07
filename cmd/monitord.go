@@ -76,6 +76,8 @@ func main() {
             
             Conf := configures.Initialize(Viper, ConfFile)
             
+            fmt.Println(Conf)
+            
             Daemon := &daemon.Daemon{
                 PidFile: Conf.Server.PidFile,
                 UnixFile: Conf.Server.UnixFile,
