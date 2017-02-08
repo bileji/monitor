@@ -23,7 +23,7 @@ var initCmd = &cobra.Command{
             return err
         }
         
-        Body, _ := json.Marshal(Conf.MongoDB)
+        Body, _ := json.Marshal(WebServer)
         
         Message, _ := json.Marshal(protocols.Socket{
             Command: protocols.SERVER_INIT,
@@ -79,7 +79,7 @@ func init() {
     Flags.StringVarP(&WebServer.Database.Username, "user", "", "", "username")
     Flags.StringVarP(&WebServer.Database.Password, "pwd", "", "", "password")
     
-    Flags.StringVarP(&WebServer.Addr, "addr", "", "", "web server address")
+    Flags.StringVarP(&WebServer.Addr, "addr", "", ":3647", "web server address")
     
     Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
     Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))

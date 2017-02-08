@@ -100,8 +100,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     // server init
     if Msg.Command == protocols.SERVER_INIT {
         if Role.Get() == RN {
-            json.Unmarshal(Msg.Body, &WebServer.Database)
-            WebServer.Addr = ":3647"
+            json.Unmarshal(Msg.Body, &WebServer)
             WebServer.Token = utils.RandStr()
             
             if (&monitor.Monitor{}).ServerInit(WebServer) != nil {
