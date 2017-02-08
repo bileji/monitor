@@ -10,3 +10,9 @@ unix_file="/var/run/monitord.sock"
 [client]
 # unix socket file
 unix_file="/var/run/monitor.sock"
+[mongodb]
+host="127.0.0.1"
+port=27017
+auth_db="vpn"
+username="shadowsocks"
+password="mlgR4evB"
