@@ -2,7 +2,7 @@ package model
 
 import (
     "encoding/json"
-    "monitor/collector"
+    "monitor/monitor/collector"
 )
 
 type Gather struct {
