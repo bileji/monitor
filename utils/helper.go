@@ -21,7 +21,7 @@ func ParseOutPut(Conn *net.UnixConn) {
     if err == nil {
         Message := protocols.OutPut{}
         json.Unmarshal(Buffer[0:Len], &Message)
-        fmt.Printf("%s\n", "Monitor say:")
+        fmt.Printf("%s\n\n\t", "Monitor say:")
         fmt.Println(string(Message.Body))
     }
     Conn.Close()
