@@ -62,7 +62,7 @@ func (O *serverRole) Set(Role int) {
 
 var Role = serverRole{Role: 0}
 
-var WebServer = &monitor.WebServer{}
+var WebServer = monitor.WebServer{}
 
 func scheduler(Unix *net.UnixListener) {
     defer Unix.Close()
