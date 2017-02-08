@@ -19,9 +19,9 @@ var (
 )
 
 var initCmd = &cobra.Command{
-    Use: "init",
-    Short: "initialize a server",
-    Long: "Initialize a server",
+    Use:    "init",
+    Short:  "initialize a server",
+    Long:   "Initialize a server",
     RunE: func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         
@@ -49,9 +49,9 @@ var initCmd = &cobra.Command{
 }
 
 var tokenCmd = &cobra.Command{
-    Use: "token",
-    Short: "show join token",
-    Long: "Show join token",
+    Use:    "token",
+    Short:  "show join token",
+    Long:   "Show join token",
     RunE: func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         
@@ -74,10 +74,10 @@ var tokenCmd = &cobra.Command{
 }
 
 var ServerCmd = &cobra.Command{
-    Use: "server",
-    Aliases: []string{"serve"},
-    Short: "manage Server",
-    Long: "Manage Server",
+    Use:        "server",
+    Aliases:    []string{"serve"},
+    Short:      "manage Server",
+    Long:       "Manage Server",
 }
 
 func init() {
