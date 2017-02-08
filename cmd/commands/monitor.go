@@ -41,24 +41,27 @@ var (
     }
 )
 
-type serverStatus struct {
+type serverRole struct {
     sync.RWMutex
-    Online bool
+    // 0 未设置 1 server 2 slave
+    Role int
 }
 
-func (O *serverStatus) Get() bool {
+func (O *serverRole) Get() int {
     O.Lock()
     defer O.Unlock()
-    return O.Online
+    return O.Role
 }
 
-func (O *serverStatus) Set(Status bool) {
+func (O *serverRole) Set(Role int) {
     O.Lock()
     defer O.Unlock()
-    O.Online = Status
+    O.Role = Role
 }
 
-var sStatus = serverStatus{Online: false}
+var Role = serverRole{Role: 0}
+
+var WebServer = &monitor.WebServer{}
 
 func scheduler(Unix *net.UnixListener) {
     defer Unix.Close()
@@ -86,17 +89,21 @@ func scheduler(Unix *net.UnixListener) {
 
 // todo 接收到cli信息,然后处理
 func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
+    const (
+        // monitor角色
+        RN int = 0  // 未设置
+        RM int = 1  // master
+        RS int = 2  // slave
+    )
+    
     if Msg.Command == protocols.SERVER_INIT {
-        if sStatus.Get() == false {
-            var DB configures.Database
-            json.Unmarshal(Msg.Body, &DB)
-            M := &monitor.Monitor{}
+        if Role.Get() == RN {
+            json.Unmarshal(Msg.Body, &WebServer.Database)
+            WebServer.Addr = ":3647"
             
-            err := M.ServerInit(&monitor.WebServer{
-                Addr: ":3647",
-                Database: DB,
-            })
-            if err != nil {
+            // todo token
+            
+            if (&monitor.Monitor{}).ServerInit(WebServer) != nil {
                 OutPut, _ := json.Marshal(protocols.OutPut{
                     Status: -1,
                     Body: []byte("failure"),
@@ -109,7 +116,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
                 })
                 Con.Write(OutPut)
             }
-            sStatus.Set(true)
+            Role.Set(RM)
         } else {
             OutPut, _ := json.Marshal(protocols.OutPut{
                 Status: -2,
@@ -117,6 +124,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
             })
             Con.Write(OutPut)
         }
+        return
     }
 }
 

@@ -12,6 +12,7 @@ type Monitor struct{}
 type WebServer struct {
     Addr     string
     Database configures.Database
+    Token    string
 }
 
 // 初始化服务
