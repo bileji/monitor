@@ -16,6 +16,8 @@ var (
 
 var initCmd = &cobra.Command{
     Use: "init",
+    Short: "Initialize a server",
+    Long: "Initialize a server",
     RunE: func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         
@@ -44,6 +46,8 @@ var initCmd = &cobra.Command{
 
 var tokenCmd = &cobra.Command{
     Use: "token",
+    Short: "Show join token",
+    Long: "Show join token",
     RunE: func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         
@@ -58,7 +62,7 @@ var tokenCmd = &cobra.Command{
             Timestamp: utils.UnixTime(),
         })
         Conn.Write(Message)
-    
+        
         utils.ParseOutPut(Conn)
         
         return nil
