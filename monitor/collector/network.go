@@ -3,7 +3,7 @@ package collector
 import (
     "os/exec"
     "strings"
-    "monitor/collector/common"
+    "monitor/monitor/collector/common"
     "github.com/shirou/gopsutil/host"
     "github.com/shirou/gopsutil/net"
 )
