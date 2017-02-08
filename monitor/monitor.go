@@ -10,9 +10,9 @@ import (
 type Monitor struct{}
 
 type WebServer struct {
-    Addr     string
-    Database configures.Database
-    Token    string
+    Addr     string                 `json:"addr"`
+    Database configures.Database    `json:"database"`
+    Token    string                 `json:"token"`
 }
 
 // 初始化服务

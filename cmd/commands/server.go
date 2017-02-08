@@ -6,9 +6,10 @@ import (
     "monitor/cmd/configures"
     "monitor/utils"
     "monitor/cmd/protocols"
+    "monitor/monitor"
 )
 
-var MongoDB = configures.Database{}
+var WebServer = monitor.WebServer{}
 
 var initCmd = &cobra.Command{
     Use: "init",
@@ -72,11 +73,13 @@ var ServerCmd = &cobra.Command{
 func init() {
     Flags := initCmd.Flags()
     
-    Flags.StringVarP(&MongoDB.Host, "host", "", "127.0.0.1", "mongodb host")
-    Flags.Int32VarP(&MongoDB.Port, "port", "", 27017, "mongodb port")
-    Flags.StringVarP(&MongoDB.AuthDB, "auth", "", "admin", "auth database")
-    Flags.StringVarP(&MongoDB.Username, "user", "", "", "username")
-    Flags.StringVarP(&MongoDB.Password, "pwd", "", "", "password")
+    Flags.StringVarP(&WebServer.Database.Host, "host", "", "127.0.0.1", "mongodb host")
+    Flags.Int32VarP(&WebServer.Database.Port, "port", "", 27017, "mongodb port")
+    Flags.StringVarP(&WebServer.Database.AuthDB, "auth", "", "admin", "auth database")
+    Flags.StringVarP(&WebServer.Database.Username, "user", "", "", "username")
+    Flags.StringVarP(&WebServer.Database.Password, "pwd", "", "", "password")
+    
+    Flags.StringVarP(&WebServer.Addr, "addr", "", "", "web server address")
     
     Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
     Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))
