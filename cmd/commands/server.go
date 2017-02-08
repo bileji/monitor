@@ -1,7 +1,6 @@
 package commands
 
 import (
-    "fmt"
     "strings"
     "strconv"
     "encoding/json"
@@ -145,38 +144,3 @@ func init() {
 //    },
 //}
 //
-//func authUriToDBAuth(AuthUri string) DBAuth {
-//    var dbAuth = DBAuth{
-//        Username: "root",
-//        Password: "",
-//    }
-//
-//    if arrStr := strings.Split(AuthUri, "/"); len(arrStr) >= 1 {
-//        if len(arrStr) > 1 {
-//            authInfo := strings.Split(arrStr[1], "@")
-//            if len(authInfo) > 1 {
-//                loginInfo := strings.Split(authInfo[1], ":")
-//                dbAuth.Username = loginInfo[0]
-//                if len(loginInfo) > 1 {
-//                    dbAuth.Password = loginInfo[1]
-//                }
-//            }
-//            dbAuth.Database = authInfo[0]
-//        }
-//
-//        hostInfo := strings.Split(arrStr[0], ":")
-//        if len(hostInfo) > 1 {
-//            dbAuth.Port, _ = strconv.Atoi(hostInfo[1])
-//        }
-//        dbAuth.Host = hostInfo[0]
-//    }
-//
-//    return dbAuth
-//}
-//
-//func init() {
-//    serverCmd.Flags().IntVarP(&serverPort, "port", "p", 3413, "port on which the server will listen")
-//    serverCmd.Flags().StringVarP(&serverInterface, "bind", "b", "0.0.0.0", "interface to which the server will bind")
-//
-//    serverCmd.Flags().StringVarP(&authUri, "db_auth", "a", "127.0.0.1:27017/vpn@shadowsocks:mlgR4evB", "auth uri of the mongodb")
-//}
