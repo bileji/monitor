@@ -22,9 +22,6 @@ var initCmd = &cobra.Command{
             return err
         }
         
-        // todo 此处有一个bug永远会覆盖配置文件
-        //Conf.MongoDB = MongoDB
-        
         Body, _ := json.Marshal(Conf.MongoDB)
         
         Message, _ := json.Marshal(protocols.Socket{
@@ -73,7 +70,7 @@ var ServerCmd = &cobra.Command{
 }
 
 func init() {
-    Flags := ServerCmd.Flags()
+    Flags := initCmd.Flags()
     
     Flags.StringVarP(&MongoDB.Host, "host", "h", "127.0.0.1", "mongodb host")
     Flags.Int32VarP(&MongoDB.Port, "port", "p", 27017, "mongodb port")
