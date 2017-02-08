@@ -7,6 +7,8 @@ pid_file="/var/run/monitord.pid"
 log_file="/var/log/monitord.log"
 # unix socket file
 unix_file="/var/run/monitord.sock"
+# join token
+token="b70ee310bc5bb78ced7f1f389d14da1e"
 [client]
 # unix socket file
 unix_file="/var/run/monitor.sock"

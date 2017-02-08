@@ -12,6 +12,7 @@ type Server struct {
     PidFile  string
     UnixFile string
     LogFile  string
+    Token    string
 }
 
 type Client struct {
@@ -50,6 +51,7 @@ func Initialize(Viper *viper.Viper, Path string) *Conf {
             PidFile:  Viper.GetString("server.pid_file"),
             UnixFile: Viper.GetString("server.unix_file"),
             LogFile: Viper.GetString("server.log_file"),
+            Token: Viper.GetString("server.token"),
         },
         Client: Client{
             UnixFile: Viper.GetString("client.unix_file"),

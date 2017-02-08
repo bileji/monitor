@@ -33,6 +33,7 @@ var initCmd = &cobra.Command{
         Body, _ := json.Marshal(monitor.WebServer{
             Addr: Addr,
             Database: Conf.MongoDB,
+            Token: Conf.Server.Token,
         })
         
         Message, _ := json.Marshal(protocols.Socket{
