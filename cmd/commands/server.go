@@ -25,15 +25,15 @@ var initCmd = &cobra.Command{
             return err
         }
         
-        // TODO save to config
-        Body, _ := json.Marshal(parseDBUri(authUri))
+        Conf.MongoDB = parseDBUri(authUri)
+        
+        Body, _ := json.Marshal(Conf.MongoDB)
         
         Message, _ := json.Marshal(protocols.Socket{
-            Command: "initweb",
+            Command: "serverinit",
             Body: Body,
-            Timestamp: 1234567890,
+            Timestamp: utils.UnixTime(),
         })
-        fmt.Println(string(Message))
         Conn.Write(Message)
         
         return nil
