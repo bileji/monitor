@@ -72,6 +72,8 @@ var tokenCmd = &cobra.Command{
 var ServerCmd = &cobra.Command{
     Use: "server",
     Aliases: []string{"serve"},
+    Short: "Manage Server",
+    Long: "Manage Server",
     //RunE: func(cmd *cobra.Command, args []string) {},
 }
 
