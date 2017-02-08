@@ -74,7 +74,7 @@ func init() {
     
     Flags.StringVarP(&MongoDB.Host, "host", "h", "127.0.0.1", "mongodb host")
     Flags.Int32VarP(&MongoDB.Port, "port", "p", 27017, "mongodb port")
-    Flags.StringVarP(&MongoDB.AuthDB, "auth", "d", "admin", "auth database")
+    Flags.StringVarP(&MongoDB.AuthDB, "auth", "", "admin", "auth database")
     Flags.StringVarP(&MongoDB.Username, "user", "", "", "username")
     Flags.StringVarP(&MongoDB.Password, "pwd", "", "", "password")
     
