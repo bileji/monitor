@@ -55,7 +55,7 @@ func scheduler(Con *net.UnixConn) {
         json.Unmarshal(Message.Body, &DB)
         log.Println(DB)
         
-        OutPut, err := json.Marshal(protocols.OutPut{Status: true, Body: []byte{"success"}})
+        OutPut, err := json.Marshal(protocols.OutPut{Status: true, Body: []byte("success")})
         Con.Write(OutPut)
     }
 }
