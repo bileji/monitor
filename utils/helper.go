@@ -5,6 +5,7 @@ import (
     "fmt"
     "time"
     "strconv"
+    "encoding/json"
     "crypto/md5"
     "encoding/hex"
     "monitor/cmd/protocols"
@@ -18,7 +19,9 @@ func ParseOutPut(Conn *net.UnixConn) {
     Buffer := make([]byte, protocols.READ_LENGTH)
     Len, err := Conn.Read(Buffer)
     if err == nil {
-        fmt.Println(string(Buffer[0:Len]))
+        Message := protocols.OutPut{}
+        json.Unmarshal(Buffer[0:Len], &Message)
+        fmt.Println(Message.Body)
     }
     Conn.Close()
 }
