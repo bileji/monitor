@@ -80,7 +80,7 @@ func init() {
     
     Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
     Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))
-    Viper.BindPFlag("mongodb.auth_db", Flags.Lookup("authDatabase"))
+    Viper.BindPFlag("mongodb.auth_db", Flags.Lookup("auth"))
     Viper.BindPFlag("mongodb.username", Flags.Lookup("user"))
     Viper.BindPFlag("mongodb.password", Flags.Lookup("pwd"))
     
