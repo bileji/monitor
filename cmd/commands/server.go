@@ -9,7 +9,14 @@ import (
     "monitor/monitor"
 )
 
-var webServer = monitor.WebServer{}
+var (
+    Host string
+    Port int32
+    AuthDB string
+    Username string
+    Password string
+    Addr string
+)
 
 var initCmd = &cobra.Command{
     Use: "init",
@@ -23,7 +30,10 @@ var initCmd = &cobra.Command{
             return err
         }
         
-        Body, _ := json.Marshal(webServer)
+        Body, _ := json.Marshal(monitor.WebServer{
+            Addr: Addr,
+            Database: Conf.MongoDB,
+        })
         
         Message, _ := json.Marshal(protocols.Socket{
             Command: protocols.SERVER_INIT,
@@ -73,13 +83,13 @@ var ServerCmd = &cobra.Command{
 func init() {
     Flags := initCmd.Flags()
     
-    Flags.StringVarP(&webServer.Database.Host, "host", "", "127.0.0.1", "mongodb host")
-    Flags.Int32VarP(&webServer.Database.Port, "port", "", 27017, "mongodb port")
-    Flags.StringVarP(&webServer.Database.AuthDB, "auth", "", "admin", "auth database")
-    Flags.StringVarP(&webServer.Database.Username, "user", "", "", "username")
-    Flags.StringVarP(&webServer.Database.Password, "pwd", "", "", "password")
+    Flags.StringVarP(&Host, "host", "", "127.0.0.1", "mongodb host")
+    Flags.Int32VarP(&Port, "port", "", 27017, "mongodb port")
+    Flags.StringVarP(&AuthDB, "auth", "", "admin", "auth database")
+    Flags.StringVarP(&Username, "user", "", "", "username")
+    Flags.StringVarP(&Password, "pwd", "", "", "password")
     
-    Flags.StringVarP(&webServer.Addr, "addr", "a", ":3647", "web server address")
+    Flags.StringVarP(&Addr, "addr", "a", ":3647", "web server address")
     
     Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
     Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))
