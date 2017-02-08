@@ -168,7 +168,7 @@ func init() {
     Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
     Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
     
-    MonitorCmd.UsageTemplate = func() {
+    MonitorCmd.UsageTemplate = func() string {
         return `Usage:{{if .Runnable}}
   {{if .HasAvailableFlags}}{{appendIfNotPresent .UseLine "[flags]"}}{{else}}{{.UseLine}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
   {{ .CommandPath}} [command]{{end}}{{if gt .Aliases 0}}
