@@ -72,7 +72,7 @@ var ServerCmd = &cobra.Command{
 func init() {
     Flags := initCmd.Flags()
     
-    Flags.StringVarP(&MongoDB.Host, "host", "", "127.0.0.1", "mongodb host")
+    Flags.StringVarP(&MongoDB.Host, "host", "h", "127.0.0.1", "mongodb host")
     Flags.Int32VarP(&MongoDB.Port, "port", "p", 27017, "mongodb port")
     Flags.StringVarP(&MongoDB.AuthDB, "auth", "a", "admin", "auth database")
     Flags.StringVarP(&MongoDB.Username, "user", "u", "", "username")
