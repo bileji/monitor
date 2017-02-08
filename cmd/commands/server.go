@@ -79,7 +79,7 @@ func init() {
     Flags.StringVarP(&webServer.Database.Username, "user", "", "", "username")
     Flags.StringVarP(&webServer.Database.Password, "pwd", "", "", "password")
     
-    Flags.StringVarP(&webServer.Addr, "addr", "", ":3647", "web server address")
+    Flags.StringVarP(&webServer.Addr, "addr", "a", ":3647", "web server address")
     
     Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
     Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))
