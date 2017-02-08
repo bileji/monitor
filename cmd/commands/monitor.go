@@ -3,6 +3,7 @@ package commands
 import (
     "log"
     "net"
+    "sync"
     "encoding/json"
     "monitor/monitor"
     "monitor/monitor/daemon"
@@ -40,6 +41,25 @@ var (
     }
 )
 
+type serverStatus struct {
+    sync.RWMutex
+    Online bool
+}
+
+func (O *serverStatus) Get() bool {
+    O.Lock()
+    defer O.Unlock()
+    return O.Online
+}
+
+func (O *serverStatus) Set(Status bool) {
+    O.Lock()
+    defer O.Unlock()
+    O.Online = Status
+}
+
+var sStatus = serverStatus{Online: false}
+
 func scheduler(Unix *net.UnixListener) {
     defer Unix.Close()
     
@@ -57,26 +77,45 @@ func scheduler(Unix *net.UnixListener) {
                     }
                     var Message protocols.Socket
                     json.Unmarshal(Buffer[0: Len], &Message)
-                    // todo 接收到cli信息,然后处理
-                    if Message.Command == protocols.SERVER_INIT {
-                        var DB configures.Database
-                        json.Unmarshal(Message.Body, &DB)
-                        M := &monitor.Monitor{}
-                        
-                        err := M.ServerInit(&monitor.WebServer{
-                            Addr: ":3647",
-                            Database: DB,
-                        })
-                        if err != nil {
-                            OutPut, _ := json.Marshal(protocols.OutPut{Status: -1, Body: []byte("failure")})
-                            Con.Write(OutPut)
-                        } else {
-                            OutPut, _ := json.Marshal(protocols.OutPut{Status: 0, Body: []byte("success")})
-                            Con.Write(OutPut)
-                        }
-                    }
+                    dispatcher(Message, Con)
                 }
             }(UnixConn)
+        }
+    }
+}
+
+// todo 接收到cli信息,然后处理
+func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
+    if Msg.Command == protocols.SERVER_INIT {
+        if sStatus.Get() == false {
+            var DB configures.Database
+            json.Unmarshal(Msg.Body, &DB)
+            M := &monitor.Monitor{}
+            
+            err := M.ServerInit(&monitor.WebServer{
+                Addr: ":3647",
+                Database: DB,
+            })
+            if err != nil {
+                OutPut, _ := json.Marshal(protocols.OutPut{
+                    Status: -1,
+                    Body: []byte("failure"),
+                })
+                Con.Write(OutPut)
+            } else {
+                OutPut, _ := json.Marshal(protocols.OutPut{
+                    Status: 0,
+                    Body: []byte("success"),
+                })
+                Con.Write(OutPut)
+            }
+            sStatus.Set(true)
+        } else {
+            OutPut, _ := json.Marshal(protocols.OutPut{
+                Status: -1,
+                Body: []byte("server has been inited"),
+            })
+            Con.Write(OutPut)
         }
     }
 }
