@@ -11,6 +11,7 @@ import (
     "monitor/cmd/configures"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
+    "monitor/utils"
 )
 
 var (
@@ -96,12 +97,12 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
         RS int = 2  // slave
     )
     
+    // server init
     if Msg.Command == protocols.SERVER_INIT {
         if Role.Get() == RN {
             json.Unmarshal(Msg.Body, &WebServer.Database)
             WebServer.Addr = ":3647"
-            
-            // todo token
+            WebServer.Token = utils.RandStr()
             
             if (&monitor.Monitor{}).ServerInit(WebServer) != nil {
                 OutPut, _ := json.Marshal(protocols.OutPut{
@@ -124,6 +125,20 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
             })
             Con.Write(OutPut)
         }
+        return
+    }
+    
+    // server token
+    if Msg.Command == protocols.SERVER_TOKEN {
+        if Role.Get() != RM {
+            // todo
+            return
+        }
+        OutPut, _ := json.Marshal(protocols.OutPut{
+            Status: 0,
+            Body: []byte(WebServer.Token),
+        })
+        Con.Write(OutPut)
         return
     }
 }

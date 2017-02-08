@@ -42,6 +42,27 @@ var initCmd = &cobra.Command{
     },
 }
 
+var tokenCmd = &cobra.Command{
+    Use: "token",
+    RunE: func(cmd *cobra.Command, args []string) error {
+        Conf := configures.Initialize(Viper, ConfFile)
+        
+        Conn, err := utils.UnixSocket(Conf)
+        if err != nil {
+            return err
+        }
+        
+        Message, _ := json.Marshal(protocols.Socket{
+            Command: protocols.SERVER_TOKEN,
+            Body: []byte(""),
+            Timestamp: utils.UnixTime(),
+        })
+        Conn.Write(Message)
+        
+        return nil
+    },
+}
+
 var ServerCmd = &cobra.Command{
     Use: "server",
     Aliases: []string{"serve"},
@@ -81,4 +102,5 @@ func init() {
     Flags.StringVarP(&authUri, "db_uri", "", "127.0.0.1:27017/vpn@shadowsocks:mlgR4evB", "auth uri of the mongodb")
     
     ServerCmd.AddCommand(initCmd)
+    ServerCmd.AddCommand(tokenCmd)
 }
