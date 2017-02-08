@@ -115,8 +115,8 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
                     Body: []byte("success"),
                 })
                 Con.Write(OutPut)
+                Role.Set(RM)
             }
-            Role.Set(RM)
         } else {
             OutPut, _ := json.Marshal(protocols.OutPut{
                 Status: -2,
@@ -129,14 +129,29 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     
     // server token
     if Msg.Command == protocols.SERVER_TOKEN {
-        if Role.Get() != RM {
-            // todo
-            return
+        var OutPut []byte
+        switch Role.Get() {
+        case RN:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("monitor has not been initialized"),
+            })
+        case RS:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("monitor role is node"),
+            })
+        case RM:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("\n\tmonitor node join -a " + WebServer.Addr + " --token " + WebServer.Token + "\n"),
+            })
+        default:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("unknown role"),
+            })
         }
-        OutPut, _ := json.Marshal(protocols.OutPut{
-            Status: 0,
-            Body: []byte(WebServer.Token),
-        })
         Con.Write(OutPut)
         return
     }
