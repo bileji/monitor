@@ -1,6 +1,7 @@
 package monitor
 
 import (
+    "strconv"
     "monitor/cmd/configures"
     "gopkg.in/mgo.v2"
     "monitor/monitor/webserver"
@@ -15,7 +16,8 @@ type WebServer struct {
 
 // 初始化服务
 func (m *Monitor) ServerInit(WS *WebServer) error {
-    Session, err := mgo.Dial(WS.Database.Host + ":" + WS.Database.Port)
+    
+    Session, err := mgo.Dial(WS.Database.Host + ":" + strconv.Itoa(int(WS.Database.Port)))
     if err != nil {
         return err
     }
