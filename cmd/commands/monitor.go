@@ -112,7 +112,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
             sStatus.Set(true)
         } else {
             OutPut, _ := json.Marshal(protocols.OutPut{
-                Status: -1,
+                Status: -2,
                 Body: []byte("server has been inited"),
             })
             Con.Write(OutPut)
