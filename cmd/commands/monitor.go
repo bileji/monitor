@@ -155,21 +155,8 @@ var MonitorCmd = &cobra.Command{
     RunE: Serve,
 }
 
-func init() {
-    
-    Flags := MonitorCmd.Flags()
-    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
-    
-    Flags.BoolVarP(&Daemon, "daemon", "d", false, "to start the daemon way")
-    Flags.StringVarP(&PidFile, "pid", "", "", "full path to pidfile")
-    Flags.StringVarP(&LogFile, "log", "l", "", "log file")
-    
-    Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
-    Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
-    Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
-    
-    MonitorCmd.UsageTemplate = func() string {
-        return `Usage:{{if .Runnable}}
+func usageTemplate() string {
+    return `Usage:{{if .Runnable}}
   {{if .HasAvailableFlags}}{{appendIfNotPresent .UseLine "[flags]"}}{{else}}{{.UseLine}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
   {{ .CommandPath}} [command]{{end}}{{if gt .Aliases 0}}
 
@@ -194,7 +181,22 @@ Additional help topics:{{range .Commands}}{{if .IsHelpCommand}}
 
 Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
 `
-    }
+}
+
+func init() {
+    
+    Flags := MonitorCmd.Flags()
+    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
+    
+    Flags.BoolVarP(&Daemon, "daemon", "d", false, "to start the daemon way")
+    Flags.StringVarP(&PidFile, "pid", "", "", "full path to pidfile")
+    Flags.StringVarP(&LogFile, "log", "l", "", "log file")
+    
+    Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
+    Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
+    Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
+    
+    MonitorCmd.SetUsageTemplate(usageTemplate())
     
     // add command
     addCommand(MonitorCmd)
