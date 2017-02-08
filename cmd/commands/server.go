@@ -24,7 +24,7 @@ var initCmd = &cobra.Command{
             return err
         }
         
-        Conf.MongoDB = parseDBUri(authUri)
+        Conf.MongoDB = *(parseDBUri(authUri))
         
         Body, _ := json.Marshal(Conf.MongoDB)
         
