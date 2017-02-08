@@ -1,8 +1,6 @@
 package commands
 
 import (
-    "strings"
-    "strconv"
     "encoding/json"
     "github.com/spf13/cobra"
     "monitor/cmd/configures"
