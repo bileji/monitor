@@ -29,11 +29,13 @@ var initCmd = &cobra.Command{
         Body, _ := json.Marshal(Conf.MongoDB)
         
         Message, _ := json.Marshal(protocols.Socket{
-            Command: "serverinit",
+            Command: protocols.SERVER_INIT,
             Body: Body,
             Timestamp: utils.UnixTime(),
         })
         Conn.Write(Message)
+        
+        utils.ParseOutPut(Conn)
         
         return nil
     },

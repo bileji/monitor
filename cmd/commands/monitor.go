@@ -11,10 +11,6 @@ import (
     "github.com/spf13/viper"
 )
 
-const (
-    READ_LENGTH = 2048
-)
-
 var (
     Daemon bool
     
@@ -45,7 +41,7 @@ var (
 
 func scheduler(Con *net.UnixConn) {
     for {
-        Buffer := make([]byte, READ_LENGTH)
+        Buffer := make([]byte, protocols.READ_LENGTH)
         Len, err := Con.Read(Buffer);
         if err != nil {
             Con.Close()
@@ -58,6 +54,9 @@ func scheduler(Con *net.UnixConn) {
         var DB configures.Database
         json.Unmarshal(Message.Body, &DB)
         log.Println(DB)
+        
+        OutPut, err := json.Marshal(protocols.OutPut{Status: true, Body: []byte{"success"}})
+        Con.Write(OutPut)
     }
 }
 
