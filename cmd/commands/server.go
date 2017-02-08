@@ -24,6 +24,7 @@ var initCmd = &cobra.Command{
             return err
         }
         
+        // todo 此处有一个bug永远会覆盖配置文件
         Conf.MongoDB = *(parseDBUri(authUri))
         
         Body, _ := json.Marshal(Conf.MongoDB)
@@ -48,10 +49,7 @@ var ServerCmd = &cobra.Command{
 }
 
 func parseDBUri(AuthUri string) *configures.Database {
-    var Database = &configures.Database{
-        Username: "root",
-        Password: "",
-    }
+    var Database = &configures.Database{}
     
     if arrStr := strings.Split(AuthUri, "/"); len(arrStr) >= 1 {
         if len(arrStr) > 1 {
@@ -84,65 +82,3 @@ func init() {
     
     ServerCmd.AddCommand(initCmd)
 }
-
-//import (
-//    "fmt"
-//    "net"
-//    "strings"
-//    "strconv"
-//    "github.com/spf13/cobra"
-//    "gopkg.in/mgo.v2"
-//    "monitor/monitor/daemon"
-//    "monitor/monitor/webserver"
-//)
-//
-//var (
-//    serverPort int
-//    serverInterface string
-//
-//    authUri string
-//)
-//
-//type DBAuth struct {
-//    Host     string
-//    Port     int
-//    Database string
-//    Username string
-//    Password string
-//}
-//
-//var serverCmd = &cobra.Command{
-//    Use: "server",
-//    Aliases: []string{"serve"},
-//    Short: "monitor the service side",
-//    Long: ``,
-//    Run: func(cmd *cobra.Command, args []string) {
-//        auth := authUriToDBAuth(authUri)
-//
-//        fmt.Println(auth)
-//
-//        Session, err := mgo.Dial(auth.Host + ":" + strconv.Itoa(auth.Port))
-//        if err != nil {
-//            panic(err)
-//        }
-//        if Session.DB(auth.Database).Login(auth.Username, auth.Password) != nil {
-//            panic(err)
-//        }
-//        Daemon := &daemon.Daemon{
-//            PidFile: "/var/run/monitord.pid",
-//            UnixFile: "/var/run/monitord.sock",
-//            LogFile: "/var/log/monitord.log",
-//        }
-//        Daemon.Daemon(func(Unix *net.UnixListener) {
-//            defer Session.Close()
-//
-//            go (&service.Master{
-//                Addr: serverInterface + ":" + strconv.Itoa(serverPort),
-//                DBHandler: Session.DB(auth.Database),
-//            }).Listen()
-//
-//            // todo socket
-//        })
-//    },
-//}
-//
