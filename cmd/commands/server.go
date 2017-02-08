@@ -90,7 +90,7 @@ func init() {
     Flags.StringVarP(&Username, "user", "", "", "username")
     Flags.StringVarP(&Password, "pwd", "", "", "password")
     
-    Flags.StringVarP(&Addr, "addr", "a", ":3647", "web server address")
+    Flags.StringVarP(&Addr, "addr", "a", "0.0.0.0:3647", "web server address")
     
     Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
     Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))
