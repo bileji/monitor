@@ -7,6 +7,6 @@ type Socket struct {
 }
 
 type OutPut struct {
-    Status bool     `json:"status"`
+    Status int      `json:"status"`
     Body   []byte   `json:"body"`
 }
