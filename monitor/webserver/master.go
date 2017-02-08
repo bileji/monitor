@@ -1,13 +1,14 @@
 package service
 
 import (
+    "log"
     "fmt"
     "io/ioutil"
     "net/http"
     "encoding/json"
     "gopkg.in/mgo.v2"
-    "monitor/collector/model"
-    "monitor/collector/collection"
+    "monitor/monitor/collector/model"
+    "monitor/monitor/collector/collection"
 )
 
 type Answer struct {
@@ -29,7 +30,10 @@ type Master struct {
 
 func (m *Master) Listen() {
     http.HandleFunc("/gather", m.Gather)
-    http.ListenAndServe(m.Addr, nil)
+    err := http.ListenAndServe(m.Addr, nil)
+    if err != nil {
+        log.Println(err)
+    }
 }
 
 func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
