@@ -58,6 +58,8 @@ var tokenCmd = &cobra.Command{
             Timestamp: utils.UnixTime(),
         })
         Conn.Write(Message)
+    
+        utils.ParseOutPut(Conn)
         
         return nil
     },
