@@ -144,7 +144,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
         case RM:
             OutPut, _ = json.Marshal(protocols.OutPut{
                 Status: 0,
-                Body: []byte("monitor node join -a " + WebServer.Addr + " --token " + WebServer.Token),
+                Body: []byte("monitor node join --addr " + WebServer.Addr + " --token " + WebServer.Token),
             })
         default:
             OutPut, _ = json.Marshal(protocols.OutPut{
