@@ -20,7 +20,7 @@ type Client struct {
 
 type Database struct {
     Host     string `json:"host"`
-    Port     int16 `json:"port"`
+    Port     int32  `json:"port"`
     AuthDB   string `json:"auth_db"`
     Username string `json:"username"`
     Password string `json:"password"`
@@ -56,7 +56,7 @@ func Initialize(Viper *viper.Viper, Path string) *Conf {
         },
         MongoDB: Database{
             Host: Viper.GetString("mongodb.host"),
-            Port: int16(Viper.GetInt("mongodb.port")),
+            Port: int32(Viper.GetInt("mongodb.port")),
             AuthDB: Viper.GetString("mongodb.auth_db"),
             Username: Viper.GetString("mongodb.username"),
             Password: Viper.GetString("mongodb.password"),
