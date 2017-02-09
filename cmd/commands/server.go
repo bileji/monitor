@@ -23,7 +23,7 @@ var initCmd = &cobra.Command{
     Short:  "initialize a server",
     Long:   "Initialize a server",
     RunE: func(cmd *cobra.Command, args []string) error {
-        Conf := configures.Initialize(Viper, ConfFile)
+        Conf := configures.Initialize(Viper, File.Conf)
         
         Conn, err := utils.UnixSocket(Conf)
         if err != nil {

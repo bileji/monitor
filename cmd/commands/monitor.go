@@ -32,14 +32,19 @@ func (r *Role) Set(Role int) {
     r.Role = Role
 }
 
+type FilePath struct {
+    Conf string
+    Pid  string
+    Log  string
+}
+
 var (
     Daemon bool
-    ConfFile string
-    PidFile string
-    LogFile string
+    
+    File FilePath
     
     Serve = func(cmd *cobra.Command, args []string) error {
-        Conf := configures.Initialize(Viper, ConfFile)
+        Conf := configures.Initialize(Viper, File.Conf)
         Daemon := &daemon.Daemon{
             PidFile:  Conf.Server.PidFile,
             UnixFile: Conf.Server.UnixFile,
@@ -229,11 +234,11 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 func init() {
     
     Flags := MonitorCmd.Flags()
-    Flags.StringVarP(&ConfFile, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
+    Flags.StringVarP(&File.Conf, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
     
     Flags.BoolVarP(&Daemon, "daemon", "d", false, "to start the daemon way")
-    Flags.StringVarP(&PidFile, "pid", "", "", "full path to pidfile")
-    Flags.StringVarP(&LogFile, "log", "l", "", "log file")
+    Flags.StringVarP(&File.Pid, "pid", "", "", "full path to pidfile")
+    Flags.StringVarP(&File.Log, "log", "l", "", "log file")
     
     Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
     Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
