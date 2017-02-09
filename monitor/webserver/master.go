@@ -3,6 +3,7 @@ package service
 import (
     "log"
     "fmt"
+    "strings"
     "io/ioutil"
     "net/http"
     "encoding/json"
@@ -42,7 +43,12 @@ func (m *Master) Listen() {
 }
 
 func (m *Master) Debug(Req *http.Request) {
-    log.Println(Req.RemoteAddr + " " + Req.Method + " " + Req.RequestURI + " " + Req.UserAgent())
+    log.Println(strings.Join([]string{
+        Req.RemoteAddr,
+        Req.Method,
+        Req.RequestURI,
+        Req.UserAgent(),
+    }, " "))
 }
 
 func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
