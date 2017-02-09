@@ -104,7 +104,8 @@ func (D *Daemon) Signal() {
                 var i interface{} = &D
                 value := reflect.ValueOf(i)
                 //value.FieldByName("Log").IsNil()
-                fmt.Println(value.FieldByName("Log").IsNil())
+                
+                fmt.Println((&(value.FieldByName("Log"))).IsNil())
                 
                 os.Exit(1)
             } else {
