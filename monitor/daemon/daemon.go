@@ -98,9 +98,8 @@ func (D *Daemon) Signal() {
                 } else {
                     log.Printf("fail to remove unix sock: %v\n", err)
                 }
-                //if len(D.Log) > 0 {
-                    D.Log.Close()
-                //}
+                fmt.Println(D.Log.Name())
+                D.Log.Close()
                 os.Exit(1)
             } else {
                 log.Printf("fail to remove process pid file: %v\n", err)
