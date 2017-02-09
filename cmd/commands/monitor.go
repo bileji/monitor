@@ -202,15 +202,13 @@ var MainCmd = &cobra.Command{
             if err := Daemon.WritePidFile(); err == nil {
                 Daemon.UnixListen(Manager.Scheduler)
                 go Daemon.Signal()
-                return nil
             } else {
-                return err
+                fmt.Println(err)
             }
         } else {
-            return err
+            fmt.Println(err)
         }
-        
-        return errors.New("monitor start failure")
+        return nil
     },
 }
 
