@@ -4,7 +4,6 @@ import (
     "log"
     "net"
     "fmt"
-    "errors"
     "encoding/json"
     "monitor/monitor"
     "monitor/monitor/daemon"
