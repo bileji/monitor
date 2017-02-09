@@ -90,9 +90,7 @@ func (D *Daemon) Signal() {
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
     for {
-        C := <-Signal
-        fmt.Println(C)
-        switch C {
+        switch <-Signal {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             if err := D.ClearPidFile(); err == nil {
                 if err := os.Remove(D.UnixFile); err == nil {
