@@ -5,11 +5,11 @@ import (
     "log"
     "fmt"
     "net"
+    "errors"
     "os/exec"
     "syscall"
     "os/signal"
     "path/filepath"
-    "github.com/wendal/errors"
 )
 
 type Daemon struct {

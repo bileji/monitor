@@ -4,6 +4,7 @@ import (
     "log"
     "net"
     "fmt"
+    "errors"
     "encoding/json"
     "monitor/monitor"
     "monitor/monitor/daemon"
@@ -12,7 +13,6 @@ import (
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
     "monitor/utils"
-    "github.com/wendal/errors"
 )
 
 type filePath struct {
