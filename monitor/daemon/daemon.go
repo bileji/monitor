@@ -96,7 +96,7 @@ func (D *Daemon) Signal() {
         }
     }
     
-    var PrintF = func(Format string, Inter... interface{}) {
+    var PrintF = func(Format string, Inter interface{}) {
         if D.Log == nil {
             fmt.Printf(Format, Inter)
         } else {
@@ -111,7 +111,7 @@ func (D *Daemon) Signal() {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             if err := D.ClearPidFile(); err == nil {
                 if err := os.Remove(D.UnixFile); err == nil {
-                    Println("success to exit proc, bye bye!")
+                    Println("success to exit process!")
                 } else {
                     PrintF("fail to remove unix sock: %v\n", err)
                 }
