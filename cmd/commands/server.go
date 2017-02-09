@@ -23,7 +23,7 @@ var initCmd = &cobra.Command{
     Short:  "initialize a server",
     Long:   "Initialize a server",
     RunE: func(cmd *cobra.Command, args []string) error {
-        Conf := configures.Initialize(Viper, File.Conf)
+        Conf := configures.Initialize(Manager.Viper, Manager.File.Conf)
         
         Conn, err := utils.UnixSocket(Conf)
         if err != nil {
@@ -54,7 +54,7 @@ var tokenCmd = &cobra.Command{
     Short:  "show join token",
     Long:   "Show join token",
     RunE: func(cmd *cobra.Command, args []string) error {
-        Conf := configures.Initialize(Viper, ConfFile)
+        Conf := configures.Initialize(Manager.Viper, Manager.File.Conf)
         
         Conn, err := utils.UnixSocket(Conf)
         if err != nil {
@@ -92,11 +92,11 @@ func init() {
     
     Flags.StringVarP(&Addr, "addr", "a", "0.0.0.0:3647", "web server address")
     
-    Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
-    Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))
-    Viper.BindPFlag("mongodb.auth_db", Flags.Lookup("auth"))
-    Viper.BindPFlag("mongodb.username", Flags.Lookup("user"))
-    Viper.BindPFlag("mongodb.password", Flags.Lookup("pwd"))
+    Manager.Viper.BindPFlag("mongodb.host", Flags.Lookup("host"))
+    Manager.Viper.BindPFlag("mongodb.port", Flags.Lookup("port"))
+    Manager.Viper.BindPFlag("mongodb.auth_db", Flags.Lookup("auth"))
+    Manager.Viper.BindPFlag("mongodb.username", Flags.Lookup("user"))
+    Manager.Viper.BindPFlag("mongodb.password", Flags.Lookup("pwd"))
     
     ServerCmd.AddCommand(initCmd)
     ServerCmd.AddCommand(tokenCmd)

@@ -19,51 +19,19 @@ type filePath struct {
     Pid  string
 }
 
-type Monitor struct {
+type MonitorCmd struct {
     Daemon    bool
     
     RunE      func(cmd *cobra.Command, args []string) error
-
+    
     File      *filePath
     Viper     *viper.Viper
     WebRole   *utils.SyncVar
     WebServer *monitor.WebServer
 }
 
-var (
-    Daemon bool
-    
-    File struct {
-        Log  string
-        Conf string
-        Pid  string
-    }
-    
-    Serve = func(cmd *cobra.Command, args []string) error {
-        Conf := configures.Initialize(Viper, File.Conf)
-        Daemon := &daemon.Daemon{
-            PidFile:  Conf.Server.PidFile,
-            UnixFile: Conf.Server.UnixFile,
-            LogFile:  Conf.Server.LogFile,
-        }
-        
-        if Conf.Server.Daemon {
-            Daemon.Daemon(scheduler)
-            return nil
-        }
-        
-        // todo write pid file
-        Daemon.UnixListen(scheduler)
-        return nil
-    }
-    
-    Viper = viper.GetViper()
-    WebRole utils.SyncVar = &utils.SyncVar{}
-    WebServer *monitor.WebServer = &monitor.WebServer{}
-)
-
-func scheduler(Unix *net.UnixListener) {
-    defer Unix.Close()
+func (mc *MonitorCmd) Scheduler(Listener *net.UnixListener) {
+    defer Listener.Close()
     
     var socket = func(Con *net.UnixConn) {
         for {
@@ -75,12 +43,12 @@ func scheduler(Unix *net.UnixListener) {
             }
             var Message protocols.Socket
             json.Unmarshal(Buffer[0: Len], &Message)
-            dispatcher(Message, Con)
+            mc.Dispatcher(Message, Con)
         }
     }
     
     for {
-        if UnixConn, err := Unix.AcceptUnix(); err != nil {
+        if UnixConn, err := Listener.AcceptUnix(); err != nil {
             log.Printf("%v\r\n", err)
         } else {
             go socket(UnixConn)
@@ -88,8 +56,7 @@ func scheduler(Unix *net.UnixListener) {
     }
 }
 
-// todo 接收到cli信息,然后处理
-func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
+func (mc *MonitorCmd) Dispatcher(Msg protocols.Socket, Conn *net.UnixConn) {
     const (
         RN int = 0  // 未设置
         RM int = 1  // 管理
@@ -99,7 +66,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     // 查看角色
     if Msg.Command == protocols.ROLE {
         var OutPut []byte
-        switch WebRole.Get() {
+        switch mc.WebRole.Get() {
         case RN:
             OutPut, _ = json.Marshal(protocols.OutPut{
                 Status: 0,
@@ -121,38 +88,38 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
                 Body: []byte("undefined"),
             })
         }
-        Con.Write(OutPut)
+        Conn.Write(OutPut)
         return
     }
     
     // 初始化manager
     if Msg.Command == protocols.SERVER_INIT {
-        if WebRole.Get() == RN {
-            json.Unmarshal(Msg.Body, &WebServer)
-            if len(WebServer.Token) <= 0 {
-                WebServer.Token = utils.RandStr()
+        if mc.WebRole.Get() == RN {
+            json.Unmarshal(Msg.Body, &mc.WebServer)
+            if len(mc.WebServer.Token) <= 0 {
+                mc.WebServer.Token = utils.RandStr()
             }
             
-            if (&monitor.Monitor{}).ServerInit(WebServer) != nil {
+            if (&monitor.Monitor{}).ServerInit(mc.WebServer) != nil {
                 OutPut, _ := json.Marshal(protocols.OutPut{
                     Status: -1,
                     Body: []byte("failure"),
                 })
-                Con.Write(OutPut)
+                Conn.Write(OutPut)
             } else {
                 OutPut, _ := json.Marshal(protocols.OutPut{
                     Status: 0,
                     Body: []byte("success"),
                 })
-                Con.Write(OutPut)
-                WebRole.Set(RM)
+                Conn.Write(OutPut)
+                mc.WebRole.Set(RM)
             }
         } else {
             OutPut, _ := json.Marshal(protocols.OutPut{
                 Status: -2,
                 Body: []byte("server has been initialized"),
             })
-            Con.Write(OutPut)
+            Conn.Write(OutPut)
         }
         return
     }
@@ -160,7 +127,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     // 查看令牌
     if Msg.Command == protocols.SERVER_TOKEN {
         var OutPut []byte
-        switch WebRole.Get() {
+        switch mc.WebRole.Get() {
         case RN:
             OutPut, _ = json.Marshal(protocols.OutPut{
                 Status: 0,
@@ -174,7 +141,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
         case RM:
             OutPut, _ = json.Marshal(protocols.OutPut{
                 Status: 0,
-                Body: []byte("monitor join --addr " + WebServer.Addr + " --token " + WebServer.Token),
+                Body: []byte("monitor join --addr " + mc.WebServer.Addr + " --token " + mc.WebServer.Token),
             })
         default:
             OutPut, _ = json.Marshal(protocols.OutPut{
@@ -182,22 +149,202 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
                 Body: []byte("unknown role"),
             })
         }
-        Con.Write(OutPut)
+        Conn.Write(OutPut)
         return
     }
 }
 
-func addCommand(Cmd *cobra.Command) {
+func (mc *MonitorCmd) AddCommand(Cmd *cobra.Command) {
     Cmd.AddCommand(RoleCmd)
     Cmd.AddCommand(ServerCmd)
     Cmd.AddCommand(VersionCmd)
 }
 
-var MonitorCmd = &cobra.Command{
+var Manager = &MonitorCmd{
+    Viper: viper.GetViper(),
+    WebRole: &utils.SyncVar{},
+    WebServer: &monitor.WebServer{},
+}
+
+//var (
+//    Daemon bool
+//
+//    File struct {
+//        Log  string
+//        Conf string
+//        Pid  string
+//    }
+//
+//    Serve = func(cmd *cobra.Command, args []string) error {
+//        Conf := configures.Initialize(Viper, File.Conf)
+//        Daemon := &daemon.Daemon{
+//            PidFile:  Conf.Server.PidFile,
+//            UnixFile: Conf.Server.UnixFile,
+//            LogFile:  Conf.Server.LogFile,
+//        }
+//
+//        if Conf.Server.Daemon {
+//            Daemon.Daemon(scheduler)
+//            return nil
+//        }
+//
+//        // todo write pid file
+//        Daemon.UnixListen(scheduler)
+//        return nil
+//    }
+//
+//    Viper = viper.GetViper()
+//    WebRole *utils.SyncVar = &utils.SyncVar{}
+//    WebServer *monitor.WebServer = &monitor.WebServer{}
+//)
+
+//func scheduler(Unix *net.UnixListener) {
+//    defer Unix.Close()
+//
+//    var socket = func(Con *net.UnixConn) {
+//        for {
+//            Buffer := make([]byte, protocols.READ_LENGTH)
+//            Len, err := Con.Read(Buffer);
+//            if err != nil {
+//                Con.Close()
+//                return
+//            }
+//            var Message protocols.Socket
+//            json.Unmarshal(Buffer[0: Len], &Message)
+//            dispatcher(Message, Con)
+//        }
+//    }
+//
+//    for {
+//        if UnixConn, err := Unix.AcceptUnix(); err != nil {
+//            log.Printf("%v\r\n", err)
+//        } else {
+//            go socket(UnixConn)
+//        }
+//    }
+//}
+
+// todo 接收到cli信息,然后处理
+//func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
+//    const (
+//        RN int = 0  // 未设置
+//        RM int = 1  // 管理
+//        RS int = 2  // 节点
+//    )
+//
+//    // 查看角色
+//    if Msg.Command == protocols.ROLE {
+//        var OutPut []byte
+//        switch WebRole.Get() {
+//        case RN:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("uninitialized"),
+//            })
+//        case RM:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("manager"),
+//            })
+//        case RS:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("node"),
+//            })
+//        default:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("undefined"),
+//            })
+//        }
+//        Con.Write(OutPut)
+//        return
+//    }
+//
+//    // 初始化manager
+//    if Msg.Command == protocols.SERVER_INIT {
+//        if WebRole.Get() == RN {
+//            json.Unmarshal(Msg.Body, &WebServer)
+//            if len(WebServer.Token) <= 0 {
+//                WebServer.Token = utils.RandStr()
+//            }
+//
+//            if (&monitor.Monitor{}).ServerInit(WebServer) != nil {
+//                OutPut, _ := json.Marshal(protocols.OutPut{
+//                    Status: -1,
+//                    Body: []byte("failure"),
+//                })
+//                Con.Write(OutPut)
+//            } else {
+//                OutPut, _ := json.Marshal(protocols.OutPut{
+//                    Status: 0,
+//                    Body: []byte("success"),
+//                })
+//                Con.Write(OutPut)
+//                WebRole.Set(RM)
+//            }
+//        } else {
+//            OutPut, _ := json.Marshal(protocols.OutPut{
+//                Status: -2,
+//                Body: []byte("server has been initialized"),
+//            })
+//            Con.Write(OutPut)
+//        }
+//        return
+//    }
+//
+//    // 查看令牌
+//    if Msg.Command == protocols.SERVER_TOKEN {
+//        var OutPut []byte
+//        switch WebRole.Get() {
+//        case RN:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("uninitialized"),
+//            })
+//        case RS:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("monitor role is node"),
+//            })
+//        case RM:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("monitor join --addr " + WebServer.Addr + " --token " + WebServer.Token),
+//            })
+//        default:
+//            OutPut, _ = json.Marshal(protocols.OutPut{
+//                Status: 0,
+//                Body: []byte("unknown role"),
+//            })
+//        }
+//        Con.Write(OutPut)
+//        return
+//    }
+//}
+
+
+var MainCmd = &cobra.Command{
     Use: "monitor",
     Short: "Linux server status monitor",
     Long: "Powerful Linux server status monitor server",
-    RunE: Serve,
+    RunE: func(cmd *cobra.Command, args []string) error {
+        Conf := configures.Initialize(Manager.Viper, Manager.File.Conf)
+        Daemon := &daemon.Daemon{
+            PidFile:  Conf.Server.PidFile,
+            UnixFile: Conf.Server.UnixFile,
+            LogFile:  Conf.Server.LogFile,
+        }
+        
+        if Conf.Server.Daemon {
+            Daemon.Daemon(Manager.Scheduler)
+            return nil
+        }
+        
+        // todo write pid file
+        Daemon.UnixListen(Manager.Scheduler)
+        return nil
+    },
 }
 
 func usageTemplate() string {
@@ -230,18 +377,18 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 
 func init() {
     
-    Flags := MonitorCmd.Flags()
-    Flags.StringVarP(&File.Conf, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
+    Flags := MainCmd.Flags()
+    Flags.StringVarP(&Manager.File.Conf, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
     
-    Flags.BoolVarP(&Daemon, "daemon", "d", false, "to start the daemon way")
-    Flags.StringVarP(&File.Pid, "pid", "", "", "full path to pidfile")
-    Flags.StringVarP(&File.Log, "log", "l", "", "log file")
+    Flags.BoolVarP(&Manager.Daemon, "daemon", "d", false, "to start the daemon way")
+    Flags.StringVarP(&Manager.File.Pid, "pid", "", "", "full path to pidfile")
+    Flags.StringVarP(&Manager.File.Log, "log", "l", "", "log file")
     
-    Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
-    Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
-    Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
+    Manager.Viper.BindPFlag("server.daemon", Flags.Lookup("daemon"))
+    Manager.Viper.BindPFlag("server.pid_file", Flags.Lookup("pid"))
+    Manager.Viper.BindPFlag("server.log_file", Flags.Lookup("log"))
     
-    MonitorCmd.SetUsageTemplate(usageTemplate())
+    MainCmd.SetUsageTemplate(usageTemplate())
     
-    addCommand(MonitorCmd)
+    Manager.AddCommand(MainCmd)
 }

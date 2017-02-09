@@ -13,7 +13,7 @@ var RoleCmd = &cobra.Command{
     Short: "view roles",
     Long: "View roles",
     RunE: func(cmd *cobra.Command, args []string) error {
-        Conf := configures.Initialize(Viper, File.Conf)
+        Conf := configures.Initialize(Manager.Viper, Manager.File.Conf)
         
         Conn, err := utils.UnixSocket(Conf)
         if err != nil {
