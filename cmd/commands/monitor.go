@@ -59,7 +59,7 @@ var (
     }
     
     Viper = viper.GetViper()
-    Role Role = Role{}
+    WebRole Role = Role{}
     WebServer *monitor.WebServer = &monitor.WebServer{}
 )
 
@@ -100,7 +100,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     // 查看角色
     if Msg.Command == protocols.ROLE {
         var OutPut []byte
-        switch Role.Get() {
+        switch WebRole.Get() {
         case RN:
             OutPut, _ = json.Marshal(protocols.OutPut{
                 Status: 0,
@@ -128,7 +128,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     
     // 初始化manager
     if Msg.Command == protocols.SERVER_INIT {
-        if Role.Get() == RN {
+        if WebRole.Get() == RN {
             json.Unmarshal(Msg.Body, &WebServer)
             if len(WebServer.Token) <= 0 {
                 WebServer.Token = utils.RandStr()
@@ -146,7 +146,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
                     Body: []byte("success"),
                 })
                 Con.Write(OutPut)
-                Role.Set(RM)
+                WebRole.Set(RM)
             }
         } else {
             OutPut, _ := json.Marshal(protocols.OutPut{
@@ -161,7 +161,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     // 查看令牌
     if Msg.Command == protocols.SERVER_TOKEN {
         var OutPut []byte
-        switch Role.Get() {
+        switch WebRole.Get() {
         case RN:
             OutPut, _ = json.Marshal(protocols.OutPut{
                 Status: 0,
