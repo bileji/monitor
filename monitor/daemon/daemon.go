@@ -5,6 +5,7 @@ import (
     "log"
     "fmt"
     "net"
+    "reflect"
     "errors"
     "os/exec"
     "syscall"
@@ -98,8 +99,12 @@ func (D *Daemon) Signal() {
                 } else {
                     log.Printf("fail to remove unix sock: %v\n", err)
                 }
-                fmt.Println(D.Log.Name())
-                D.Log.Close()
+                
+                var i interface{} = D
+                value := reflect.ValueOf(i)
+                value.FieldByName("Log").IsNil()
+                fmt.Println(value.FieldByName("Log").IsNil())
+                
                 os.Exit(1)
             } else {
                 log.Printf("fail to remove process pid file: %v\n", err)
