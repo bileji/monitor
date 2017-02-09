@@ -56,6 +56,7 @@ var (
             return nil
         }
         
+        // todo write pid file
         Daemon.UnixListen(scheduler)
         return nil
     }
