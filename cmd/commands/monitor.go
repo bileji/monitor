@@ -12,6 +12,7 @@ import (
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
     "monitor/utils"
+    "github.com/wendal/errors"
 )
 
 type filePath struct {
@@ -197,9 +198,14 @@ var MainCmd = &cobra.Command{
             return nil
         }
         
-        // todo write pid file
-        Daemon.UnixListen(Manager.Scheduler)
-        return nil
+        if err := Daemon.CreatePidFile(); err == nil {
+            if err := Daemon.WritePidFile(); err == nil {
+                Daemon.UnixListen(Manager.Scheduler)
+                go Daemon.Signal()
+            }
+        }
+        
+        return errors.New("monitor start failure")
     },
 }
 
