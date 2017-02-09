@@ -31,6 +31,7 @@ func (m *Monitor) ServerInit(WS *WebServer) error {
     go (&service.Master{
         Addr: WS.Addr,
         DBHandler: Session.DB(WS.Database.AuthDB),
+        Token: WS.Token,
     }).Listen()
     
     return nil

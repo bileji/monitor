@@ -12,13 +12,16 @@ import (
 )
 
 type Answer struct {
-    Code    int32 `json:"code"`
-    Data    map[string]interface{} `json:"data"`
-    Message string `json:"message"`
+    Code    int32                   `json:"code"`
+    Data    map[string]interface{}  `json:"data"`
+    Message string                  `json:"message"`
 }
 
 func (A Answer)Return(Res http.ResponseWriter) {
     Res.Header().Set("Content-type", "application/json")
+    if _, ok := A.Data; !ok {
+        A.Data = make(map[string]interface{}, 1)
+    }
     Bytes, _ := json.Marshal(A)
     Res.Write(Bytes)
 }
@@ -26,6 +29,7 @@ func (A Answer)Return(Res http.ResponseWriter) {
 type Master struct {
     Addr      string
     DBHandler *mgo.Database
+    Token     string
 }
 
 func (m *Master) Listen() {
@@ -49,31 +53,31 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
                 Message: fmt.Sprintf("%v", err),
             }.Return(Res)
             return
-        } else {
-            err = json.Unmarshal(Body, &Gather);
-            if err != nil {
-                Answer{
-                    Code: -1,
-                    Message: fmt.Sprintf("%v", err),
-                }.Return(Res)
-                return
-            }
-            
-            err = m.DBHandler.C(collection.GATHER).Insert(Gather);
-            if err != nil {
-                Answer{
-                    Code: -1,
-                    Message: fmt.Sprintf("%v", err),
-                }.Return(Res)
-                return
-            }
-            
+        }
+        
+        err = json.Unmarshal(Body, &Gather);
+        if err != nil {
             Answer{
-                Code: 0,
-                Message: "gather success",
+                Code: -1,
+                Message: fmt.Sprintf("%v", err),
             }.Return(Res)
             return
         }
+        
+        err = m.DBHandler.C(collection.GATHER).Insert(Gather);
+        if err != nil {
+            Answer{
+                Code: -1,
+                Message: fmt.Sprintf("%v", err),
+            }.Return(Res)
+            return
+        }
+        
+        Answer{
+            Code: 0,
+            Message: "gather successful",
+        }.Return(Res)
+        return
     }
     
     Answer{
@@ -83,4 +87,37 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
     return
 }
 
-
+func (m *Master) Token(Res http.ResponseWriter, Req *http.Request) {
+    
+    if Req.Method == "PUT" {
+        Body, err := ioutil.ReadAll(Req.Body)
+        defer Req.Body.Close()
+        
+        if err != nil {
+            Answer{
+                Code: -1,
+                Message: fmt.Sprintf("%v", err),
+            }.Return(Res)
+            return
+        }
+        
+        if m.Token == string(Body) {
+            Answer{
+                Code: 0,
+                Message: "verify successful",
+            }.Return(Res)
+            return
+        }
+        Answer{
+            Code: -1,
+            Message: "token does not match",
+        }.Return(Res)
+        return
+    }
+    
+    Answer{
+        Code: -1,
+        Message: "invalid request",
+    }.Return(Res)
+    return
+}
