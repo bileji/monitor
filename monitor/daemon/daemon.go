@@ -39,19 +39,19 @@ func currentPath(arg string) string {
 }
 
 func (D *Daemon) CreatePidFile() error {
-    File, err := os.OpenFile(D.PidFile, os.O_CREATE | os.O_RDWR, 0644)
+    var err error
+    D.Pid, err = os.OpenFile(D.PidFile, os.O_CREATE | os.O_RDWR, 0644)
     if err != nil {
         return err
     }
     
-    if Info, _ := File.Stat(); Info.Size() != 0 {
+    if Info, _ := D.Pid.Stat(); Info.Size() != 0 {
         return errors.New("pid file is exist: " + D.PidFile)
     }
     return nil
 }
 
 func (D *Daemon) WritePidFile() error {
-    fmt.Println(fmt.Sprint(os.Getpid()))
     _, err := D.Pid.WriteString(fmt.Sprint(os.Getpid()))
     return err
 }
