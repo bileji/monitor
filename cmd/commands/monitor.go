@@ -199,7 +199,6 @@ var MainCmd = &cobra.Command{
         }
         
         if err := Daemon.CreatePidFile(); err == nil {
-            fmt.Println(err)
             if err := Daemon.WritePidFile(); err == nil {
                 Daemon.UnixListen(Manager.Scheduler)
                 go Daemon.Signal()

@@ -51,6 +51,7 @@ func (D *Daemon) CreatePidFile() error {
 }
 
 func (D *Daemon) WritePidFile() error {
+    fmt.Println(fmt.Sprint(os.Getpid()))
     _, err := D.Pid.WriteString(fmt.Sprint(os.Getpid()))
     return err
 }
