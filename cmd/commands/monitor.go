@@ -16,7 +16,6 @@ import (
 
 type Role struct {
     sync.RWMutex
-    // 0 未设置 1 管理 2 节点
     Role int
 }
 
