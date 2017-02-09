@@ -19,7 +19,7 @@ type Answer struct {
 
 func (A Answer)Return(Res http.ResponseWriter) {
     Res.Header().Set("Content-type", "application/json")
-    if _, ok := A.Data; !ok {
+    if len(A.Data) <= 0 {
         A.Data = make(map[string]interface{}, 1)
     }
     Bytes, _ := json.Marshal(A)
@@ -34,6 +34,7 @@ type Master struct {
 
 func (m *Master) Listen() {
     http.HandleFunc("/gather", m.Gather)
+    http.HandleFunc("/verify", m.Verify)
     err := http.ListenAndServe(m.Addr, nil)
     if err != nil {
         log.Println(err)
@@ -87,7 +88,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
     return
 }
 
-func (m *Master) Token(Res http.ResponseWriter, Req *http.Request) {
+func (m *Master) Verify(Res http.ResponseWriter, Req *http.Request) {
     
     if Req.Method == "PUT" {
         Body, err := ioutil.ReadAll(Req.Body)
