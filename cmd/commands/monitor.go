@@ -23,8 +23,6 @@ type filePath struct {
 type MonitorCmd struct {
     Daemon    bool
     
-    RunE      func(cmd *cobra.Command, args []string) error
-    
     File      *filePath
     Viper     *viper.Viper
     WebRole   *utils.SyncVar
