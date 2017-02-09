@@ -103,7 +103,7 @@ func (D *Daemon) Signal() {
                 // todo
                 var i interface{} = &D
                 value := reflect.ValueOf(i)
-                value.FieldByName("Log").IsNil()
+                //value.FieldByName("Log").IsNil()
                 fmt.Println(value.FieldByName("Log").IsNil())
                 
                 os.Exit(1)
