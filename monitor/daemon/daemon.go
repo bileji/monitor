@@ -5,6 +5,7 @@ import (
     "log"
     "fmt"
     "net"
+    "strings"
     "errors"
     "os/exec"
     "syscall"
@@ -87,6 +88,22 @@ func (D *Daemon) Daemon(Routine func(*net.UnixListener)) {
 }
 
 func (D *Daemon) Signal() {
+    var Println = func(Str... string) {
+        if D.Log == nil {
+            fmt.Println(strings.Join(Str, ""))
+        } else {
+            log.Println(strings.Join(Str, ""))
+        }
+    }
+    
+    var PrintF = func(Format string, Inter... interface{}) {
+        if D.Log == nil {
+            fmt.Printf(Format, Inter)
+        } else {
+            log.Printf(Format, Inter)
+        }
+    }
+    
     Signal := make(chan os.Signal, 1)
     signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
     for {
@@ -94,21 +111,17 @@ func (D *Daemon) Signal() {
         case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
             if err := D.ClearPidFile(); err == nil {
                 if err := os.Remove(D.UnixFile); err == nil {
-                    log.Println("success to exit proc, bye bye!")
+                    Println("success to exit proc, bye bye!")
                 } else {
-                    log.Printf("fail to remove unix sock: %v\n", err)
+                    PrintF("fail to remove unix sock: %v\n", err)
                 }
-                
-                // todo
-                
-                fmt.Println(D.Log == nil)
                 
                 os.Exit(1)
             } else {
-                log.Printf("fail to remove process pid file: %v\n", err)
+                PrintF("fail to remove process pid file: %v\n", err)
             }
         default:
-            log.Println("unknow signal, this process will go on...")
+            Println("unknow signal, this process will go on...")
         }
     }
 }
