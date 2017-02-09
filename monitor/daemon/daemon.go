@@ -84,26 +84,6 @@ func (D *Daemon) Daemon(Routine func(*net.UnixListener)) {
     go D.UnixListen(Routine)
     
     D.Signal()
-    //Signal := make(chan os.Signal, 1)
-    //signal.Notify(Signal, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt)
-    //for {
-    //    switch <-Signal {
-    //    case syscall.SIGTERM, syscall.SIGKILL, os.Interrupt:
-    //        if err := D.ClearPidFile(); err == nil {
-    //            if err := os.Remove(D.UnixFile); err == nil {
-    //                log.Println("success to exit proc, bye bye!")
-    //            } else {
-    //                log.Printf("fail to remove unix sock: %v\n", err)
-    //            }
-    //            D.Log.Close()
-    //            os.Exit(1)
-    //        } else {
-    //            log.Printf("fail to remove process pid file: %v\n", err)
-    //        }
-    //    default:
-    //        log.Println("unknow signal, this process will go on...")
-    //    }
-    //}
 }
 
 func (D *Daemon) Signal() {

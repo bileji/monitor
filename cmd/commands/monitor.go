@@ -203,7 +203,11 @@ var MainCmd = &cobra.Command{
                 Daemon.UnixListen(Manager.Scheduler)
                 go Daemon.Signal()
                 return nil
+            } else {
+                return err
             }
+        } else {
+            return err
         }
         
         return errors.New("monitor start failure")
