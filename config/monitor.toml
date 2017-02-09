@@ -2,11 +2,11 @@
 # to start the daemon way
 daemon=false
 # configuration file specifying additional options
-pid_file="/var/run/monitor.pid"
+pid_file="/var/run/monitord.pid"
 # log file
-log_file="/var/log/monitor.log"
+log_file="/var/log/monitord.log"
 # unix socket file
-unix_file="/var/run/monitor.sock"
+unix_file="/var/run/monitord.sock"
 # join token
 token="b70ee310bc5bb78ced7f1f389d14da1e"
 [client]
