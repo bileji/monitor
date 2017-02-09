@@ -3,7 +3,6 @@ package commands
 import (
     "log"
     "net"
-    "sync"
     "encoding/json"
     "monitor/monitor"
     "monitor/monitor/daemon"
@@ -14,33 +13,31 @@ import (
     "monitor/utils"
 )
 
-type Role struct {
-    sync.RWMutex
-    Role int
-}
-
-func (r *Role) Get() int {
-    r.Lock()
-    defer r.Unlock()
-    return r.Role
-}
-
-func (r *Role) Set(Role int) {
-    r.Lock()
-    defer r.Unlock()
-    r.Role = Role
-}
-
-type FilePath struct {
+type filePath struct {
+    Log  string
     Conf string
     Pid  string
-    Log  string
+}
+
+type Monitor struct {
+    Daemon    bool
+    
+    RunE      func(cmd *cobra.Command, args []string) error
+
+    File      *filePath
+    Viper     *viper.Viper
+    WebRole   *utils.SyncVar
+    WebServer *monitor.WebServer
 }
 
 var (
     Daemon bool
     
-    File FilePath
+    File struct {
+        Log  string
+        Conf string
+        Pid  string
+    }
     
     Serve = func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, File.Conf)
@@ -61,7 +58,7 @@ var (
     }
     
     Viper = viper.GetViper()
-    WebRole Role = Role{}
+    WebRole utils.SyncVar = &utils.SyncVar{}
     WebServer *monitor.WebServer = &monitor.WebServer{}
 )
 
