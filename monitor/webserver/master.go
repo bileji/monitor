@@ -90,6 +90,8 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
 
 func (m *Master) Verify(Res http.ResponseWriter, Req *http.Request) {
     
+    log.Println(Req.UserAgent())
+    
     if Req.Method == "PUT" {
         Body, err := ioutil.ReadAll(Req.Body)
         defer Req.Body.Close()
