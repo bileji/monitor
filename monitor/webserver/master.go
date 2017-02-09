@@ -41,7 +41,13 @@ func (m *Master) Listen() {
     }
 }
 
+func (m *Master) Debug(Req *http.Request) {
+    log.Println(Req.RemoteAddr + " " + Req.Method + " " + Req.RequestURI + " " + Req.UserAgent())
+}
+
 func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
+    m.Debug(Req)
+    
     var Gather model.Gather
     
     if Req.Method == "PUT" {
@@ -90,7 +96,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
 
 func (m *Master) Verify(Res http.ResponseWriter, Req *http.Request) {
     
-    log.Println(Req.RemoteAddr + " " + Req.RequestURI + " " + Req.UserAgent())
+    m.Debug(Req)
     
     if Req.Method == "PUT" {
         Body, err := ioutil.ReadAll(Req.Body)
