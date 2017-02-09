@@ -5,7 +5,6 @@ import (
     "log"
     "fmt"
     "net"
-    "reflect"
     "errors"
     "os/exec"
     "syscall"
@@ -101,11 +100,8 @@ func (D *Daemon) Signal() {
                 }
                 
                 // todo
-                var i interface{} = &D
-                value := reflect.ValueOf(i)
-                //value.FieldByName("Log").IsNil()
                 
-                fmt.Println(value.FieldByName("Log"))
+                fmt.Println(&(D.Log) == os.File{})
                 
                 os.Exit(1)
             } else {
