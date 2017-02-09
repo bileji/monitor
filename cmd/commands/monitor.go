@@ -161,6 +161,7 @@ func (mc *MonitorCmd) AddCommand(Cmd *cobra.Command) {
 }
 
 var Manager = &MonitorCmd{
+    File: &filePath{},
     Viper: viper.GetViper(),
     WebRole: &utils.SyncVar{},
     WebServer: &monitor.WebServer{},
