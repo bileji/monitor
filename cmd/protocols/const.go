@@ -1,8 +1,10 @@
 package protocols
 
 const (
-    READ_LENGTH = 2048
+    READ_LENGTH int = 20480
     
-    SERVER_INIT = "serverinit"
-    SERVER_TOKEN = "servertoken"
+    SERVER_INIT string = "serverinit"
+    SERVER_TOKEN string = "servertoken"
+    
+    ROLE string = "role"
 )

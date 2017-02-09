@@ -14,76 +14,77 @@ import (
     "monitor/utils"
 )
 
+type Role struct {
+    sync.RWMutex
+    // 0 未设置 1 管理 2 节点
+    Role int
+}
+
+func (r *Role) Get() int {
+    r.Lock()
+    defer r.Unlock()
+    if !r.Role {
+        return 0
+    }
+    return r.Role
+}
+
+func (r *Role) Set(Role int) {
+    r.Lock()
+    defer r.Unlock()
+    r.Role = Role
+}
+
 var (
     Daemon bool
-    
     ConfFile string
-    
     PidFile string
     LogFile string
-    
-    Viper = viper.GetViper()
     
     Serve = func(cmd *cobra.Command, args []string) error {
         Conf := configures.Initialize(Viper, ConfFile)
         Daemon := &daemon.Daemon{
-            PidFile: Conf.Server.PidFile,
+            PidFile:  Conf.Server.PidFile,
             UnixFile: Conf.Server.UnixFile,
-            LogFile: Conf.Server.LogFile,
+            LogFile:  Conf.Server.LogFile,
         }
         
         if Conf.Server.Daemon {
             Daemon.Daemon(scheduler)
-        } else {
-            Daemon.UnixListen(scheduler)
+            return nil
         }
         
+        Daemon.UnixListen(scheduler)
         return nil
     }
+    
+    Viper = viper.GetViper()
+    Role Role = Role{}
+    WebServer *monitor.WebServer = &monitor.WebServer{}
 )
-
-type serverRole struct {
-    sync.RWMutex
-    // 0 未设置 1 server 2 slave
-    Role int
-}
-
-func (O *serverRole) Get() int {
-    O.Lock()
-    defer O.Unlock()
-    return O.Role
-}
-
-func (O *serverRole) Set(Role int) {
-    O.Lock()
-    defer O.Unlock()
-    O.Role = Role
-}
-
-var Role = serverRole{Role: 0}
-
-var WebServer = &monitor.WebServer{}
 
 func scheduler(Unix *net.UnixListener) {
     defer Unix.Close()
+    
+    var socket = func(Con *net.UnixConn) {
+        for {
+            Buffer := make([]byte, protocols.READ_LENGTH)
+            Len, err := Con.Read(Buffer);
+            if err != nil {
+                Con.Close()
+                return
+            }
+            var Message protocols.Socket
+            json.Unmarshal(Buffer[0: Len], &Message)
+            dispatcher(Message, Con)
+        }
+    }
     
     for {
         if UnixConn, err := Unix.AcceptUnix(); err != nil {
             log.Printf("%v\r\n", err)
         } else {
-            go func(Con *net.UnixConn) {
-                for {
-                    Buffer := make([]byte, protocols.READ_LENGTH)
-                    Len, err := Con.Read(Buffer);
-                    if err != nil {
-                        Con.Close()
-                        return
-                    }
-                    var Message protocols.Socket
-                    json.Unmarshal(Buffer[0: Len], &Message)
-                    dispatcher(Message, Con)
-                }
-            }(UnixConn)
+            go socket(UnixConn)
         }
     }
 }
@@ -91,13 +92,41 @@ func scheduler(Unix *net.UnixListener) {
 // todo 接收到cli信息,然后处理
 func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
     const (
-        // monitor角色
         RN int = 0  // 未设置
-        RM int = 1  // master
-        RS int = 2  // slave
+        RM int = 1  // 管理
+        RS int = 2  // 节点
     )
     
-    // server init
+    // 查看角色
+    if Msg.Command == protocols.ROLE {
+        var OutPut []byte
+        switch Role.Get() {
+        case RN:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("uninitialized"),
+            })
+        case RM:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("manager"),
+            })
+        case RS:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("node"),
+            })
+        default:
+            OutPut, _ = json.Marshal(protocols.OutPut{
+                Status: 0,
+                Body: []byte("undefined"),
+            })
+        }
+        Con.Write(OutPut)
+        return
+    }
+    
+    // 初始化manager
     if Msg.Command == protocols.SERVER_INIT {
         if Role.Get() == RN {
             json.Unmarshal(Msg.Body, &WebServer)
@@ -129,14 +158,14 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
         return
     }
     
-    // server token
+    // 查看令牌
     if Msg.Command == protocols.SERVER_TOKEN {
         var OutPut []byte
         switch Role.Get() {
         case RN:
             OutPut, _ = json.Marshal(protocols.OutPut{
                 Status: 0,
-                Body: []byte("monitor has not been initialized"),
+                Body: []byte("uninitialized"),
             })
         case RS:
             OutPut, _ = json.Marshal(protocols.OutPut{
@@ -160,6 +189,7 @@ func dispatcher(Msg protocols.Socket, Con *net.UnixConn) {
 }
 
 func addCommand(Cmd *cobra.Command) {
+    Cmd.AddCommand(RoleCmd)
     Cmd.AddCommand(ServerCmd)
     Cmd.AddCommand(VersionCmd)
 }
@@ -214,6 +244,5 @@ func init() {
     
     MonitorCmd.SetUsageTemplate(usageTemplate())
     
-    // add command
     addCommand(MonitorCmd)
 }
