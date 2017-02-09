@@ -101,7 +101,7 @@ func (D *Daemon) Signal() {
                 
                 // todo
                 
-                fmt.Println(*(D.Log) == os.File{})
+                fmt.Println(D.Log == nil)
                 
                 os.Exit(1)
             } else {
