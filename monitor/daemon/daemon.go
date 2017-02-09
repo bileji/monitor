@@ -100,7 +100,8 @@ func (D *Daemon) Signal() {
                     log.Printf("fail to remove unix sock: %v\n", err)
                 }
                 
-                var i interface{} = D
+                // todo
+                var i interface{} = &D
                 value := reflect.ValueOf(i)
                 value.FieldByName("Log").IsNil()
                 fmt.Println(value.FieldByName("Log").IsNil())
