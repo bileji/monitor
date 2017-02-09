@@ -11,7 +11,7 @@ func main() {
     // 调优
     runtime.GOMAXPROCS(runtime.NumCPU())
     
-    err := commands.MonitorCmd.Execute()
+    err := commands.MainCmd.Execute()
     
     if err != nil {
         fmt.Println(err)
