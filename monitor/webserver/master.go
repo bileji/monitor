@@ -108,6 +108,7 @@ func (m *Master) Token(Res http.ResponseWriter, Req *http.Request) {
             }.Return(Res)
             return
         }
+        
         Answer{
             Code: -1,
             Message: "token does not match",
