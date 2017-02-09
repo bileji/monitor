@@ -169,7 +169,7 @@ func (mc *MonitorCmd) Dispatcher(Msg protocols.Socket, Conn *net.UnixConn) {
     }
 }
 
-func (mc *MonitorCmd) AddCommand(Cmd *cobra.Command) {
+func (mc *MonitorCmd) Command(Cmd *cobra.Command) {
     Cmd.AddCommand(RoleCmd)
     Cmd.AddCommand(ServerCmd)
     Cmd.AddCommand(VersionCmd)
@@ -220,5 +220,5 @@ func init() {
     
     MainCmd.SetUsageTemplate(utils.UsageTemplate())
     
-    Manager.AddCommand(MainCmd)
+    Manager.Command(MainCmd)
 }
