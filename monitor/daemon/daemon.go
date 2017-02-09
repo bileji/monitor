@@ -98,7 +98,7 @@ func (D *Daemon) Signal() {
                 } else {
                     log.Printf("fail to remove unix sock: %v\n", err)
                 }
-                if Info, _ := D.Log.Stat(); Info.Size() != 0 {
+                if len(D.Log) > 0 {
                     D.Log.Close()
                 }
                 os.Exit(1)
