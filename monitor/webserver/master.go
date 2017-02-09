@@ -31,6 +31,7 @@ type Master struct {
     Addr      string
     DBHandler *mgo.Database
     Token     string
+    Log       bool
 }
 
 func (m *Master) Listen() {
@@ -43,16 +44,16 @@ func (m *Master) Listen() {
 }
 
 func (m *Master) Debug(Req *http.Request) {
-    
-    LogStr := []string{
-        "[web]",
-        Req.RemoteAddr,
-        Req.Method,
-        Req.RequestURI,
-        Req.UserAgent(),
+    if m.Log == true {
+        LogStr := []string{
+            "[web]",
+            Req.RemoteAddr,
+            Req.Method,
+            Req.RequestURI,
+            Req.UserAgent(),
+        }
+        log.Println(strings.Join(LogStr, " "))
     }
-    
-    log.Println(strings.Join(LogStr, " "))
 }
 
 func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
