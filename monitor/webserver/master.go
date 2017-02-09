@@ -90,7 +90,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
 
 func (m *Master) Verify(Res http.ResponseWriter, Req *http.Request) {
     
-    log.Println(Req.UserAgent())
+    log.Println(Req.RemoteAddr + " " + Req.RequestURI + " " + Req.UserAgent())
     
     if Req.Method == "PUT" {
         Body, err := ioutil.ReadAll(Req.Body)
