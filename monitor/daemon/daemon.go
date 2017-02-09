@@ -105,7 +105,7 @@ func (D *Daemon) Signal() {
                 value := reflect.ValueOf(i)
                 //value.FieldByName("Log").IsNil()
                 
-                fmt.Println((&(value.FieldByName("Log"))).IsNil())
+                fmt.Println(value.FieldByName("Log"))
                 
                 os.Exit(1)
             } else {
