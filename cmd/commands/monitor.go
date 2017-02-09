@@ -23,9 +23,6 @@ type Role struct {
 func (r *Role) Get() int {
     r.Lock()
     defer r.Unlock()
-    if !r.Role {
-        return 0
-    }
     return r.Role
 }
 
