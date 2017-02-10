@@ -1,10 +1,8 @@
 package common
 
 import (
-    "fmt"
     "strings"
     "path/filepath"
-    "github.com/spf13/viper"
 )
 
 type Server struct {
@@ -42,7 +40,6 @@ func (c *Command) ReadConf() error {
     
     if err := c.Viper.ReadInConfig(); err != nil {
         return err
-        
     }
     
     c.Configure = &Configure{
