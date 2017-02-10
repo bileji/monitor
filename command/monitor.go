@@ -7,18 +7,28 @@ import (
     "github.com/spf13/viper"
 )
 
+//var MainCmd = &common.Command{
+//    Viper: viper.GetViper(),
+//    Command: &cobra.Command{
+//        Use: common.CMD_MAIN,
+//        Short: "Linux server status monitor",
+//        Long: "Powerful Linux server status monitor server",
+//        PersistentPreRunE: pre,
+//        RunE: func(cmd *cobra.Command, args []string) error {
+//            fmt.Println("run")
+//            return nil
+//        },
+//    },
+//    Children: []*common.Command{
+//        VersionCmd,
+//        //RoleCmd,
+//        JoinCmd,
+//        //ServerCmd,
+//    },
+//}
+
 var MainCmd = &common.Command{
     Viper: viper.GetViper(),
-    Command: &cobra.Command{
-        Use: common.CMD_MAIN,
-        Short: "Linux server status monitor",
-        Long: "Powerful Linux server status monitor server",
-        PersistentPreRunE: pre,
-        RunE: func(cmd *cobra.Command, args []string) error {
-            fmt.Println("run")
-            return nil
-        },
-    },
     Children: []*common.Command{
         VersionCmd,
         //RoleCmd,
@@ -27,12 +37,21 @@ var MainCmd = &common.Command{
     },
 }
 
-var pre = func(cmd *cobra.Command, args []string) error {
-    fmt.Println(common.ReadConf(MainCmd.Viper, MainCmd.Flags.Main.Config))
-    return nil
-}
-
 func init() {
+    
+    MainCmd.Command = &cobra.Command{
+        Use: common.CMD_MAIN,
+        Short: "Linux server status monitor",
+        Long: "Powerful Linux server status monitor server",
+        PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+            fmt.Println(common.ReadConf(MainCmd.Viper, MainCmd.Flags.Main.Config))
+            return nil
+        },
+        RunE: func(cmd *cobra.Command, args []string) error {
+            fmt.Println("run")
+            return nil
+        },
+    }
     
     Flags := MainCmd.Command.Flags()
     Flags.BoolVarP(&MainCmd.Flags.Main.Daemon, "daemon", "d", false, "to start by daemon")
