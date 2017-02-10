@@ -21,7 +21,7 @@ var MonitorCmd = &common.Command{
             return nil
         },
     },
-    Children: []cobra.Command{
+    Children: []*common.Command{
         VersionCmd,
         //RoleCmd,
         //JoinCmd,

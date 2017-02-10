@@ -8,14 +8,14 @@ import (
 type Command struct {
     Flags     map[string]interface{}
     Command   *cobra.Command
-    Children  []*cobra.Command
+    Children  []*Command
     Viper     *viper.Viper
     Configure *Configure
 }
 
 func (c *Command) NewChildren() {
     for _, Child := range c.Children {
-        c.Command.AddCommand(Child)
+        c.Command.AddCommand(Child.Command)
     }
 }
 
