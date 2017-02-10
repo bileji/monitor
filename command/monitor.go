@@ -27,6 +27,7 @@ func init() {
             if MainCmd.ReadConf() != nil {
                 fmt.Println("No config file found. Using built-in defaults.");
             }
+            fmt.Println(MainCmd.Configure)
             return nil
         },
         RunE: func(cmd *cobra.Command, args []string) error {
