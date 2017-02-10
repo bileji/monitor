@@ -5,8 +5,31 @@ import (
     "github.com/spf13/viper"
 )
 
+type MonitorFlags struct {
+    Config string
+    Daemon bool
+    Pid    string
+    Log    string
+    Debug  string
+}
+
+type ServerFlags struct {
+    
+}
+
+type JoinFlags struct {
+    Addr  string
+    Token string
+}
+
+type Flags struct {
+    Main   MonitorFlags
+    Server ServerFlags
+    Join   JoinFlags
+}
+
 type Command struct {
-    Flags     map[string]interface{}
+    Flags     Flags
     Command   *cobra.Command
     Children  []*Command
     Viper     *viper.Viper

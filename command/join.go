@@ -23,6 +23,6 @@ func init() {
     
     Flags := JoinCmd.Command.Flags()
     
-    Flags.StringVarP(&JoinCmd.Flags["Addr"], "addr", "", "", "manager addr")
-    Flags.StringVarP(&JoinCmd.Flags["Token"], "token", "", "", "join token")
+    Flags.StringVarP(&JoinCmd.Flags.Join.Addr, "addr", "", "", "manager addr")
+    Flags.StringVarP(&JoinCmd.Flags.Join.Token, "token", "", "", "join token")
 }

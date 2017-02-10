@@ -6,7 +6,7 @@ import (
     "github.com/spf13/viper"
 )
 
-var MonitorCmd = &common.Command{
+var MainCmd = &common.Command{
     Viper: viper.GetViper(),
     Command: &cobra.Command{
         Use: common.CMD_MAIN,
@@ -24,23 +24,23 @@ var MonitorCmd = &common.Command{
     Children: []*common.Command{
         VersionCmd,
         //RoleCmd,
-        //JoinCmd,
+        JoinCmd,
         //ServerCmd,
     },
 }
 
 func init() {
     
-    Flags := MonitorCmd.Command.Flags()
-    Flags.BoolVarP(&MonitorCmd.Flags["daemon"], "daemon", "d", false, "to start by daemon")
-    Flags.StringVarP(&MonitorCmd.Flags["pid"], "pid", "", "", "full path of pid file")
-    Flags.StringVarP(&MonitorCmd.Flags["log"], "log", "", "", "full path of log file")
-    Flags.StringVarP(&MonitorCmd.Flags["config"], "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
+    Flags := MainCmd.Command.Flags()
+    Flags.BoolVarP(&MainCmd.Flags.Main.Daemon, "daemon", "d", false, "to start by daemon")
+    Flags.StringVarP(&MainCmd.Flags.Main.Pid, "pid", "", "", "full path of pid file")
+    Flags.StringVarP(&MainCmd.Flags.Main.Log, "log", "", "", "full path of log file")
+    Flags.StringVarP(&MainCmd.Flags.Main.Config, "config", "c", "/etc/monitor.toml", "configuration file specifying additional options")
     
-    V := MonitorCmd.Viper
+    V := MainCmd.Viper
     V.BindPFlag("server.pid", Flags.Lookup("pid"))
     V.BindPFlag("server.log", Flags.Lookup("log"))
     V.BindPFlag("server.daemon", Flags.Lookup("daemon"))
     
-    MonitorCmd.NewChildren()
+    MainCmd.NewChildren()
 }
