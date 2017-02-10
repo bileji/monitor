@@ -13,10 +13,7 @@ var MainCmd = &common.Command{
         Use: common.CMD_MAIN,
         Short: "Linux server status monitor",
         Long: "Powerful Linux server status monitor server",
-        PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-            fmt.Println("pre")
-            return nil
-        },
+        PersistentPreRunE: pre,
         RunE: func(cmd *cobra.Command, args []string) error {
             fmt.Println("run")
             return nil
@@ -28,6 +25,11 @@ var MainCmd = &common.Command{
         JoinCmd,
         //ServerCmd,
     },
+}
+
+var pre = func(cmd *cobra.Command, args []string) error {
+    fmt.Println(common.ReadConf(MainCmd.Viper, MainCmd.Flags.Main.Config))
+    return nil
 }
 
 func init() {

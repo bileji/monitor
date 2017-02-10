@@ -32,7 +32,7 @@ type Configure struct {
     MongoDB Database
 }
 
-func Initialize(Viper *viper.Viper, Path string) *Configure {
+func ReadConf(Viper *viper.Viper, Path string) *Configure {
     Dir, File := filepath.Split(Path)
     Ext := filepath.Ext(File)
     
