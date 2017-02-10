@@ -5,6 +5,7 @@ import (
     "monitor/command/common"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
+    "monitor/monitor/daemon"
 )
 
 var MainCmd = &common.Command{
@@ -30,7 +31,31 @@ func init() {
             return nil
         },
         RunE: func(cmd *cobra.Command, args []string) error {
-            fmt.Println("run")
+            Conf := MainCmd.Configure.Server
+            
+            Daemon := &daemon.Daemon{
+                PidFile: Conf.Pid,
+                UnixFile: Conf.Unix,
+                LogFile: Conf.Log,
+            }
+            
+            if Conf.Daemon == true {
+                Daemon.Daemon(MainCmd.Scheduler)
+                return nil
+            }
+            
+            err := Daemon.CreatePidFile()
+            if err == nil {
+                err := Daemon.WritePidFile()
+                if err == nil {
+                    go Daemon.Signal()
+                    Daemon.UnixListen(MainCmd.Scheduler)
+                    return nil
+                }
+            }
+            
+            fmt.Println(err)
+            
             return nil
         },
     }

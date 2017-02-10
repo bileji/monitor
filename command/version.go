@@ -13,7 +13,7 @@ var VersionCmd = &common.Command{
         Short:  "view monitor version",
         Long:   "All software has versions. This is monitor's",
         RunE:   func(cmd *cobra.Command, args []string) error {
-            fmt.Printf("monitor: v%s %s/%s \n", "1.0.0", runtime.GOOS, runtime.GOARCH)
+            fmt.Printf("version: v%s %s/%s \n", "1.0.0", runtime.GOOS, runtime.GOARCH)
             return nil
         },
     },
