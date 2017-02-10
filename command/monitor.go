@@ -1,6 +1,7 @@
 package command
 
 import (
+    "fmt"
     "monitor/command/common"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
@@ -13,11 +14,11 @@ var MainCmd = &common.Command{
         Short: "Linux server status monitor",
         Long: "Powerful Linux server status monitor server",
         PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-            
+            fmt.Println("pre")
             return nil
         },
         RunE: func(cmd *cobra.Command, args []string) error {
-            
+            fmt.Println("run")
             return nil
         },
     },
