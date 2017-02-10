@@ -36,3 +36,9 @@ func (m *Monitor) ServerInit(WS *WebServer) error {
     
     return nil
 }
+
+// node join
+func (m *Monitor) Join() error {
+    
+    return nil
+}
