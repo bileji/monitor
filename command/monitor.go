@@ -7,26 +7,6 @@ import (
     "github.com/spf13/viper"
 )
 
-//var MainCmd = &common.Command{
-//    Viper: viper.GetViper(),
-//    Command: &cobra.Command{
-//        Use: common.CMD_MAIN,
-//        Short: "Linux server status monitor",
-//        Long: "Powerful Linux server status monitor server",
-//        PersistentPreRunE: pre,
-//        RunE: func(cmd *cobra.Command, args []string) error {
-//            fmt.Println("run")
-//            return nil
-//        },
-//    },
-//    Children: []*common.Command{
-//        VersionCmd,
-//        //RoleCmd,
-//        JoinCmd,
-//        //ServerCmd,
-//    },
-//}
-
 var MainCmd = &common.Command{
     Viper: viper.GetViper(),
     Children: []*common.Command{
@@ -44,7 +24,9 @@ func init() {
         Short: "Linux server status monitor",
         Long: "Powerful Linux server status monitor server",
         PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-            fmt.Println(common.ReadConf(MainCmd.Viper, MainCmd.Flags.Main.Config))
+            if MainCmd.ReadConf() != nil {
+                fmt.Println("No config file found. Using built-in defaults.");
+            }
             return nil
         },
         RunE: func(cmd *cobra.Command, args []string) error {

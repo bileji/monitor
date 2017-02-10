@@ -32,35 +32,38 @@ type Configure struct {
     MongoDB Database
 }
 
-func ReadConf(Viper *viper.Viper, Path string) *Configure {
-    Dir, File := filepath.Split(Path)
+func (c *Command) ReadConf() error {
+    Dir, File := filepath.Split(c.Flags.Main.Config)
     Ext := filepath.Ext(File)
     
-    Viper.SetConfigName(strings.Replace(File, Ext, "", 1))
-    Viper.SetConfigType(strings.Trim(Ext, "."))
-    Viper.AddConfigPath(Dir)
+    c.Viper.SetConfigName(strings.Replace(File, Ext, "", 1))
+    c.Viper.SetConfigType(strings.Trim(Ext, "."))
+    c.Viper.AddConfigPath(Dir)
     
-    if Viper.ReadInConfig() != nil {
-        fmt.Println("No config file found. Using built-in defaults.")
+    if err := c.Viper.ReadInConfig(); err != nil {
+        return err
+        
     }
     
-    return &Configure{
+    c.Configure = &Configure{
         Server: Server{
-            Daemon: Viper.GetBool("server.daemon"),
-            Pid:  Viper.GetString("server.pid"),
-            Log: Viper.GetString("server.log"),
-            Unix: Viper.GetString("server.unix"),
+            Daemon: c.Viper.GetBool("server.daemon"),
+            Pid:  c.Viper.GetString("server.pid"),
+            Log: c.Viper.GetString("server.log"),
+            Unix: c.Viper.GetString("server.unix"),
         },
         Client: Client{
-            UnixFile: Viper.GetString("client.unix"),
+            UnixFile: c.Viper.GetString("client.unix"),
         },
         MongoDB: Database{
-            Host: Viper.GetString("mongodb.host"),
-            Port: int32(Viper.GetInt("mongodb.port")),
-            Auth: Viper.GetString("mongodb.auth"),
-            Username: Viper.GetString("mongodb.username"),
-            Password: Viper.GetString("mongodb.password"),
+            Host: c.Viper.GetString("mongodb.host"),
+            Port: int32(c.Viper.GetInt("mongodb.port")),
+            Auth: c.Viper.GetString("mongodb.auth"),
+            Username: c.Viper.GetString("mongodb.username"),
+            Password: c.Viper.GetString("mongodb.password"),
         },
     }
+    
+    return nil
 }
 
