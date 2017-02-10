@@ -6,7 +6,6 @@ import (
 )
 
 var RoleCmd = &common.Command{
-    Flags: make(map[string]interface{}, 0),
     Command: &cobra.Command{
         Use: common.CMD_ROLE,
         Short: "verion this monitor indentify",
