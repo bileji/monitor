@@ -4,14 +4,14 @@ import (
     "os"
     "fmt"
     "runtime"
-    "monitor/cmd/commands"
+    "monitor/command"
 )
 
 func main() {
     // 调优
     runtime.GOMAXPROCS(runtime.NumCPU())
     
-    err := commands.MainCmd.Execute()
+    err := command.MonitorCmd.Command.Execute()
     
     if err != nil {
         fmt.Println(err)

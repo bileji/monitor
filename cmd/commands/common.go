@@ -4,6 +4,10 @@ import (
     "github.com/spf13/cobra"
 )
 
+//type flags struct {
+//
+//}
+
 type Command struct {
     Flags    *flags
     Command  *cobra.Command
