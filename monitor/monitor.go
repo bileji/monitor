@@ -4,10 +4,13 @@ import (
     "strconv"
     "monitor/cmd/configures"
     "gopkg.in/mgo.v2"
-    "monitor/monitor/webserver"
+    "monitor/monitor/server"
+    "monitor/monitor/utils"
 )
 
-type Monitor struct{}
+type Monitor struct {
+    WebRole *utils.UniqueID
+}
 
 type WebServer struct {
     Addr     string                 `json:"addr"`

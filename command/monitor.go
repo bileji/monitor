@@ -6,7 +6,10 @@ import (
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
     "monitor/monitor/daemon"
+    "monitor/monitor"
 )
+
+var Monitor = monitor.Monitor{}
 
 var MainCmd = &common.Command{
     Viper: viper.GetViper(),
