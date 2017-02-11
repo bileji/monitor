@@ -10,12 +10,7 @@ import (
 
 var MainCmd = &common.Command{
     Viper: viper.GetViper(),
-    Children: []*common.Command{
-        VersionCmd,
-        //RoleCmd,
-        JoinCmd,
-        //ServerCmd,
-    },
+    Children: []*common.Command{VersionCmd, RoleCmd, JoinCmd, ServerCmd},
 }
 
 func init() {
