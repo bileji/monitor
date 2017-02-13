@@ -7,6 +7,7 @@ import (
     "time"
     "encoding/json"
     "monitor/command/protocol"
+    "monitor/monitor/header"
 )
 
 type Socket struct {
@@ -31,7 +32,7 @@ func (s *Socket) UnixSocket() (error) {
     return nil
 }
 
-func (s *Socket)SendMessage(Message protocol.SocketMsg) {
+func (s *Socket)SendMessage(Message header.UnixMsg) {
     if Message.Timestamp == 0 {
         Message.Timestamp = time.Now().Unix()
     }
