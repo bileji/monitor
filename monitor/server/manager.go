@@ -52,20 +52,17 @@ func (m *Manager) ConnectDB() error {
 }
 
 func (m *Manager) Listen(EMsg chan bool) {
+    Listener, err := net.Listen("tcp", m.Addr)
+    defer Listener.Close()
+    if err != nil {
+        EMsg <- false
+        return
+    }
+    
+    EMsg <- true
     http.HandleFunc("/gather", m.Gather)
     http.HandleFunc("/verify", m.Verify)
-    
-    Listener, err := net.Listen("tcp", m.Addr)
-    if err != nil {
-        fmt.Println("++++++")
-        fmt.Println(err)
-        EMsg <- false
-    } else {
-        EMsg <- true
-        err := http.Serve(Listener, nil)
-        fmt.Println("------")
-        fmt.Println(err)
-    }
+    http.Serve(Listener, nil)
     //EMsg <- http.ListenAndServe(m.Addr, nil)
 }
 
