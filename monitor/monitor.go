@@ -29,9 +29,10 @@ type ServerC struct {
 }
 
 func (m *Monitor) SInit(Msg []byte) error {
-    fmt.Println(Msg)
     var Conf ServerC
     json.Unmarshal(Msg, &Conf)
+    
+    fmt.Println(Conf)
     
     switch m.WebRole.Get() {
     case MAN:
