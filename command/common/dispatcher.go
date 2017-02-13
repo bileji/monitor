@@ -32,7 +32,7 @@ func Run(Msg protocol.SocketMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
     case CMD_ROLE:
     
     case CMD_SERVER_INIT:
-        err := Monitor.SInit(Dis.Message);
+        err := Monitor.SInit(Dis.Message.Body);
         if err != nil {
             Dis.Res(-1, fmt.Sprintf("%v", err))
             return
