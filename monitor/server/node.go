@@ -30,11 +30,11 @@ func (n *Node) Verify() error {
 }
 
 func (n *Node) gather(Spec int) error {
-    ht, err := heartbeat.NewTast("gather", Spec)
+    Ht, err := heartbeat.NewTast("gather", Spec)
     if err != nil {
         return err
     }
-    ht.Start(func() {
+    Ht.Start(func() error {
         Gather, _ := json.Marshal(header.Gather{
             Cpu: collector.Cpu{}.Exec(),
             Docker: collector.Docker{}.Exec(),
@@ -42,7 +42,9 @@ func (n *Node) gather(Spec int) error {
             Network: collector.Network{}.Exec(),
         })
         
-        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", Gather)
+        Str, _ := json.Marshal(Gather)
+        
+        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", Str)
         if err != nil {
             log.Printf("%v", err)
         }
