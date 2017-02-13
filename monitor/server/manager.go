@@ -78,7 +78,7 @@ func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
     
     var Gather model.Gather
     
-    if Req.Method == "PUT" {
+    if Req.Method == "POST" {
         Body, err := ioutil.ReadAll(Req.Body);
         defer Req.Body.Close()
         
@@ -126,7 +126,7 @@ func (m *Manager) Verify(Res http.ResponseWriter, Req *http.Request) {
     
     m.Debug(Req)
     
-    if Req.Method == "PUT" {
+    if Req.Method == "POST" {
         Body, err := ioutil.ReadAll(Req.Body)
         defer Req.Body.Close()
         
