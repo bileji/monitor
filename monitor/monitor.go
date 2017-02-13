@@ -32,7 +32,8 @@ func (m *Monitor) SInit(Msg []byte) error {
     Conf := header.Manager{}
     json.Unmarshal(Msg, &Conf)
     
-    fmt.Println(Conf)
+    fmt.Println(m.WebRole.Get())
+    fmt.Println("=============")
     
     switch m.WebRole.Get() {
     case MAN:
