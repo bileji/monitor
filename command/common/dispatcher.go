@@ -31,7 +31,11 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
     
     switch Dis.Message.Command {
     case CMD_ROLE:
-    
+        Msg, err := Monitor.Role()
+        if err == nil {
+            Dis.Res(-1, Msg)
+        }
+        Dis.Res(-1, fmt.Sprintf("%v", err))
     case CMD_SERVER_INIT:
         err := Monitor.ManagerInit(Dis.Message.Body);
         if err == nil {

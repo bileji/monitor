@@ -19,6 +19,19 @@ type Monitor struct {
     WebRole helper.UniqueID
 }
 
+func (m *Monitor) Role() string {
+    switch m.WebRole.Get() {
+    case MAN:
+        return "manager"
+    case NOD:
+        return "node"
+    case NAN:
+        return "not yet initialized"
+    default:
+        return "the monitor is misleading"
+    }
+}
+
 func (m *Monitor) ManagerInit(Msg []byte) error {
     Manager := server.Manager{}
     json.Unmarshal(Msg, &Manager)
