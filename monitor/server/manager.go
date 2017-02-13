@@ -53,14 +53,15 @@ func (m *Manager) ConnectDB() error {
 
 func (m *Manager) CheckPort() error {
     Listener, err := net.Listen("tcp", m.Addr)
+    defer Listener.Close()
     if err != nil {
         return err
     }
     Conn, err := Listener.Accept()
-    defer Conn.Close()
     if err != nil {
         return err
     }
+    Conn.Close()
     return nil
 }
 
