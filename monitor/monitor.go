@@ -73,7 +73,7 @@ func (m *Monitor) ManagerToken() (string, error) {
 }
 
 func (m *Monitor) Join() error {
-    Node := server.Node{}
+    Node := server.Node{Addr: "47.90.1.235:3476"}
     
     return Node.Verify()
 }
