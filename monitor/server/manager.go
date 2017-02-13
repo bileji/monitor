@@ -51,27 +51,11 @@ func (m *Manager) ConnectDB() error {
     return nil
 }
 
-func (m *Manager) CheckPort() error {
-    Listener, err := net.Listen("tcp", m.Addr)
-    defer Listener.Close()
-    if err != nil {
-        return err
-    }
-    Conn, err := Listener.Accept()
-    if err != nil {
-        return err
-    }
-    return Conn.Close()
-}
-
-func (m *Manager) Listen() {
+func (m *Manager) Listen(EMsg chan error) {
     http.HandleFunc("/gather", m.Gather)
     http.HandleFunc("/verify", m.Verify)
     
-    err := http.ListenAndServe(m.Addr, nil)
-    if err != nil {
-        log.Println(err)
-    }
+    EMsg <- http.ListenAndServe(m.Addr, nil)
 }
 
 func (m *Manager) Debug(Req *http.Request) {

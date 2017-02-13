@@ -33,11 +33,11 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
         if err != nil {
             return err
         }
-        err = Manager.CheckPort()
-        if err != nil {
+        EMsg := make(chan error, 1)
+        go Manager.Listen(EMsg)
+        if err <- EMsg; err != nil {
             return err
         }
-        go Manager.Listen()
         m.Token = Manager.Token
         m.WebRole.Set(MAN)
         return nil
