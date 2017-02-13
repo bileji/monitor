@@ -9,9 +9,8 @@ import (
     "monitor/monitor"
 )
 
-var Monitor = monitor.Monitor{}
-
 var MainCmd = &common.Command{
+    Subject: &monitor.Monitor{},
     Viper: viper.GetViper(),
     Children: []*common.Command{VersionCmd, RoleCmd, JoinCmd, ServerCmd},
 }
