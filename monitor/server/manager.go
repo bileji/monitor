@@ -55,7 +55,7 @@ func (m *Manager) Listen(EMsg chan bool) {
     Listener, err := net.Listen("tcp", m.Addr)
     if err != nil {
         EMsg <- false
-        Listener.Close()
+        //Listener.Close()
         return
     }
     EMsg <- true
