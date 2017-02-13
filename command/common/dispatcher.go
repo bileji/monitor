@@ -40,6 +40,8 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
         return
     case CMD_SERVER_TOKEN:
         Msg, err := Monitor.ManagerToken()
+        fmt.Println(Msg)
+        fmt.Println(err)
         if err == nil {
             Dis.Res(SUCCESS, Msg)
         }
