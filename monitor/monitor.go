@@ -1,6 +1,7 @@
 package monitor
 
 import (
+    "fmt"
     "strconv"
     "gopkg.in/mgo.v2"
     "monitor/monitor/server"
@@ -28,6 +29,7 @@ type ServerC struct {
 }
 
 func (m *Monitor) SInit(Msg []byte) error {
+    fmt.Println(Msg)
     var Conf ServerC
     json.Unmarshal(Msg, &Conf)
     
