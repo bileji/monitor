@@ -16,7 +16,6 @@ var InitCmd = &common.Command{
         Short: "init monitor server",
         Long: "Init monitor server",
         RunE: func(cmd *cobra.Command, args []string) error {
-            fmt.Println(MainCmd.Configure)
             Socket := &common.Socket{
                 SUnix: MainCmd.Configure.Server.Unix,
                 CUnix: MainCmd.Configure.Client.Unix,
