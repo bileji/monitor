@@ -39,9 +39,9 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
         Dis.Res(FAILURE, fmt.Sprintf("%v", err))
         return
     case CMD_SERVER_TOKEN:
-        Token, err := Monitor.ManagerToken()
+        TokenStr, err := Monitor.ManagerToken()
         if err == nil {
-            Dis.Res(SUCCESS, fmt.Sprint(Token))
+            Dis.Res(SUCCESS, fmt.Sprintf("%s", TokenStr))
         }
         Dis.Res(FAILURE, fmt.Sprintf("%v", err))
         return
