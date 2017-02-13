@@ -1,5 +1,5 @@
-hash: 79aa19003a533594028ba528b99f8bb4c6e25b4e64422ff6e6abb4f44f685d9f
-updated: 2017-02-06T16:37:35.704949882+08:00
+hash: ba4f23f925f8e95068c6beb417758c81608aed68b537a91effcb84b8b0c6b732
+updated: 2017-02-13T20:05:51.385267466+08:00
 imports:
 - name: github.com/fsnotify/fsnotify
   version: a904159b9206978bb6d53fcc7a769e5cd726c737
@@ -26,10 +26,12 @@ imports:
   version: b3b15ef068fd0b17ddf408a23669f20811d194d2
 - name: github.com/mitchellh/mapstructure
   version: db1efb556f84b25a0a13a04aad883943538ad2e0
+- name: github.com/noaway/heartbeat
+  version: 9ba9a606fca34224909f0ecca1720dbfc515cbf8
 - name: github.com/pelletier/go-buffruneio
   version: df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d
 - name: github.com/pelletier/go-toml
-  version: d1fa2118c12c44e4f5004da216d1efad10cb4924
+  version: c9506ee96398e7571356462217b9e24d6a628d71
 - name: github.com/shirou/gopsutil
   version: 1123132e5ad392485dbd16e0f09a0db8c963a2ab
   subpackages:
@@ -60,15 +62,12 @@ imports:
   version: 5ed0fc31f7f453625df314d8e66b9791e8d13003
 - name: github.com/StackExchange/wmi
   version: e54cbda6595d7293a7a468ccf9525f6bc8887f99
-- name: golang.org/x/sys
-  version: 7a6e5648d140666db5d920909e082ca00a87ba2c
-  subpackages:
-  - unix
-- name: golang.org/x/text
-  version: 506f9d5c962f284575e88337e7d9296d27e729d3
-  subpackages:
-  - transform
-  - unicode/norm
+- name: golang.org/x/sys/unix
+  version: ""
+- name: golang.org/x/text/transform
+  version: ""
+- name: golang.org/x/text/unicode/norm
+  version: ""
 - name: gopkg.in/mgo.v2
   version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:
@@ -77,5 +76,5 @@ imports:
   - internal/scram
   - internal/json
 - name: gopkg.in/yaml.v2
-  version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
+  version: a3f3340b5840cee44f372bddb5880fcbc419b46a
 devImports: []

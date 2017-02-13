@@ -54,6 +54,7 @@ func (n *Node) gather(Spec int) error {
         json.Unmarshal(Body, &Answer)
         if Answer.Code == header.FAILURE {
             log.Println("gather failure")
+            log.Println(Answer)
         }
         return nil
     })
