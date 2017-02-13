@@ -42,6 +42,7 @@ func (c *Command) ReadConf() error {
             Pid:  c.Viper.GetString("server.pid"),
             Log: c.Viper.GetString("server.log"),
             Unix: c.Viper.GetString("server.unix"),
+            Addr: c.Viper.GetString("server.addr"),
         },
         Client: Client{
             Unix: c.Viper.GetString("client.unix"),
