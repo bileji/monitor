@@ -1,6 +1,7 @@
 package command
 
 import (
+    "encoding/json"
     "monitor/command/common"
     "github.com/spf13/cobra"
     "monitor/monitor/header"
@@ -21,9 +22,14 @@ var JoinCmd = &common.Command{
             if err != nil {
                 return err
             }
+            
+            Buffer, _ := json.Marshal(header.Node{
+                Addr: MainCmd.Flags.Join.Addr,
+                Token: MainCmd.Flags.Join.Token,
+            })
             Socket.SendMessage(header.UnixMsg{
                 Command: common.CMD_JOIN,
-                Body: []byte(""),
+                Body: Buffer,
             })
             Socket.EchoReceive()
             return nil
