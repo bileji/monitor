@@ -15,10 +15,11 @@ const (
 )
 
 type Monitor struct {
+    Token   string
     WebRole helper.UniqueID
 }
 
-func (m *Monitor) SInit(Msg []byte) error {
+func (m *Monitor) ManagerInit(Msg []byte) error {
     Manager := server.Manager{}
     json.Unmarshal(Msg, &Manager)
     
@@ -30,12 +31,26 @@ func (m *Monitor) SInit(Msg []byte) error {
     case NAN:
         err := Manager.ConnectDB()
         if err != nil {
-            return nil
+            return err
         }
         go Manager.Listen()
+        m.Token = Manager.Token
         m.WebRole.Set(MAN)
         return nil
     default:
-        return nil
+        return errors.New("the monitor is misleading")
+    }
+}
+
+func (m *Monitor) ManagerToken() (string, error) {
+    switch m.WebRole.Get() {
+    case MAN:
+        return m.Token, nil
+    case NOD:
+        return nil, errors.New("run as a node")
+    case NAN:
+        return nil, errors.New("not yet initialized")
+    default:
+        return nil, errors.New("the monitor is misleading")
     }
 }

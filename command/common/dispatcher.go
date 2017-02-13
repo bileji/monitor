@@ -33,15 +33,20 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
     case CMD_ROLE:
     
     case CMD_SERVER_INIT:
-        err := Monitor.SInit(Dis.Message.Body);
-        if err != nil {
-            Dis.Res(-1, fmt.Sprintf("%v", err))
+        err := Monitor.ManagerInit(Dis.Message.Body);
+        if err == nil {
+            Dis.Res(-1, "success")
             return
         }
-        Dis.Res(-1, "success")
+        Dis.Res(-1, fmt.Sprintf("%v", err))
         return
     case CMD_SERVER_TOKEN:
-    
+        Msg, err := Monitor.ManagerToken()
+        if err == nil {
+            Dis.Res(-1, Msg)
+        }
+        Dis.Res(-1, fmt.Sprintf("%v", err))
+        return
     case CMD_JOIN:
     
     default:
