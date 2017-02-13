@@ -36,7 +36,6 @@ type Command struct {
     Subject   *monitor.Monitor
     Flags     Flags
     Command   *cobra.Command
-    Children  []*Command
     Viper     *viper.Viper
     Configure *Configure
 }

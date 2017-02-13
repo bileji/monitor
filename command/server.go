@@ -61,5 +61,5 @@ var ServerCmd = &common.Command{
 }
 
 func init() {
-    ServerCmd.Command.AddCommand(InitCmd, TokenCmd)
+    ServerCmd.NewChildren(InitCmd, TokenCmd)
 }
