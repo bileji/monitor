@@ -51,8 +51,9 @@ func init() {
         Long: "Powerful Linux server status monitor server",
         PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
             if MainCmd.ReadConf() != nil {
-                fmt.Println("No config file found. Using built-in defaults.");
+                fmt.Println("open: no config file found");
             }
+            println(MainCmd.Configure)
             return nil
         },
         RunE: func(cmd *cobra.Command, args []string) error {
