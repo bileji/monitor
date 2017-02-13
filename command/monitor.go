@@ -13,7 +13,7 @@ var MainCmd = &common.Command{
     Subject: &monitor.Monitor{},
     Viper: viper.GetViper(),
     //Children: []*common.Command{VersionCmd, RoleCmd, JoinCmd, ServerCmd},
-    Children: []*common.Command{VersionCmd, RoleCmd, JoinCmd},
+    Children: []*common.Command{},
 }
 
 func init() {
