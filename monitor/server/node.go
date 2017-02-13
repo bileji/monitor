@@ -7,7 +7,6 @@ import (
     "encoding/json"
     "monitor/monitor/header"
     "monitor/monitor/helper"
-    "monitor/monitor/collector"
     "github.com/noaway/heartbeat"
     "monitor/monitor/collector/model"
 )
@@ -37,8 +36,10 @@ func (n *Node) gather(Spec int) error {
     }
     Ht.Start(func() error {
         Gather := model.Gather{}
+    
+        Buffer, _ := Gather.Exec()
         
-        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", string(Gather.Exec()))
+        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", string(Buffer))
         if err != nil {
             log.Printf("%v", err)
         }
