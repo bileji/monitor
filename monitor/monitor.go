@@ -35,7 +35,7 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
         }
         EMsg := make(chan error, 1)
         go Manager.Listen(EMsg)
-        if err <- EMsg; err != nil {
+        if err := <-EMsg; err != nil {
             return err
         }
         m.Token = Manager.Token
