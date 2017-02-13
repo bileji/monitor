@@ -44,7 +44,7 @@ func (n *Node) gather(Spec int) error {
         
         Str, _ := json.Marshal(Gather)
         
-        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", Str)
+        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", string(Str))
         if err != nil {
             log.Printf("%v", err)
         }
