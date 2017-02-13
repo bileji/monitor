@@ -33,10 +33,10 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
         if err != nil {
             return err
         }
-        EMsg := make(chan error, 1)
+        EMsg := make(chan bool, 1)
         go Manager.Listen(EMsg)
-        if err := <-EMsg; err != nil {
-            return err
+        if ! <-EMsg {
+            return errors.New(Manager.Addr + "has been bind")
         }
         m.Token = Manager.Token
         m.WebRole.Set(MAN)

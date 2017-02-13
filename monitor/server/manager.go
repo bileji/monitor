@@ -12,6 +12,7 @@ import (
     "monitor/monitor/collector/collection"
     "monitor/monitor/header"
     "strconv"
+    "net"
 )
 
 type Answer struct {
@@ -50,11 +51,18 @@ func (m *Manager) ConnectDB() error {
     return nil
 }
 
-func (m *Manager) Listen(EMsg chan error) {
+func (m *Manager) Listen(EMsg chan bool) {
     http.HandleFunc("/gather", m.Gather)
     http.HandleFunc("/verify", m.Verify)
     
-    EMsg <- http.ListenAndServe(m.Addr, nil)
+    Listener, err := net.Listen("tcp", m.Addr)
+    if err != nil {
+        EMsg <- false
+    } else {
+        EMsg <- true
+        http.Serve(Listener, nil)
+    }
+    //EMsg <- http.ListenAndServe(m.Addr, nil)
 }
 
 func (m *Manager) Debug(Req *http.Request) {
