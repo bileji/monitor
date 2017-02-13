@@ -12,7 +12,7 @@ import (
 var MainCmd = &common.Command{
     Subject: &monitor.Monitor{},
     Viper: viper.GetViper(),
-    Children: []*common.Command{VersionCmd, RoleCmd, JoinCmd, ServerCmd},
+    
 }
 
 func init() {
@@ -81,5 +81,5 @@ func init() {
     
     Flags.StringVarP(&MainCmd.Configure.Server.Addr, "addr", "a", "0.0.0.0:3647", "web server address")
     
-    MainCmd.NewChildren()
+    MainCmd.NewChildren(JoinCmd, RoleCmd, RoleCmd, ServerCmd, VersionCmd)
 }

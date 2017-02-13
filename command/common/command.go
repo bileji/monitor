@@ -41,8 +41,8 @@ type Command struct {
     Configure *Configure
 }
 
-func (c *Command) NewChildren() {
-    for _, Child := range c.Children {
+func (c *Command) NewChildren(Children... *Command) {
+    for _, Child := range Children {
         c.Command.AddCommand(Child.Command)
     }
 }
