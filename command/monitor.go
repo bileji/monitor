@@ -81,5 +81,5 @@ func init() {
     
     Flags.StringVarP(&MainCmd.Configure.Server.Addr, "addr", "a", "0.0.0.0:3647", "web server address")
     
-    MainCmd.NewChildren(JoinCmd, RoleCmd, RoleCmd, ServerCmd, VersionCmd)
+    //MainCmd.NewChildren(JoinCmd, RoleCmd, RoleCmd, ServerCmd, VersionCmd)
 }
