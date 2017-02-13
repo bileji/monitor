@@ -3,6 +3,7 @@ package command
 import (
     "github.com/spf13/cobra"
     "monitor/command/common"
+    "monitor/monitor/header"
 )
 
 var RoleCmd = &common.Command{
@@ -11,7 +12,19 @@ var RoleCmd = &common.Command{
         Short: "verion this monitor indentify",
         Long: "verion this monitor indentify",
         RunE: func(cmd *cobra.Command, args []string) error {
-            // todo
+            Socket := &common.Socket{
+                SUnix: MainCmd.Configure.Server.Unix,
+                CUnix: MainCmd.Configure.Client.Unix,
+            }
+            err := Socket.UnixSocket();
+            defer Socket.Conn.Close()
+            if err != nil {
+                return err
+            }
+            Socket.SendMessage(header.UnixMsg{
+                Command: common.CMD_ROLE,
+                Body: []byte(""),
+            })
             return nil
         },
     },

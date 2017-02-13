@@ -19,6 +19,7 @@ var InitCmd = &common.Command{
                 CUnix: MainCmd.Configure.Client.Unix,
             }
             err := Socket.UnixSocket();
+            defer Socket.Conn.Close()
             if err != nil {
                 return err
             }
@@ -42,7 +43,19 @@ var TokenCmd = &common.Command{
         Short: "view node join token",
         Long: "View node join token",
         RunE: func(cmd *cobra.Command, args []string) error {
-            
+            Socket := &common.Socket{
+                SUnix: MainCmd.Configure.Server.Unix,
+                CUnix: MainCmd.Configure.Client.Unix,
+            }
+            err := Socket.UnixSocket();
+            defer Socket.Conn.Close()
+            if err != nil {
+                return err
+            }
+            Socket.SendMessage(header.UnixMsg{
+                Command: common.CMD_SERVER_TOKEN,
+                Body: []byte(""),
+            })
             return nil
         },
     },

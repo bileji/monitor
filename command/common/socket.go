@@ -27,7 +27,6 @@ func (s *Socket) UnixSocket() (error) {
     if err != nil {
         return err
     }
-    
     s.Conn, err = net.DialUnix("unix", lAddr, rAddr)
     return nil
 }
