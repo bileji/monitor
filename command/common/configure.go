@@ -10,10 +10,11 @@ type Server struct {
     Pid    string
     Unix   string
     Log    string
+    Addr   string
 }
 
 type Client struct {
-    UnixFile string
+    Unix string
 }
 
 type Database struct {
@@ -50,7 +51,7 @@ func (c *Command) ReadConf() error {
             Unix: c.Viper.GetString("server.unix"),
         },
         Client: Client{
-            UnixFile: c.Viper.GetString("client.unix"),
+            Unix: c.Viper.GetString("client.unix"),
         },
         MongoDB: Database{
             Host: c.Viper.GetString("mongodb.host"),
