@@ -58,12 +58,11 @@ func (m *Manager) Listen(EMsg chan bool) {
         EMsg <- false
         return
     }
-    
     EMsg <- true
+    
     http.HandleFunc("/gather", m.Gather)
     http.HandleFunc("/verify", m.Verify)
     http.Serve(Listener, nil)
-    //EMsg <- http.ListenAndServe(m.Addr, nil)
 }
 
 func (m *Manager) Debug(Req *http.Request) {
