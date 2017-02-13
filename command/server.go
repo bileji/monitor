@@ -23,7 +23,7 @@ var InitCmd = &common.Command{
             if err != nil {
                 return err
             }
-            Buffer, _ := json.Marshal(monitor.ServerC{
+            Buffer, _ := json.Marshal(header.Manager{
                 Addr: MainCmd.Configure.Server.Addr,
                 Database: MainCmd.Configure.MongoDB,
                 Token: helper.RandStr(),

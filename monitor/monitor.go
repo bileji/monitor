@@ -29,7 +29,7 @@ type ServerC struct {
 }
 
 func (m *Monitor) SInit(Msg []byte) error {
-    var Conf ServerC
+    Conf := header.Manager{}
     json.Unmarshal(Msg, &Conf)
     
     fmt.Println(Conf)

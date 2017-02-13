@@ -1,12 +1,8 @@
 package header
 
-import (
-    "gopkg.in/mgo.v2"
-)
-
-type ManagerRec struct {
-    Addr      string
-    Token     string
-    Log       bool
-    DBHandler *mgo.Database
+type Manager struct {
+    Addr     string   `json:"addr"`
+    Token    string   `json:"token"`
+    Log      bool     `json:"log"`
+    Database Database `json:"db_handler"`
 }
