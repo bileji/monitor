@@ -46,7 +46,7 @@ func (m *Monitor) SInit(Msg []byte) error {
             }
             go (&service.Master{
                 Addr: Conf.Addr,
-                DBHandler: DB.Auth,
+                DBHandler: S.DB(DB.Auth),
                 Token: Conf.Token,
             }).Listen()
             m.WebRole.Set(MAN)
