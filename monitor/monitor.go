@@ -19,19 +19,14 @@ const (
 )
 
 type Monitor struct {
-    WebRole *helper.UniqueID
-}
-
-type ServerC struct {
-    Addr     string            `json:"addr"`
-    Database header.Database   `json:"database"`
-    Token    string            `json:"token"`
+    WebRole helper.UniqueID
 }
 
 func (m *Monitor) SInit(Msg []byte) error {
     Conf := header.Manager{}
     json.Unmarshal(Msg, &Conf)
     
+    fmt.Println("+++++++++++++")
     fmt.Println(m.WebRole.Get())
     fmt.Println("=============")
     
