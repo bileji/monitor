@@ -31,15 +31,11 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
     
     switch Dis.Message.Command {
     case CMD_ROLE:
-        Msg, err := Monitor.Role()
-        if err == nil {
-            Dis.Res(-1, Msg)
-        }
-        Dis.Res(-1, fmt.Sprintf("%v", err))
+        Dis.Res(0, Monitor.Role())
     case CMD_SERVER_INIT:
         err := Monitor.ManagerInit(Dis.Message.Body);
         if err == nil {
-            Dis.Res(-1, "success")
+            Dis.Res(0, "success")
             return
         }
         Dis.Res(-1, fmt.Sprintf("%v", err))
@@ -47,7 +43,7 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
     case CMD_SERVER_TOKEN:
         Msg, err := Monitor.ManagerToken()
         if err == nil {
-            Dis.Res(-1, Msg)
+            Dis.Res(0, Msg)
         }
         Dis.Res(-1, fmt.Sprintf("%v", err))
         return
