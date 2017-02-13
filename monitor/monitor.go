@@ -5,9 +5,9 @@ import (
     "gopkg.in/mgo.v2"
     "monitor/monitor/server"
     "monitor/monitor/helper"
-    "monitor/command/common"
     "encoding/json"
     "errors"
+    "monitor/monitor/header"
 )
 
 const (
@@ -23,7 +23,7 @@ type Monitor struct {
 
 type ServerC struct {
     Addr     string            `json:"addr"`
-    Database common.Database   `json:"database"`
+    Database header.Database   `json:"database"`
     Token    string            `json:"token"`
 }
 

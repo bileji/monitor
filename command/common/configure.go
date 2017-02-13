@@ -3,6 +3,7 @@ package common
 import (
     "strings"
     "path/filepath"
+    "monitor/monitor/header"
 )
 
 type Server struct {
@@ -17,18 +18,10 @@ type Client struct {
     Unix string
 }
 
-type Database struct {
-    Host     string `json:"host"`
-    Port     int32  `json:"port"`
-    Auth     string `json:"auth"`
-    Username string `json:"username"`
-    Password string `json:"password"`
-}
-
 type Configure struct {
     Server  Server
     Client  Client
-    MongoDB Database
+    MongoDB header.Database
 }
 
 func (c *Command) ReadConf() error {
@@ -53,7 +46,7 @@ func (c *Command) ReadConf() error {
         Client: Client{
             Unix: c.Viper.GetString("client.unix"),
         },
-        MongoDB: Database{
+        MongoDB: header.Database{
             Host: c.Viper.GetString("mongodb.host"),
             Port: int32(c.Viper.GetInt("mongodb.port")),
             Auth: c.Viper.GetString("mongodb.auth"),
