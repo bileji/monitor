@@ -3,16 +3,16 @@ package server
 import (
     "log"
     "fmt"
+    "net"
+    "net/http"
     "strings"
     "io/ioutil"
-    "net/http"
     "encoding/json"
     "gopkg.in/mgo.v2"
     "monitor/monitor/collector/model"
     "monitor/monitor/collector/collection"
     "monitor/monitor/header"
     "strconv"
-    "github.com/shirou/gopsutil/net"
 )
 
 type Answer struct {
