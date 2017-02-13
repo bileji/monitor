@@ -7,7 +7,6 @@ import (
     "github.com/spf13/viper"
     "monitor/command/protocol"
     "monitor/monitor"
-    "pigeon/server/dispatcher"
 )
 
 type MonitorFlags struct {
