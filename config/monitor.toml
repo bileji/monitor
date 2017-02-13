@@ -7,7 +7,7 @@ pid="/var/run/monitord.pid"
 log="/var/log/monitord.log"
 # unix socket file
 unix="/var/run/monitord.sock"
-addr=":3467"
+addr=":80"
 [client]
 # unix socket file
 unix="/var/run/monitor.sock"
