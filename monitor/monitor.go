@@ -33,7 +33,7 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
         if err != nil {
             return err
         }
-        err := Manager.CheckPort()
+        err = Manager.CheckPort()
         if err != nil {
             return err
         }
@@ -51,10 +51,10 @@ func (m *Monitor) ManagerToken() (string, error) {
     case MAN:
         return m.Token, nil
     case NOD:
-        return nil, errors.New("run as a node")
+        return "", errors.New("run as a node")
     case NAN:
-        return nil, errors.New("not yet initialized")
+        return "", errors.New("not yet initialized")
     default:
-        return nil, errors.New("the monitor is misleading")
+        return "", errors.New("the monitor is misleading")
     }
 }
