@@ -11,7 +11,7 @@ import (
 type Node header.Node
 
 func (n *Node) Verify() error {
-    R, err := helper.Request("POST", n.Addr + "/verify", n.Token)
+    R, err := helper.Request("PUT", "http://" + n.Addr + "/verify", n.Token)
     if err != nil {
         return err
     }
