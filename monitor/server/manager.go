@@ -1,4 +1,4 @@
-package service
+package server
 
 import (
     "log"
@@ -10,6 +10,8 @@ import (
     "gopkg.in/mgo.v2"
     "monitor/monitor/collector/model"
     "monitor/monitor/collector/collection"
+    "monitor/monitor/header"
+    "strconv"
 )
 
 type Answer struct {
@@ -27,14 +29,28 @@ func (A Answer)Return(Res http.ResponseWriter) {
     Res.Write(Bytes)
 }
 
-type Master struct {
-    Addr      string
-    DBHandler *mgo.Database
-    Token     string
-    Log       bool
+type Manager header.Manager
+
+func (m *Manager) ConnectDB() error {
+    // 创建连接
+    Session, err := mgo.Dial(m.Database.Host + ":" + strconv.Itoa(int(m.Database.Port)))
+    if err != nil {
+        return err
+    }
+    
+    // 登录DB
+    if err := Session.DB(m.Database.Auth).Login(m.Database.Username, m.Database.Password); err != nil {
+        return err
+    }
+    
+    // 连接池限制
+    Session.SetPoolLimit(10)
+    m.Handler = Session.DB(m.Database.Auth)
+    
+    return nil
 }
 
-func (m *Master) Listen() {
+func (m *Manager) Listen() {
     http.HandleFunc("/gather", m.Gather)
     http.HandleFunc("/verify", m.Verify)
     err := http.ListenAndServe(m.Addr, nil)
@@ -43,7 +59,7 @@ func (m *Master) Listen() {
     }
 }
 
-func (m *Master) Debug(Req *http.Request) {
+func (m *Manager) Debug(Req *http.Request) {
     if m.Log == true {
         LogStr := []string{
             "[web]",
@@ -56,7 +72,7 @@ func (m *Master) Debug(Req *http.Request) {
     }
 }
 
-func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
+func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
     m.Debug(Req)
     
     var Gather model.Gather
@@ -82,7 +98,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
             return
         }
         
-        err = m.DBHandler.C(collection.GATHER).Insert(Gather);
+        err = m.Handler.C(collection.GATHER).Insert(Gather);
         if err != nil {
             Answer{
                 Code: -1,
@@ -105,7 +121,7 @@ func (m *Master) Gather(Res http.ResponseWriter, Req *http.Request) {
     return
 }
 
-func (m *Master) Verify(Res http.ResponseWriter, Req *http.Request) {
+func (m *Manager) Verify(Res http.ResponseWriter, Req *http.Request) {
     
     m.Debug(Req)
     
