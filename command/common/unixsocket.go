@@ -6,9 +6,13 @@ import (
     "fmt"
     "time"
     "encoding/json"
-    "monitor/command/protocol"
     "monitor/monitor/header"
 )
+
+type Response struct {
+    Code int
+    Body []byte
+}
 
 type Socket struct {
     CUnix string
@@ -43,7 +47,7 @@ func (s *Socket)EchoReceive() {
     defer s.Conn.Close()
     Buffer := make([]byte, SOCKET_REC_LENGTH)
     if Len, err := s.Conn.Read(Buffer); err == nil {
-        Message := protocol.Response{}
+        Message := Response{}
         json.Unmarshal(Buffer[0:Len], &Message)
         fmt.Println(string(Message.Body))
     }
