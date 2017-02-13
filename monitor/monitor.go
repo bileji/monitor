@@ -1,6 +1,7 @@
 package monitor
 
 import (
+    "fmt"
     "monitor/monitor/server"
     "monitor/monitor/helper"
     "encoding/json"
@@ -52,6 +53,7 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
             return errors.New("listen tcp " + Manager.Addr + " address already in use")
         }
         m.Token = Manager.Token
+        fmt.Println(m.Token)
         m.WebRole.Set(MAN)
         return nil
     default:
@@ -60,6 +62,7 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
 }
 
 func (m *Monitor) ManagerToken() (string, error) {
+    fmt.Println(m.Token)
     switch m.WebRole.Get() {
     case MAN:
         return m.Token, nil
