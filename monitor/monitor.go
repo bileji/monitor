@@ -76,5 +76,5 @@ func (m *Monitor) Join(Msg []byte) error {
     Node := server.Node{}
     json.Unmarshal(Msg, &Node)
     
-    return Node.Verify()
+    return Node.RunForever()
 }

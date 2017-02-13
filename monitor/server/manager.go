@@ -78,13 +78,13 @@ func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
     
     var Gather model.Gather
     
-    if Req.Method == "PUT" {
+    if Req.Method == header.METHOD {
         Body, err := ioutil.ReadAll(Req.Body);
         defer Req.Body.Close()
         
         if err != nil {
             Answer{
-                Code: -1,
+                Code: header.FAILURE,
                 Message: fmt.Sprintf("%v", err),
             }.Return(Res)
             return
@@ -93,7 +93,7 @@ func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
         err = json.Unmarshal(Body, &Gather);
         if err != nil {
             Answer{
-                Code: -1,
+                Code: header.FAILURE,
                 Message: fmt.Sprintf("%v", err),
             }.Return(Res)
             return
@@ -102,21 +102,21 @@ func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
         err = m.Handler.C(collection.GATHER).Insert(Gather);
         if err != nil {
             Answer{
-                Code: -1,
+                Code: header.FAILURE,
                 Message: fmt.Sprintf("%v", err),
             }.Return(Res)
             return
         }
         
         Answer{
-            Code: 0,
+            Code: header.SUCCESS,
             Message: "gather successful",
         }.Return(Res)
         return
     }
     
     Answer{
-        Code: -1,
+        Code: header.FAILURE,
         Message: "invalid request",
     }.Return(Res)
     return
@@ -126,13 +126,13 @@ func (m *Manager) Verify(Res http.ResponseWriter, Req *http.Request) {
     
     m.Debug(Req)
     
-    if Req.Method == "PUT" {
+    if Req.Method == header.METHOD {
         Body, err := ioutil.ReadAll(Req.Body)
         defer Req.Body.Close()
         
         if err != nil {
             Answer{
-                Code: -1,
+                Code: header.FAILURE,
                 Message: fmt.Sprintf("%v", err),
             }.Return(Res)
             return
@@ -140,21 +140,21 @@ func (m *Manager) Verify(Res http.ResponseWriter, Req *http.Request) {
         
         if m.Token == string(Body) {
             Answer{
-                Code: 0,
+                Code: header.SUCCESS,
                 Message: "verify successful",
             }.Return(Res)
             return
         }
         
         Answer{
-            Code: -1,
+            Code: header.FAILURE,
             Message: "token does not match",
         }.Return(Res)
         return
     }
     
     Answer{
-        Code: -1,
+        Code: header.FAILURE,
         Message: "invalid request",
     }.Return(Res)
     return
