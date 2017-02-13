@@ -32,6 +32,7 @@ var InitCmd = &common.Command{
                 Command: common.CMD_SERVER_INIT,
                 Body: Buffer,
             })
+            Socket.EchoReceive()
             return nil
         },
     },
@@ -56,6 +57,7 @@ var TokenCmd = &common.Command{
                 Command: common.CMD_SERVER_TOKEN,
                 Body: []byte(""),
             })
+            Socket.EchoReceive()
             return nil
         },
     },

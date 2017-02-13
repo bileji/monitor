@@ -25,6 +25,7 @@ var RoleCmd = &common.Command{
                 Command: common.CMD_ROLE,
                 Body: []byte(""),
             })
+            Socket.EchoReceive()
             return nil
         },
     },
