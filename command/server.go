@@ -9,7 +9,7 @@ import (
     "monitor/monitor/helper"
 )
 
-var initCmd = &common.Command{
+var InitCmd = &common.Command{
     Command: &cobra.Command{
         Use: common.CMD_SERVER_INIT,
         Short: "init monitor server",
@@ -37,7 +37,7 @@ var initCmd = &common.Command{
     },
 }
 
-var tokenCmd = &common.Command{
+var TokenCmd = &common.Command{
     Command: &cobra.Command{
         Use: common.CMD_SERVER_TOKEN,
         Short: "view node join token",
@@ -55,16 +55,5 @@ var ServerCmd = &common.Command{
         Short: "monitor manager",
         Long: "Monitor manager",
     },
-    Children: []*common.Command{initCmd, tokenCmd},
-}
-
-func init() {
-    initFlags := initCmd.Command.Flags()
-    initFlags.StringVarP(&MainCmd.Configure.MongoDB.Host, "host", "", "127.0.0.1", "mongodb host")
-    initFlags.Int32VarP(&MainCmd.Configure.MongoDB.Port, "port", "", 27017, "mongodb port")
-    initFlags.StringVarP(&MainCmd.Configure.MongoDB.Auth, "auth", "", "admin", "auth database")
-    initFlags.StringVarP(&MainCmd.Configure.MongoDB.Username, "user", "", "", "username")
-    initFlags.StringVarP(&MainCmd.Configure.MongoDB.Password, "pwd", "", "", "password")
-    
-    initFlags.StringVarP(&MainCmd.Configure.Server.Addr, "addr", "a", "0.0.0.0:3647", "web server address")
+    Children: []*common.Command{InitCmd, TokenCmd},
 }

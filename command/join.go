@@ -18,10 +18,5 @@ var JoinCmd = &common.Command{
     },
 }
 
-func init() {
-    
-    Flags := JoinCmd.Command.Flags()
-    
-    Flags.StringVarP(&JoinCmd.Flags.Join.Addr, "addr", "", "", "manager addr")
-    Flags.StringVarP(&JoinCmd.Flags.Join.Token, "token", "", "", "join token")
-}
+
+
