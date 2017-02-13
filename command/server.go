@@ -61,13 +61,13 @@ var ServerCmd = &common.Command{
 }
 
 func init() {
-    Flags := InitCmd.Command.Flags()
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Host, "host", "", "127.0.0.1", "mongodb host")
-    Flags.Int32VarP(&MainCmd.Configure.MongoDB.Port, "port", "", 27017, "mongodb port")
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Auth, "auth", "", "admin", "auth database")
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Username, "user", "", "", "username")
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Password, "pwd", "", "", "password")
-
-    Flags.StringVarP(&MainCmd.Configure.Server.Addr, "addr", "a", "0.0.0.0:3647", "web server address")
+    //Flags := InitCmd.Command.Flags()
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Host, "host", "", "127.0.0.1", "mongodb host")
+    //Flags.Int32VarP(&MainCmd.Configure.MongoDB.Port, "port", "", 27017, "mongodb port")
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Auth, "auth", "", "admin", "auth database")
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Username, "user", "", "", "username")
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Password, "pwd", "", "", "password")
+    //
+    //Flags.StringVarP(&MainCmd.Configure.Server.Addr, "addr", "a", "0.0.0.0:3647", "web server address")
     ServerCmd.NewChildren(InitCmd, TokenCmd)
 }
