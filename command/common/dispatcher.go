@@ -6,10 +6,11 @@ import (
     "encoding/json"
     "monitor/command/protocol"
     "monitor/monitor"
+    "monitor/monitor/header"
 )
 
 type Dispatcher struct {
-    Message protocol.SocketMsg
+    Message header.UnixMsg
     Conn    *net.UnixConn
 }
 
@@ -22,7 +23,7 @@ func (dis *Dispatcher) Res(Code int, Msg string) (int, error) {
     return dis.Conn.Write(Byte)
 }
 
-func Run(Msg protocol.SocketMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
+func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
     Dis := &Dispatcher{
         Conn: Conn,
         Message: Msg,

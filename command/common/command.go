@@ -5,8 +5,8 @@ import (
     "encoding/json"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
-    "monitor/command/protocol"
     "monitor/monitor"
+    "monitor/monitor/header"
 )
 
 type MonitorFlags struct {
@@ -58,7 +58,7 @@ func (c *Command) Scheduler(Listener *net.UnixListener) {
                 Con.Close()
                 return
             }
-            var Message protocol.SocketMsg
+            var Message header.UnixMsg
             json.Unmarshal(Buffer[0: Len], &Message)
             
             Run(Message, Con, c.Subject)

@@ -4,9 +4,9 @@ import (
     "encoding/json"
     "monitor/command/common"
     "github.com/spf13/cobra"
-    "monitor/command/protocol"
     "monitor/monitor"
     "monitor/monitor/helper"
+    "monitor/monitor/header"
 )
 
 var InitCmd = &common.Command{
@@ -28,7 +28,7 @@ var InitCmd = &common.Command{
                 Database: MainCmd.Configure.MongoDB,
                 Token: helper.RandStr(),
             })
-            Socket.SendMessage(protocol.SocketMsg{
+            Socket.SendMessage(header.UnixMsg{
                 Command: common.CMD_SERVER_INIT,
                 Body: Buffer,
             })
