@@ -15,11 +15,7 @@ import (
     "net"
 )
 
-type Answer struct {
-    Code    int32                   `json:"code"`
-    Data    map[string]interface{}  `json:"data"`
-    Message string                  `json:"message"`
-}
+type Answer header.Answer
 
 func (A Answer)Return(Res http.ResponseWriter) {
     Res.Header().Set("Content-type", "application/json")

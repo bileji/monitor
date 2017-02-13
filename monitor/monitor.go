@@ -71,3 +71,9 @@ func (m *Monitor) ManagerToken() (string, error) {
         return "", errors.New("the monitor is misleading")
     }
 }
+
+func (m *Monitor) Join() error {
+    Node := server.Node{}
+    
+    return Node.Verify()
+}
