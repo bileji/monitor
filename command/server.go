@@ -4,7 +4,6 @@ import (
     "encoding/json"
     "monitor/command/common"
     "github.com/spf13/cobra"
-    "monitor/monitor"
     "monitor/monitor/helper"
     "monitor/monitor/header"
 )
