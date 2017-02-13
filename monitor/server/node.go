@@ -1,11 +1,11 @@
 package server
 
 import (
+    "errors"
     "io/ioutil"
     "encoding/json"
     "monitor/monitor/header"
     "monitor/monitor/helper"
-    "github.com/wendal/errors"
 )
 
 type Node header.Node
