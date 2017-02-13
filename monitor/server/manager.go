@@ -57,10 +57,14 @@ func (m *Manager) Listen(EMsg chan bool) {
     
     Listener, err := net.Listen("tcp", m.Addr)
     if err != nil {
+        fmt.Println("++++++")
+        fmt.Println(err)
         EMsg <- false
     } else {
         EMsg <- true
-        http.Serve(Listener, nil)
+        err := http.Serve(Listener, nil)
+        fmt.Println("------")
+        fmt.Println(err)
     }
     //EMsg <- http.ListenAndServe(m.Addr, nil)
 }
