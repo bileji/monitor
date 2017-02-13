@@ -24,6 +24,7 @@ type Monitor struct {
 
 func (m *Monitor) SInit(Msg []byte) error {
     Conf := header.Manager{}
+    fmt.Println("-------------")
     json.Unmarshal(Msg, &Conf)
     
     fmt.Println("+++++++++++++")
