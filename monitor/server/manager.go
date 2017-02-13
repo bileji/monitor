@@ -90,7 +90,7 @@ func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
             return
         }
         
-        err = json.Unmarshal(Body, &Gather);
+        err = json.Unmarshal([]byte(Body), &Gather);
         if err != nil {
             Answer{
                 Code: header.FAILURE,
