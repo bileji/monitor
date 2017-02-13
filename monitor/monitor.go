@@ -44,7 +44,11 @@ func (m *Monitor) SInit(Msg []byte) error {
             if err := S.DB(DB.Auth).Login(DB.Username, DB.Password); err != nil {
                 return err
             }
-            go (&service.Master{Addr: Conf.Addr, DBHandler: DB.Auth, Token: Conf.Token}).Listen()
+            go (&service.Master{
+                Addr: Conf.Addr,
+                DBHandler: DB.Auth,
+                Token: Conf.Token,
+            }).Listen()
             m.WebRole.Set(MAN)
             return nil
         }
