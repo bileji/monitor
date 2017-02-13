@@ -61,7 +61,7 @@ func (c *Command) Scheduler(Listener *net.UnixListener) {
             var Message protocol.SocketMsg
             json.Unmarshal(Buffer[0: Len], &Message)
             
-            dispatcher.Run(Message, Con, c.Subject)
+            Run(Message, Con, c.Subject)
         }
     }
     
