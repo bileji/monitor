@@ -8,6 +8,7 @@ import (
     "monitor/monitor/header"
     "monitor/monitor/helper"
     "monitor/monitor/collector"
+    "github.com/noaway/heartbeat"
 )
 
 type Node header.Node
@@ -28,13 +29,12 @@ func (n *Node) Verify() error {
     }
 }
 
-func (n *Node) RunForever() error {
-    err := n.Verify()
+func (n *Node) gather(Spec int) error {
+    ht, err := heartbeat.NewTast("gather", Spec)
     if err != nil {
         return err
     }
-    
-    go func() {
+    ht.Start(func() {
         Gather, _ := json.Marshal(header.Gather{
             Cpu: collector.Cpu{}.Exec(),
             Docker: collector.Docker{}.Exec(),
@@ -50,10 +50,22 @@ func (n *Node) RunForever() error {
         Body, _ := ioutil.ReadAll(R.Body)
         var Answer header.Answer
         json.Unmarshal(Body, &Answer)
-        if Answer.Code != header.SUCCESS {
+        if Answer.Code == header.FAILURE {
             log.Println("gather failure")
         }
-    }()
+        return nil
+    })
+    return nil
+}
+
+func (n *Node) RunForever() error {
+    err := n.Verify()
+    if err != nil {
+        return err
+    }
+    
+    // 收集信息
+    go n.gather(5)
     
     return nil
 }
