@@ -53,7 +53,6 @@ func init() {
             if MainCmd.ReadConf() != nil {
                 fmt.Println("open: no config file found");
             }
-            println(&MainCmd.Configure)
             return nil
         },
         RunE: func(cmd *cobra.Command, args []string) error {
