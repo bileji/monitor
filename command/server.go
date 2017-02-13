@@ -1,12 +1,12 @@
 package command
 
 import (
-    "encoding/json"
+    //"encoding/json"
     "monitor/command/common"
     "github.com/spf13/cobra"
-    "monitor/command/protocol"
-    "monitor/monitor"
-    "monitor/monitor/helper"
+    //"monitor/command/protocol"
+    //"monitor/monitor"
+    //"monitor/monitor/helper"
 )
 
 var initCmd = &common.Command{
@@ -15,23 +15,23 @@ var initCmd = &common.Command{
         Short: "init monitor server",
         Long: "Init monitor server",
         RunE: func(cmd *cobra.Command, args []string) error {
-            Socket := &common.Socket{
-                SUnix: MainCmd.Configure.Server.Unix,
-                CUnix: MainCmd.Configure.Client.Unix,
-            }
-            err := Socket.UnixSocket();
-            if err != nil {
-                return err
-            }
-            Buffer, _ := json.Marshal(monitor.ServerC{
-                Addr: MainCmd.Configure.Server.Addr,
-                Database: MainCmd.Configure.MongoDB,
-                Token: helper.RandStr(),
-            })
-            Socket.SendMessage(protocol.SocketMsg{
-                Command: common.CMD_SERVER_INIT,
-                Body: Buffer,
-            })
+            //Socket := &common.Socket{
+            //    SUnix: MainCmd.Configure.Server.Unix,
+            //    CUnix: MainCmd.Configure.Client.Unix,
+            //}
+            //err := Socket.UnixSocket();
+            //if err != nil {
+            //    return err
+            //}
+            //Buffer, _ := json.Marshal(monitor.ServerC{
+            //    Addr: MainCmd.Configure.Server.Addr,
+            //    Database: MainCmd.Configure.MongoDB,
+            //    Token: helper.RandStr(),
+            //})
+            //Socket.SendMessage(protocol.SocketMsg{
+            //    Command: common.CMD_SERVER_INIT,
+            //    Body: Buffer,
+            //})
             return nil
         },
     },
