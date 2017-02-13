@@ -50,6 +50,7 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
         err := Monitor.Join(Dis.Message.Body)
         if err == nil {
             Dis.Res(SUCCESS, "success")
+            return
         }
         Dis.Res(FAILURE, fmt.Sprintf("%v", err))
         return
