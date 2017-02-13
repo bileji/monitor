@@ -62,7 +62,7 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
 func (m *Monitor) ManagerToken() (string, error) {
     switch m.WebRole.Get() {
     case MAN:
-        return m.Token, errors.New(m.Token)
+        return m.Token, nil
     case NOD:
         return "", errors.New("run as a node")
     case NAN:
