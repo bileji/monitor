@@ -46,7 +46,7 @@ func Run(Msg header.UnixMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
         Dis.Res(FAILURE, fmt.Sprintf("%v", err))
         return
     case CMD_JOIN:
-        err := Monitor.Join()
+        err := Monitor.Join(Dis.Message.Body)
         if err == nil {
             Dis.Res(SUCCESS, "success")
         }

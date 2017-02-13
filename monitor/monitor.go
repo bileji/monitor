@@ -5,6 +5,7 @@ import (
     "monitor/monitor/helper"
     "encoding/json"
     "errors"
+    "monitor/monitor/header"
 )
 
 const (
@@ -72,8 +73,9 @@ func (m *Monitor) ManagerToken() (string, error) {
     }
 }
 
-func (m *Monitor) Join() error {
-    Node := server.Node{Addr: "47.90.1.235:3476"}
+func (m *Monitor) Join(Msg []byte) error {
+    Node := server.Node{}
+    json.Unmarshal(Msg, &Node)
     
     return Node.Verify()
 }
