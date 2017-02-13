@@ -61,8 +61,7 @@ func (m *Manager) CheckPort() error {
     if err != nil {
         return err
     }
-    Conn.Close()
-    return nil
+    return Conn.Close()
 }
 
 func (m *Manager) Listen() {
