@@ -9,6 +9,7 @@ import (
     "monitor/monitor/helper"
     "monitor/monitor/collector"
     "github.com/noaway/heartbeat"
+    "monitor/monitor/collector/model"
 )
 
 type Node header.Node
@@ -35,16 +36,9 @@ func (n *Node) gather(Spec int) error {
         return err
     }
     Ht.Start(func() error {
-        Gather, _ := json.Marshal(header.Gather{
-            Cpu: collector.Cpu{}.Exec(),
-            Docker: collector.Docker{}.Exec(),
-            Memory: collector.Memory{}.Exec(),
-            Network: collector.Network{}.Exec(),
-        })
+        Gather := model.Gather{}
         
-        Str, _ := json.Marshal(Gather)
-        
-        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", string(Str))
+        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", string(Gather.Exec()))
         if err != nil {
             log.Printf("%v", err)
         }
