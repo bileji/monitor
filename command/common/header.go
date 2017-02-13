@@ -1,4 +1,4 @@
-package common
+package command
 
 const CMD_MAIN string = "monitor"
 const CMD_VERSION string = "version"

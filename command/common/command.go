@@ -5,9 +5,9 @@ import (
     "encoding/json"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
-    "monitor/command/dispatcher"
     "monitor/command/protocol"
     "monitor/monitor"
+    "pigeon/server/dispatcher"
 )
 
 type MonitorFlags struct {

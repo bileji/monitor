@@ -1,10 +1,9 @@
-package dispatcher
+package common
 
 import (
     "net"
     "fmt"
     "encoding/json"
-    "monitor/command/common"
     "monitor/command/protocol"
     "monitor/monitor"
 )
@@ -30,9 +29,9 @@ func Run(Msg protocol.SocketMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
     }
     
     switch Dis.Message.Command {
-    case common.CMD_ROLE:
+    case CMD_ROLE:
     
-    case common.CMD_SERVER_INIT:
+    case CMD_SERVER_INIT:
         err := Monitor.SInit(Dis.Message);
         if err != nil {
             Dis.Res(-1, fmt.Sprintf("%v", err))
@@ -40,9 +39,9 @@ func Run(Msg protocol.SocketMsg, Conn *net.UnixConn, Monitor *monitor.Monitor) {
         }
         Dis.Res(-1, "success")
         return
-    case common.CMD_SERVER_TOKEN:
+    case CMD_SERVER_TOKEN:
     
-    case common.CMD_JOIN:
+    case CMD_JOIN:
     
     default:
         
