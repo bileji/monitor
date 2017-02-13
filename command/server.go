@@ -54,6 +54,12 @@ var ServerCmd = &common.Command{
         Use: common.CMD_SERVER,
         Short: "monitor manager",
         Long: "Monitor manager",
+        RunE: func(cmd *cobra.Command, args []string) error {
+            return nil
+        },
     },
-    Children: []*common.Command{InitCmd, TokenCmd},
+}
+
+func init() {
+    ServerCmd.Command.AddCommand(InitCmd, TokenCmd)
 }
