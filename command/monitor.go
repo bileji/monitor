@@ -68,18 +68,18 @@ func init() {
     V.BindPFlag("server.log", Flags.Lookup("log"))
     V.BindPFlag("server.daemon", Flags.Lookup("daemon"))
     
-    Flags = JoinCmd.Command.Flags()
-    Flags.StringVarP(&JoinCmd.Flags.Join.Addr, "addr", "", "", "manager addr")
-    Flags.StringVarP(&JoinCmd.Flags.Join.Token, "token", "", "", "join token")
-    
-    Flags = InitCmd.Command.Flags()
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Host, "host", "", "127.0.0.1", "mongodb host")
-    Flags.Int32VarP(&MainCmd.Configure.MongoDB.Port, "port", "", 27017, "mongodb port")
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Auth, "auth", "", "admin", "auth database")
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Username, "user", "", "", "username")
-    Flags.StringVarP(&MainCmd.Configure.MongoDB.Password, "pwd", "", "", "password")
-    
-    Flags.StringVarP(&MainCmd.Configure.Server.Addr, "addr", "a", "0.0.0.0:3647", "web server address")
+    //Flags = JoinCmd.Command.Flags()
+    //Flags.StringVarP(&JoinCmd.Flags.Join.Addr, "addr", "", "", "manager addr")
+    //Flags.StringVarP(&JoinCmd.Flags.Join.Token, "token", "", "", "join token")
+    //
+    //Flags = InitCmd.Command.Flags()
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Host, "host", "", "127.0.0.1", "mongodb host")
+    //Flags.Int32VarP(&MainCmd.Configure.MongoDB.Port, "port", "", 27017, "mongodb port")
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Auth, "auth", "", "admin", "auth database")
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Username, "user", "", "", "username")
+    //Flags.StringVarP(&MainCmd.Configure.MongoDB.Password, "pwd", "", "", "password")
+    //
+    //Flags.StringVarP(&MainCmd.Configure.Server.Addr, "addr", "a", "0.0.0.0:3647", "web server address")
     
     //MainCmd.NewChildren(JoinCmd, RoleCmd, RoleCmd, ServerCmd, VersionCmd)
 }
