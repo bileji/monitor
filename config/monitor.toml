@@ -2,17 +2,17 @@
 # to start the daemon way
 daemon=false
 # configuration file specifying additional options
-pid_file="/var/run/monitord.pid"
+pid="/var/run/monitord.pid"
 # log file
-log_file="/var/log/monitord.log"
+log="/var/log/monitord.log"
 # unix socket file
-unix_file="/var/run/monitord.sock"
+unix="/var/run/monitord.sock"
 [client]
 # unix socket file
-unix_file="/var/run/monitor.sock"
+unix="/var/run/monitor.sock"
 [mongodb]
 host="127.0.0.1"
 port=27017
-auth_db="vpn"
+auth="vpn"
 username="shadowsocks"
 password="mlgR4evB"
