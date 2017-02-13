@@ -12,6 +12,7 @@ import (
     "monitor/monitor/collector/collection"
     "monitor/monitor/header"
     "strconv"
+    "github.com/shirou/gopsutil/net"
 )
 
 type Answer struct {
@@ -50,9 +51,19 @@ func (m *Manager) ConnectDB() error {
     return nil
 }
 
+func (m *Manager) CheckPort() error {
+    Conn, err := net.Listen("tcp", m.Addr)
+    if err == nil {
+        Conn.Close()
+        return nil
+    }
+    return err
+}
+
 func (m *Manager) Listen() {
     http.HandleFunc("/gather", m.Gather)
     http.HandleFunc("/verify", m.Verify)
+    
     err := http.ListenAndServe(m.Addr, nil)
     if err != nil {
         log.Println(err)
