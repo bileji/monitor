@@ -52,12 +52,16 @@ func (m *Manager) ConnectDB() error {
 }
 
 func (m *Manager) CheckPort() error {
-    Conn, err := net.Listen("tcp", m.Addr)
-    if err == nil {
-        Conn.Close()
-        return nil
+    Listener, err := net.Listen("tcp", m.Addr)
+    if err != nil {
+        return err
     }
-    return err
+    Conn, err := Listener.Accept()
+    defer Conn.Close()
+    if err != nil {
+        return err
+    }
+    return nil
 }
 
 func (m *Manager) Listen() {
