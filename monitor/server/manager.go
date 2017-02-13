@@ -3,7 +3,6 @@ package server
 import (
     "log"
     "fmt"
-    "net"
     "net/http"
     "strings"
     "io/ioutil"
