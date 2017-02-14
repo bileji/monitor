@@ -1,6 +1,7 @@
 package command
 
 import (
+    "fmt"
     "encoding/json"
     "monitor/command/common"
     "github.com/spf13/cobra"
@@ -19,6 +20,7 @@ var InitCmd = &common.Command{
                 CUnix: MainCmd.Configure.Client.Unix,
             }
             err := Socket.UnixSocket();
+            fmt.Println("debug")
             defer Socket.Conn.Close()
             if err != nil {
                 return err
