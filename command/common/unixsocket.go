@@ -39,6 +39,9 @@ func (s *Socket) UnixSocket() error {
         return err
     }
     s.Conn, err = net.DialUnix("unix", lAddr, rAddr)
+    if err != nil {
+        return err
+    }
     return nil
 }
 

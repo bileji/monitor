@@ -19,14 +19,11 @@ var InitCmd = &common.Command{
                 SUnix: MainCmd.Configure.Server.Unix,
                 CUnix: MainCmd.Configure.Client.Unix,
             }
-            fmt.Println("debug0")
             err := Socket.UnixSocket();
             if err != nil {
                 return err
             }
-            fmt.Println("debug1")
             defer Socket.Close()
-            fmt.Println("debug2")
             
             Buffer, _ := json.Marshal(header.Manager{
                 Addr: MainCmd.Configure.Server.Addr,
