@@ -20,11 +20,10 @@ var InitCmd = &common.Command{
                 CUnix: MainCmd.Configure.Client.Unix,
             }
             err := Socket.UnixSocket();
-            fmt.Println("debug")
-            defer Socket.Conn.Close()
             if err != nil {
                 return err
             }
+            defer Socket.Conn.Close()
             Buffer, _ := json.Marshal(header.Manager{
                 Addr: MainCmd.Configure.Server.Addr,
                 Database: MainCmd.Configure.MongoDB,
