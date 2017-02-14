@@ -11,6 +11,7 @@ import (
 var InitCmd = &common.Command{
     Command: &cobra.Command{
         Use: common.CMD_SERVER_INIT,
+        SilenceErrors: false,
         SilenceUsage: false,
         Short: "init monitor server",
         Long: "Init monitor server",

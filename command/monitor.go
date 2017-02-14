@@ -49,6 +49,8 @@ func init() {
         Use: common.CMD_MAIN,
         Short: "Linux server status monitor",
         Long: "Powerful Linux server status monitor server",
+        SilenceErrors: false,
+        SilenceUsage: false,
         PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
             if MainCmd.ReadConf() != nil {
                 fmt.Println("open: no config file found");
