@@ -45,9 +45,9 @@ func (p Process) Get(Reg string) []Process {
         for i := 0; i < 10; i++ {
             if i <= len(Slice) {
                 Fields = append(Fields, Slice[i])
-                continue
+            } else {
+                Fields = append(Fields, "")
             }
-            Fields = append(Fields, "")
         }
         Pid, _ := strconv.Atoi(Fields[1])
         Cpu, _ := strconv.ParseFloat(Fields[2], 64)
