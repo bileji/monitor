@@ -37,7 +37,8 @@ func (p Process) Get(Reg string) []Process {
     Lines := strings.Split(string(Out), "\n")
     
     for _, Line := range Lines {
-        fmt.Println(Line)
+        fmt.Println(strings.Fields(Line))
+        fmt.Println("+++++-------------++++++++")
     //    Info := strings.Split(Line, " ")
     //    Pid, _ := strconv.Atoi(Info[1])
     //    Cpu, _ := strconv.ParseFloat(Info[2], 64)
