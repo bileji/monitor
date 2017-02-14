@@ -6,6 +6,7 @@ import (
     "strings"
     //"strconv"
     "fmt"
+    "regexp"
 )
 
 type Process struct {
@@ -29,34 +30,37 @@ func (p Process) Get(Reg string) []Process {
     if err != nil {
         return Pros
     }
-    //Out, err := common.Invoke{}.Command(Ps, "aux")
-    Out, err := common.Invoke{}.Command(Ps, "aux", "|grep -E 'mongod|docker'", "|grep -v grep")
+    Out, err := common.Invoke{}.Command(Ps, "aux")
     if err != nil {
         return Pros
     }
     Lines := strings.Split(string(Out), "\n")
     
     for _, Line := range Lines {
-        fmt.Println(strings.Fields(Line))
-    //    Info := strings.Split(Line, " ")
-    //    Pid, _ := strconv.Atoi(Info[1])
-    //    Cpu, _ := strconv.ParseFloat(Info[2], 64)
-    //    Memory, _ := strconv.ParseFloat(Info[3], 64)
-    //    Vsz, _ := strconv.Atoi(Info[4])
-    //    Rss, _ := strconv.Atoi(Info[5])
-    //    Pros = append(Pros, Process{
-    //        User: Info[0],
-    //        Pid: Pid,
-    //        Cpu: Cpu,
-    //        Memory: Memory,
-    //        Vsz: Vsz,
-    //        Rss: Rss,
-    //        //Tty: Info[6],
-    //        //Stat: Info[7],
-    //        //Start: Info[8],
-    //        //Time: Info[9],
-    //        //Command: Info[10],
-    //    })
+        Str := regexp.MustCompile(Reg).FindAllString(Line, -1)
+        if len(Str) <= 0 {
+            continue
+        }
+        fmt.Println(Line)
+        //    Info := strings.Split(Line, " ")
+        //    Pid, _ := strconv.Atoi(Info[1])
+        //    Cpu, _ := strconv.ParseFloat(Info[2], 64)
+        //    Memory, _ := strconv.ParseFloat(Info[3], 64)
+        //    Vsz, _ := strconv.Atoi(Info[4])
+        //    Rss, _ := strconv.Atoi(Info[5])
+        //    Pros = append(Pros, Process{
+        //        User: Info[0],
+        //        Pid: Pid,
+        //        Cpu: Cpu,
+        //        Memory: Memory,
+        //        Vsz: Vsz,
+        //        Rss: Rss,
+        //        //Tty: Info[6],
+        //        //Stat: Info[7],
+        //        //Start: Info[8],
+        //        //Time: Info[9],
+        //        //Command: Info[10],
+        //    })
     }
     
     return Pros
