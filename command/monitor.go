@@ -1,12 +1,12 @@
 package command
 
 import (
+    "errors"
     "monitor/command/common"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
     "monitor/monitor/daemon"
     "monitor/monitor"
-    "github.com/wendal/errors"
 )
 
 var MainCmd = &common.Command{
