@@ -30,7 +30,8 @@ func (p Process) Get(Reg string) []Process {
         return Pros
     }
     fmt.Println(Ps)
-    Out, err := common.Invoke{}.Command(Ps, "aux", "|grep", "-E", Reg, "|grep", "-v", "grep")
+    Out, err := common.Invoke{}.Command(Ps, "aux")
+    //Out, err := common.Invoke{}.Command(Ps, "aux", "|grep -E", Reg, "|grep -v grep")
     if err != nil {
         fmt.Println(err)
         return Pros
