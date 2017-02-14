@@ -41,13 +41,13 @@ func (p Process) Get(Reg string) []Process {
         if len(Str) <= 0 {
             continue
         }
-        var Fields [10]string
+        Fields := make([]string, 10)
         Slice := strings.Fields(Line)
         for i := 0; i < 10; i++ {
             if i <= len(Slice) {
-                Fields = append(Fields, Slice[i])
+                Fields[i] = Slice[i]
             } else {
-                Fields = append(Fields, "")
+                Fields[i] = ""
             }
         }
         fmt.Println(Fields)
