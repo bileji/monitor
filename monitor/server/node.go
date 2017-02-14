@@ -8,7 +8,6 @@ import (
     "monitor/monitor/header"
     "monitor/monitor/helper"
     "github.com/noaway/heartbeat"
-    "monitor/monitor/collector/model"
     "monitor/monitor/collector"
 )
 
