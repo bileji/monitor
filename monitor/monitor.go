@@ -5,6 +5,8 @@ import (
     "monitor/monitor/helper"
     "encoding/json"
     "errors"
+    "strings"
+    "monitor/monitor/collector"
 )
 
 const (
@@ -64,7 +66,18 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
 func (m *Monitor) ManagerToken() (string, error) {
     switch m.WebRole.Get() {
     case MAN:
-        return m.Token, nil
+        if len(m.Addr) <= 0 {
+            m.Addr = ":80"
+        }
+        Addr := strings.Split(m.Addr, ":")
+        if len(Addr) != 2 {
+            return "monitor join --token " + m.Token
+        }
+        if len(Addr[0]) == 0 {
+            Addr[0] = collector.Network{}.GetPublicIP()
+        }
+        
+        return "monitor join --addr " + strings.Join(Addr, ":") + " --token " + m.Token, nil
     case NOD:
         return "", errors.New("run as a node")
     case NAN:
