@@ -7,6 +7,7 @@ import (
     "github.com/spf13/viper"
     "monitor/monitor/daemon"
     "monitor/monitor"
+    "github.com/wendal/errors"
 )
 
 var MainCmd = &common.Command{
@@ -53,7 +54,7 @@ func init() {
         SilenceErrors: true,
         PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
             if MainCmd.ReadConf() != nil {
-                fmt.Println("open: no config file found");
+                return errors.New("open: no config file found")
             }
             return nil
         },
