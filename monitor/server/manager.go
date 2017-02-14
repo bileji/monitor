@@ -13,6 +13,7 @@ import (
     "monitor/monitor/header"
     "strconv"
     "net"
+    "time"
 )
 
 type Answer header.Answer
@@ -76,7 +77,7 @@ func (m *Manager) Debug(Req *http.Request) {
 func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
     m.Debug(Req)
     
-    var Gather model.Gather
+    var Gather header.Gather
     
     if Req.Method == header.METHOD {
         Body, err := ioutil.ReadAll(Req.Body);
@@ -99,7 +100,9 @@ func (m *Manager) Gather(Res http.ResponseWriter, Req *http.Request) {
             return
         }
         
-        err = m.Handler.C(collection.GATHER).Insert(Gather);
+        Gather.Created = time.Now().Unix()
+        Gather.Modified = time.Now().Unix()
+        err = m.Handler.C(header.GATHER).Insert(Gather);
         if err != nil {
             Answer{
                 Code: header.FAILURE,

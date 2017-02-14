@@ -7,7 +7,7 @@ type Disk struct {
     IOCounters map[string]disk.IOCountersStat `json:"io_counters"`
 }
 
-func (d Disk) Exec() *Disk {
+func (d Disk) Gather() *Disk {
     var err error
     if d.UseAge, err = disk.Usage("/data"); err != nil {
         d.UseAge = &disk.UsageStat{}

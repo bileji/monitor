@@ -31,7 +31,7 @@ func (n Network) GetPublicIP() string {
     return ""
 }
 
-func (n Network) Exec() *Network {
+func (n Network) Gather() *Network {
     var err error
     n.PublicIP = n.GetPublicIP()
     if n.HostInfo, err = host.Info(); err != nil {

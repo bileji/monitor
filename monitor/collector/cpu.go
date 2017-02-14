@@ -10,7 +10,7 @@ type Cpu struct {
     TimesStat []cpu.TimesStat `json:"times_stat"`
 }
 
-func (c Cpu) Exec() *Cpu {
+func (c Cpu) Gather() *Cpu {
     var err error
     if c.Load, err = load.Avg(); err != nil {
         c.Load = &load.AvgStat{}
