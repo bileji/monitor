@@ -11,8 +11,6 @@ import (
 var InitCmd = &common.Command{
     Command: &cobra.Command{
         Use: common.CMD_SERVER_INIT,
-        SilenceErrors: true,
-        SilenceUsage: true,
         Short: "init monitor server",
         Long: "Init monitor server",
         RunE: func(cmd *cobra.Command, args []string) error {
