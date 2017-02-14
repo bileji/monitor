@@ -99,5 +99,5 @@ func init() {
     V.BindPFlag("server.daemon", Flags.Lookup("daemon"))
     
     MainCmd.Command.SetUsageTemplate(UsageTemplate())
-    MainCmd.NewChildren(JoinCmd, RoleCmd, ServerCmd, VersionCmd)
+    MainCmd.NewChildren(JoinCmd, RoleCmd, ServerCmd, VersionCmd, ViewCmd)
 }
