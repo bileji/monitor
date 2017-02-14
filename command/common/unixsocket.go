@@ -20,7 +20,14 @@ type Socket struct {
     Conn  *net.UnixConn
 }
 
-func (s *Socket) UnixSocket() (error) {
+func (s *Socket) Close() error {
+    if s.Conn != nil {
+        return s.Conn.Close()
+    }
+    return nil
+}
+
+func (s *Socket) UnixSocket() error {
     os.Remove(s.CUnix)
     
     lAddr, err := net.ResolveUnixAddr("unix", s.CUnix)

@@ -25,7 +25,7 @@ var InitCmd = &common.Command{
                 return err
             }
             fmt.Println("debug1")
-            defer Socket.Conn.Close()
+            defer Socket.Close()
             fmt.Println("debug2")
             
             Buffer, _ := json.Marshal(header.Manager{
@@ -57,7 +57,7 @@ var TokenCmd = &common.Command{
             if err != nil {
                 return err
             }
-            defer Socket.Conn.Close()
+            defer Socket.Close()
             
             Socket.SendMessage(header.UnixMsg{
                 Command: common.CMD_SERVER_TOKEN,
