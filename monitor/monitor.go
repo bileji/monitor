@@ -15,6 +15,7 @@ const (
 )
 
 type Monitor struct {
+    Addr    string
     Token   string
     WebRole helper.UniqueID
 }
@@ -51,6 +52,7 @@ func (m *Monitor) ManagerInit(Msg []byte) error {
         if ! <-EMsg {
             return errors.New("listen tcp " + Manager.Addr + " address already in use")
         }
+        m.Addr = Manager.Addr
         m.Token = Manager.Token
         m.WebRole.Set(MAN)
         return nil
