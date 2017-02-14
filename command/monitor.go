@@ -49,6 +49,7 @@ func init() {
         Use: common.CMD_MAIN,
         Short: "Linux server status monitor",
         Long: "Powerful Linux server status monitor server",
+        // 控制错误日志显示
         SilenceErrors: true,
         PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
             if MainCmd.ReadConf() != nil {
