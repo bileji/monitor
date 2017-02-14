@@ -35,14 +35,14 @@ func (p Process) Get(Reg string) []Process {
     }
     
     Lines := strings.Split(string(Out), "\n")
-    for Line, _ := range Lines {
+    for _, Line := range Lines {
         Info := strings.Split(Line, " ")
         Pid, _ := strconv.Atoi(Info[1])
         Cpu, _ := strconv.ParseFloat(Info[2], 64)
         Memory, _ := strconv.ParseFloat(Info[3], 64)
         Vsz, _ := strconv.Atoi(Info[4])
         Rss, _ := strconv.Atoi(Info[5])
-        append(Pros, Process{
+        Pros = append(Pros, Process{
             User: Info[0],
             Pid: Pid,
             Cpu: Cpu,
