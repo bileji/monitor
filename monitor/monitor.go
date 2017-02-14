@@ -71,7 +71,7 @@ func (m *Monitor) ManagerToken() (string, error) {
         }
         Addr := strings.Split(m.Addr, ":")
         if len(Addr) != 2 {
-            return "monitor join --token " + m.Token
+            return "monitor join --token " + m.Token, nil
         }
         if len(Addr[0]) == 0 {
             Addr[0] = collector.Network{}.GetPublicIP()
