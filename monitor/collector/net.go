@@ -16,7 +16,7 @@ type Network struct {
 
 // echo `nc ns1.dnspod.net 6666`
 func (n Network) GetPublicIP() string {
-    nc, err := exec.LookPath("/usr/bin/nc")
+    nc, err := exec.LookPath("nc")
     if err != nil {
         return ""
     }
