@@ -13,7 +13,7 @@ import (
 
 type Gather header.Gather
 
-func (g *Gather) Exec([]byte, error) {
+func (g *Gather) Exec() ([]byte, error) {
     return json.Marshal(Gather{
         Cpu:     collector.Cpu{}.Gather(),
         Docker:  collector.Docker{}.Gather(),
