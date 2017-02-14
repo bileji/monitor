@@ -10,17 +10,18 @@ import (
 )
 
 type Process struct {
-    User    string
-    Pid     int
-    Cpu     float64
-    Memory  float64
-    Vsz     int
-    Rss     int
-    Tty     string
-    Stat    string
-    Start   string
-    Time    string
-    Command string
+    User    string      `json:"user"`
+    Pid     int         `json:"pid"`
+    Cpu     float64     `json:"cpu"`
+    Memory  float64     `json:"memory"`
+    Vsz     int         `json:"vsz"`
+    Rss     int         `json:"rss"`
+    Tty     string      `json:"tty"`
+    Stat    string      `json:"stat"`
+    Start   string      `json:"start"`
+    Time    string      `json:"time"`
+    Command string      `json:"command"`
+    Detail  []string    `json:"detail"`
 }
 
 func (p Process) Get(Reg string) []Process {
@@ -50,13 +51,12 @@ func (p Process) Get(Reg string) []Process {
                 Fields[i] = ""
             }
         }
-        fmt.Println(Fields)
         Pid, _ := strconv.Atoi(Fields[1])
         Cpu, _ := strconv.ParseFloat(Fields[2], 64)
         Memory, _ := strconv.ParseFloat(Fields[3], 64)
         Vsz, _ := strconv.Atoi(Fields[4])
         Rss, _ := strconv.Atoi(Fields[5])
-        Pros = append(Pros, Process{
+        Pro := Process{
             User: Fields[0],
             Pid: Pid,
             Cpu: Cpu,
@@ -68,7 +68,12 @@ func (p Process) Get(Reg string) []Process {
             Start: Fields[8],
             Time: Fields[9],
             Command: Fields[10],
-        })
+        }
+        if len(Slice) > 11 {
+            Pro.Detail = Slice[10:]
+        }
+        
+        Pros = append(Pros, Pro)
     }
     
     return Pros
