@@ -5,7 +5,7 @@ import (
     "github.com/spf13/cobra"
 )
 
-var VersionCmd = &common.Command{
+var ViewCmd = &common.Command{
     Command:&cobra.Command{
         Use:    common.CMD_VIEW,
         Short:  "view monitor linux info",
