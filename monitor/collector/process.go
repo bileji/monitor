@@ -29,35 +29,34 @@ func (p Process) Get(Reg string) []Process {
     if err != nil {
         return Pros
     }
-    fmt.Println(Ps)
     Out, err := common.Invoke{}.Command(Ps, "aux")
     //Out, err := common.Invoke{}.Command(Ps, "aux", "|grep -E", Reg, "|grep -v grep")
     if err != nil {
-        fmt.Println(err)
         return Pros
     }
-    fmt.Println(string(Out))
     Lines := strings.Split(string(Out), "\n")
+    
     for _, Line := range Lines {
-        Info := strings.Split(Line, " ")
-        Pid, _ := strconv.Atoi(Info[1])
-        Cpu, _ := strconv.ParseFloat(Info[2], 64)
-        Memory, _ := strconv.ParseFloat(Info[3], 64)
-        Vsz, _ := strconv.Atoi(Info[4])
-        Rss, _ := strconv.Atoi(Info[5])
-        Pros = append(Pros, Process{
-            User: Info[0],
-            Pid: Pid,
-            Cpu: Cpu,
-            Memory: Memory,
-            Vsz: Vsz,
-            Rss: Rss,
-            //Tty: Info[6],
-            //Stat: Info[7],
-            //Start: Info[8],
-            //Time: Info[9],
-            //Command: Info[10],
-        })
+        fmt.Println(Line)
+    //    Info := strings.Split(Line, " ")
+    //    Pid, _ := strconv.Atoi(Info[1])
+    //    Cpu, _ := strconv.ParseFloat(Info[2], 64)
+    //    Memory, _ := strconv.ParseFloat(Info[3], 64)
+    //    Vsz, _ := strconv.Atoi(Info[4])
+    //    Rss, _ := strconv.Atoi(Info[5])
+    //    Pros = append(Pros, Process{
+    //        User: Info[0],
+    //        Pid: Pid,
+    //        Cpu: Cpu,
+    //        Memory: Memory,
+    //        Vsz: Vsz,
+    //        Rss: Rss,
+    //        //Tty: Info[6],
+    //        //Stat: Info[7],
+    //        //Start: Info[8],
+    //        //Time: Info[9],
+    //        //Command: Info[10],
+    //    })
     }
     
     return Pros
