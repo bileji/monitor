@@ -34,7 +34,7 @@ func (n *Node) RunForever() error {
     }
     
     // 收集信息
-    go node.Gather(n.Addr, 5)
+    go node.GatherInfo(n.Addr, 5)
     
     return nil
 }

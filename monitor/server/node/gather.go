@@ -23,7 +23,7 @@ func (g *Gather) Exec() ([]byte, error) {
     })
 }
 
-func Gather(Addr string, Spec int) error {
+func GatherInfo(Addr string, Spec int) error {
     Ht, err := heartbeat.NewTast("gather", Spec)
     if err != nil {
         return err
