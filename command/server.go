@@ -1,6 +1,7 @@
 package command
 
 import (
+    "fmt"
     "encoding/json"
     "monitor/command/common"
     "github.com/spf13/cobra"
@@ -18,11 +19,14 @@ var InitCmd = &common.Command{
                 SUnix: MainCmd.Configure.Server.Unix,
                 CUnix: MainCmd.Configure.Client.Unix,
             }
+            fmt.Println("debug0")
             err := Socket.UnixSocket();
             if err != nil {
                 return err
             }
+            fmt.Println("debug1")
             defer Socket.Conn.Close()
+            fmt.Println("debug2")
             
             Buffer, _ := json.Marshal(header.Manager{
                 Addr: MainCmd.Configure.Server.Addr,
@@ -54,7 +58,7 @@ var TokenCmd = &common.Command{
                 return err
             }
             defer Socket.Conn.Close()
-    
+            
             Socket.SendMessage(header.UnixMsg{
                 Command: common.CMD_SERVER_TOKEN,
                 Body: []byte(""),
