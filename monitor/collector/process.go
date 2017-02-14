@@ -5,6 +5,7 @@ import (
     "monitor/monitor/collector/common"
     "strings"
     "strconv"
+    "fmt"
 )
 
 type Process struct {
@@ -28,12 +29,13 @@ func (p Process) Get(Reg string) []Process {
     if err != nil {
         return Pros
     }
-    
+    fmt.Println(Ps)
     Out, err := common.Invoke{}.Command(Ps, "aux", "|grep", "-E", Reg, "|grep", "-v", "grep")
     if err != nil {
+        fmt.Println(err)
         return Pros
     }
-    
+    fmt.Println(Out)
     Lines := strings.Split(string(Out), "\n")
     for _, Line := range Lines {
         Info := strings.Split(Line, " ")
