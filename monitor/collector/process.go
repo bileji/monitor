@@ -29,8 +29,8 @@ func (p Process) Get(Reg string) []Process {
     if err != nil {
         return Pros
     }
-    Out, err := common.Invoke{}.Command(Ps, "aux")
-    //Out, err := common.Invoke{}.Command(Ps, "aux", "|grep -E", Reg, "|grep -v grep")
+    //Out, err := common.Invoke{}.Command(Ps, "aux")
+    Out, err := common.Invoke{}.Command(Ps, "aux", "|grep -E 'mongod|docker'", "|grep -v grep")
     if err != nil {
         return Pros
     }
@@ -38,7 +38,6 @@ func (p Process) Get(Reg string) []Process {
     
     for _, Line := range Lines {
         fmt.Println(strings.Fields(Line))
-        fmt.Println("+++++-------------++++++++")
     //    Info := strings.Split(Line, " ")
     //    Pid, _ := strconv.Atoi(Info[1])
     //    Cpu, _ := strconv.ParseFloat(Info[2], 64)
