@@ -36,7 +36,7 @@ func (p Process) Get(Reg string) []Process {
         fmt.Println(err)
         return Pros
     }
-    fmt.Println(Out)
+    fmt.Println(string(Out))
     Lines := strings.Split(string(Out), "\n")
     for _, Line := range Lines {
         Info := strings.Split(Line, " ")
@@ -52,11 +52,11 @@ func (p Process) Get(Reg string) []Process {
             Memory: Memory,
             Vsz: Vsz,
             Rss: Rss,
-            Tty: Info[6],
-            Stat: Info[7],
-            Start: Info[8],
-            Time: Info[9],
-            Command: Info[10],
+            //Tty: Info[6],
+            //Stat: Info[7],
+            //Start: Info[8],
+            //Time: Info[9],
+            //Command: Info[10],
         })
     }
     
