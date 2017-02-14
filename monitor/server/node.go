@@ -47,8 +47,7 @@ func (n *Node) gather(Spec int) error {
         return err
     }
     Ht.Start(func() error {
-        
-        Buffer, _ := Gather{}.Exec()
+        Buffer, _ := (&Gather{}).Exec()
         
         R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", string(Buffer))
         if err != nil {
