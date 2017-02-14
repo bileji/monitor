@@ -1,7 +1,6 @@
 package command
 
 import (
-    "fmt"
     "monitor/command/common"
     "github.com/spf13/cobra"
     "github.com/spf13/viper"
@@ -73,18 +72,18 @@ func init() {
             }
             
             err := Daemon.CreatePidFile()
-            if err == nil {
-                err := Daemon.WritePidFile()
-                if err == nil {
-                    go Daemon.Signal()
-                    Daemon.UnixListen(MainCmd.Scheduler)
-                    return nil
-                }
+            if err != nil {
+                return err
+            }
+            err = Daemon.WritePidFile()
+            if err != nil {
+                return err
             }
             
-            fmt.Println(err)
-            
+            go Daemon.Signal()
+            Daemon.UnixListen(MainCmd.Scheduler)
             return nil
+            
         },
     }
     
