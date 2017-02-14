@@ -47,7 +47,7 @@ func (n *Node) gather(Spec int) error {
         return err
     }
     Ht.Start(func() error {
-        Gather := header.Gather{}
+        Gather := Gather{}
         
         Buffer, _ := Gather.Exec()
         
