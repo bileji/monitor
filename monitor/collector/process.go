@@ -6,6 +6,7 @@ import (
     "strings"
     "strconv"
     "regexp"
+    "fmt"
 )
 
 type Process struct {
@@ -49,6 +50,7 @@ func (p Process) Get(Reg string) []Process {
                 Fields = append(Fields, "")
             }
         }
+        fmt.Println(Fields)
         Pid, _ := strconv.Atoi(Fields[1])
         Cpu, _ := strconv.ParseFloat(Fields[2], 64)
         Memory, _ := strconv.ParseFloat(Fields[3], 64)
