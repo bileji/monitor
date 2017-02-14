@@ -1,29 +1,15 @@
 package server
 
 import (
-    "log"
     "errors"
     "io/ioutil"
     "encoding/json"
     "monitor/monitor/header"
     "monitor/monitor/helper"
-    "github.com/noaway/heartbeat"
-    "monitor/monitor/collector"
+    "monitor/monitor/server/node"
 )
 
 type Node header.Node
-
-type Gather header.Gather
-
-func (g *Gather) Exec() ([]byte, error) {
-    return json.Marshal(Gather{
-        Cpu:     collector.Cpu{}.Gather(),
-        Docker:  collector.Docker{}.Gather(),
-        Memory:  collector.Memory{}.Gather(),
-        Disk:    collector.Disk{}.Gather(),
-        Network: collector.Network{}.Gather(),
-    })
-}
 
 func (n *Node) Verify() error {
     R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/verify", n.Token)
@@ -41,34 +27,6 @@ func (n *Node) Verify() error {
     }
 }
 
-func (n *Node) gather(Spec int) error {
-    Ht, err := heartbeat.NewTast("gather", Spec)
-    if err != nil {
-        return err
-    }
-    Ht.Start(func() error {
-        Buffer, _ := (&Gather{}).Exec()
-        
-        R, err := helper.Request(header.METHOD, header.SCHEMA + n.Addr + "/gather", string(Buffer))
-        if err != nil {
-            log.Printf("%v", err)
-        }
-        defer R.Body.Close()
-        Body, _ := ioutil.ReadAll(R.Body)
-        
-        var Answer header.Answer
-        err = json.Unmarshal(Body, &Answer)
-        if err != nil {
-            log.Println(err)
-        }
-        if Answer.Code == header.FAILURE {
-            log.Println(Answer)
-        }
-        return nil
-    })
-    return nil
-}
-
 func (n *Node) RunForever() error {
     err := n.Verify()
     if err != nil {
@@ -76,7 +34,7 @@ func (n *Node) RunForever() error {
     }
     
     // 收集信息
-    go n.gather(5)
+    go node.Gather(n.Addr, 5)
     
     return nil
 }
