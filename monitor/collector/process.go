@@ -24,7 +24,7 @@ type Process struct {
 func (p Process) Get(Reg string) []Process {
     
     var Pros []Process
-    Ps, err := exec.LookPath("/usr/bin/ps")
+    Ps, err := exec.LookPath("ps")
     if err != nil {
         return Pros
     }
