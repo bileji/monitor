@@ -1,7 +1,6 @@
 package command
 
 import (
-    "fmt"
     "encoding/json"
     "monitor/command/common"
     "github.com/spf13/cobra"
