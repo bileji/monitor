@@ -41,9 +41,9 @@ func (p Process) Get(Reg string) []Process {
         if len(Str) <= 0 {
             continue
         }
-        Fields := make([]string, 10)
+        Fields := make([]string, 11)
         Slice := strings.Fields(Line)
-        for i := 0; i < 10; i++ {
+        for i := 0; i <= 10; i++ {
             if i <= len(Slice) {
                 Fields[i] = Slice[i]
             } else {
