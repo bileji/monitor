@@ -8,8 +8,6 @@ import (
     "io/ioutil"
     "encoding/json"
     "gopkg.in/mgo.v2"
-    "monitor/monitor/collector/model"
-    "monitor/monitor/collector/collection"
     "monitor/monitor/header"
     "strconv"
     "net"
