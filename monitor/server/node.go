@@ -8,20 +8,7 @@ import (
     "monitor/monitor/header"
     "monitor/monitor/helper"
     "github.com/noaway/heartbeat"
-    "monitor/monitor/collector"
 )
-
-type Gather header.Gather
-
-func (g *Gather) Exec() ([]byte, error) {
-    return json.Marshal(Gather{
-        Cpu:     collector.Cpu{}.Gather(),
-        Docker:  collector.Docker{}.Gather(),
-        Memory:  collector.Memory{}.Gather(),
-        Disk:    collector.Disk{}.Gather(),
-        Network: collector.Network{}.Gather(),
-    })
-}
 
 type Node header.Node
 
@@ -47,7 +34,7 @@ func (n *Node) gather(Spec int) error {
         return err
     }
     Ht.Start(func() error {
-        Gather := Gather{}
+        Gather := header.Gather{}
         
         Buffer, _ := Gather.Exec()
         
@@ -57,8 +44,12 @@ func (n *Node) gather(Spec int) error {
         }
         defer R.Body.Close()
         Body, _ := ioutil.ReadAll(R.Body)
+        
         var Answer header.Answer
-        json.Unmarshal(Body, &Answer)
+        err = json.Unmarshal(Body, &Answer)
+        if err != nil {
+            log.Println(err)
+        }
         if Answer.Code == header.FAILURE {
             log.Println(Answer)
         }
