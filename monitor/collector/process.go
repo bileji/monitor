@@ -4,8 +4,7 @@ import (
     "os/exec"
     "monitor/monitor/collector/common"
     "strings"
-    //"strconv"
-    "fmt"
+    "strconv"
     "regexp"
 )
 
@@ -41,26 +40,33 @@ func (p Process) Get(Reg string) []Process {
         if len(Str) <= 0 {
             continue
         }
-        fmt.Println(Line)
-        //    Info := strings.Split(Line, " ")
-        //    Pid, _ := strconv.Atoi(Info[1])
-        //    Cpu, _ := strconv.ParseFloat(Info[2], 64)
-        //    Memory, _ := strconv.ParseFloat(Info[3], 64)
-        //    Vsz, _ := strconv.Atoi(Info[4])
-        //    Rss, _ := strconv.Atoi(Info[5])
-        //    Pros = append(Pros, Process{
-        //        User: Info[0],
-        //        Pid: Pid,
-        //        Cpu: Cpu,
-        //        Memory: Memory,
-        //        Vsz: Vsz,
-        //        Rss: Rss,
-        //        //Tty: Info[6],
-        //        //Stat: Info[7],
-        //        //Start: Info[8],
-        //        //Time: Info[9],
-        //        //Command: Info[10],
-        //    })
+        Fields := make([]string, 10)
+        Slice := strings.Fields(Line)
+        for i := 0; i < 10; i++ {
+            if i <= len(Slice) {
+                Fields = append(Fields, Slice[i])
+                continue
+            }
+            Fields = append(Fields, "")
+        }
+        Pid, _ := strconv.Atoi(Fields[1])
+        Cpu, _ := strconv.ParseFloat(Fields[2], 64)
+        Memory, _ := strconv.ParseFloat(Fields[3], 64)
+        Vsz, _ := strconv.Atoi(Fields[4])
+        Rss, _ := strconv.Atoi(Fields[5])
+        Pros = append(Pros, Process{
+            User: Fields[0],
+            Pid: Pid,
+            Cpu: Cpu,
+            Memory: Memory,
+            Vsz: Vsz,
+            Rss: Rss,
+            Tty: Fields[6],
+            Stat: Fields[7],
+            Start: Fields[8],
+            Time: Fields[9],
+            Command: Fields[10],
+        })
     }
     
     return Pros
