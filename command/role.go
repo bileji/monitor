@@ -9,8 +9,8 @@ import (
 var RoleCmd = &common.Command{
     Command: &cobra.Command{
         Use: common.CMD_ROLE,
-        Short: "verion this monitor indentify",
-        Long: "verion this monitor indentify",
+        Short: "view this monitor indentify",
+        Long: "view this monitor indentify",
         RunE: func(cmd *cobra.Command, args []string) error {
             Socket := &common.Socket{
                 SUnix: MainCmd.Configure.Server.Unix,
