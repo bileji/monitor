@@ -25,3 +25,5 @@ import:
 - package: github.com/mitchellh/mapstructure
 - package: github.com/pelletier/go-toml
 - package: github.com/noaway/heartbeat
+- package: github.com/VividCortex/godaemon
+- package: github.com/Sirupsen/logrus
